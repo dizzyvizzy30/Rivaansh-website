@@ -7,19 +7,40 @@
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-  <header>
-    <nav>
-      <ul class="nav-list">
-  <li><a href="/index.html">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#locations">Locations</a></li>
-        <li><a href="#ent">E.N.T</a></li>
-        <li><a href="#surgeries">Our ENT Surgeries</a></li>
-        <li><a href="gallery.html">Gallery</a></li>
-        <li><a href="#blog">Blog</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
+  <header class="site-header">
+    <div class="header-left">
+      <a href="../index.html" class="logo-link">
+        <img src="../images/icons/logo.jpeg" alt="Rivaansh ENT Logo" class="site-logo">
+      </a>
+      <div class="site-title-group">
+        <span class="site-title">Rivaansh ENT Clinic</span>
+        <span class="site-tagline">Empowering Better Lives Through Expert ENT Care</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="hamburger" id="hamburger-menu" aria-label="Open menu" tabindex="0">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <nav>
+        <ul class="nav-list" id="main-nav">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="about-us.html">About Us</a>
+            <ul class="dropdown">
+              <li><a href="overview.html">Overview</a></li>
+              <li><a href="team.html">Our Specialists</a></li>
+            </ul>
+          </li>
+          <li><a href="care.html">Care</a></li>
+          <li><a href="appointment.html">Appointment</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="locations.html">Locations</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
   </header>
   <div class="container">
     <section id="gallery">
@@ -31,6 +52,20 @@
   <img src="../images/gallery/Doctor 1.jpeg" alt="Doctor" style="width:140px;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
       </div>
     </section>
+      <section class="testimonial-slider-section" style="margin:3em 0 2em 0;">
+        <h2 style="text-align:center;color:#1976d2;margin-bottom:1.5em;font-size:2em;">What Our Patients Say</h2>
+        <div class="testimonial-slider" style="display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:2em;padding:1em 0;">
+          <div class="testimonial-slide" style="min-width:340px;max-width:480px;flex:0 0 auto;background:#fff;border-radius:16px;box-shadow:0 2px 12px rgba(25,118,210,0.08);padding:2em 1.5em;text-align:center;scroll-snap-align:center;font-size:1.5em;color:#1976d2;font-weight:600;">
+            "Amazing care and staff!"
+          </div>
+          <div class="testimonial-slide" style="min-width:340px;max-width:480px;flex:0 0 auto;background:#fff;border-radius:16px;box-shadow:0 2px 12px rgba(25,118,210,0.08);padding:2em 1.5em;text-align:center;scroll-snap-align:center;font-size:1.5em;color:#1976d2;font-weight:600;">
+            "Best ENT doctors in town."
+          </div>
+          <div class="testimonial-slide" style="min-width:340px;max-width:480px;flex:0 0 auto;background:#fff;border-radius:16px;box-shadow:0 2px 12px rgba(25,118,210,0.08);padding:2em 1.5em;text-align:center;scroll-snap-align:center;font-size:1.5em;color:#1976d2;font-weight:600;">
+            "Highly recommend their services."
+          </div>
+        </div>
+      </section>
     <section id="blog">
       <h2>Blog</h2>
       <div style="display:flex;justify-content:center;">
@@ -38,5 +73,6 @@
       </div>
     </section>
   </div>
+  <script src="../js/script.js"></script>
 </body>
 </html>

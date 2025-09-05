@@ -1,33 +1,66 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Locations | Rivaansh ENT Clinic</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-  <header>
-    <nav>
-      <ul class="nav-list">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="locations.html">Locations</a></li>
-        <li><a href="ent.html">E.N.T</a></li>
-        <li><a href="surgeries.html">Our ENT Surgeries</a></li>
-        <li><a href="gallery.html">Gallery</a></li>
-        <li><a href="blog.html">Blog</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </nav>
+  <header class="site-header">
+    <div class="header-left">
+      <a href="../index.html" class="logo-link">
+        <img src="../images/icons/logo.jpeg" alt="Rivaansh ENT Logo" class="site-logo">
+      </a>
+      <div class="site-title-group">
+        <span class="site-title">Rivaansh ENT Clinic</span>
+        <span class="site-tagline">Empowering Better Lives Through Expert ENT Care</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="hamburger" id="hamburger-menu" aria-label="Open menu" tabindex="0">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <nav>
+        <ul class="nav-list" id="main-nav">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="about-us.html">About Us</a>
+            <ul class="dropdown">
+              <li><a href="overview.html">Overview</a></li>
+              <li><a href="team.html">Our Specialists</a></li>
+            </ul>
+          </li>
+          <li><a href="care.html">Care</a></li>
+          <li><a href="appointment.html">Appointment</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="locations.html">Locations</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
   </header>
-  <div class="container">
-    <section id="locations">
-      <h2>Our Location</h2>
-      <p>406, 4th Floor, Centre Point, Opp. Vrundavan Heights, Nr. Savvy Swaraj, New S.G.Road, Vandematram - Gota, Ahmedabad.</p>
-      <p><strong>Contact:</strong> 91 90332 50621</p>
-      <p><strong>Appointment:</strong> +91 079 4845 0005</p>
-    </section>
+  <div class="container" style="display:flex;flex-direction:column;align-items:center;gap:2em;margin-top:2em;">
+    <div style="display:flex;flex-direction:column;align-items:center;">
+      <img src="../images/gallery/Facility 1.jpeg" alt="Rivaansh Ahmedabad" style="width:280px;border-radius:16px;box-shadow:0 2px 12px rgba(25,118,210,0.10);margin-bottom:1em;">
+      <div style="text-align:center;font-size:1.1em;color:#1976d2;font-weight:600;">
+        406, 4th Floor, Centre Point,<br>
+        Opp. Vrundavan Heights, Nr. Savvy Swaraj,<br>
+        New S.G.Road, Vandematram - Gota, Ahmedabad.
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;">
+      <img src="../images/gallery/Facility 2.jpeg" alt="Rivaansh Unjha" style="width:280px;border-radius:16px;box-shadow:0 2px 12px rgba(25,118,210,0.10);margin-bottom:1em;">
+      <div style="text-align:center;font-size:1.1em;color:#1976d2;font-weight:600;">
+        101, 1st Floor, Shree Complex,<br>
+        Near Bus Stand, Unjha, Gujarat.<br>
+        (Sample Unjha Address)
+      </div>
+    </div>
   </div>
+  <script src="../js/script.js"></script>
 </body>
 </html>

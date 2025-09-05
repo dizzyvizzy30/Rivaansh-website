@@ -7,18 +7,40 @@
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-  <header>
-    <nav>
-      <ul class="nav-list">
-        <li><a href="about.html">About</a></li>
-        <li><a href="locations.html">Locations</a></li>
-        <li><a href="ent.html">E.N.T</a></li>
-        <li><a href="surgeries.html">Our ENT Surgeries</a></li>
-        <li><a href="gallery.html">Gallery</a></li>
-        <li><a href="blog.html">Blog</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </nav>
+  <header class="site-header">
+    <div class="header-left">
+      <a href="../index.html" class="logo-link">
+        <img src="../images/icons/logo.jpeg" alt="Rivaansh ENT Logo" class="site-logo">
+      </a>
+      <div class="site-title-group">
+        <span class="site-title">Rivaansh ENT Clinic</span>
+        <span class="site-tagline">Empowering Better Lives Through Expert ENT Care</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="hamburger" id="hamburger-menu" aria-label="Open menu" tabindex="0">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <nav>
+        <ul class="nav-list" id="main-nav">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="about-us.html">About Us</a>
+            <ul class="dropdown">
+              <li><a href="overview.html">Overview</a></li>
+              <li><a href="team.html">Our Specialists</a></li>
+            </ul>
+          </li>
+          <li><a href="care.html">Care</a></li>
+          <li><a href="appointment.html">Appointment</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="locations.html">Locations</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
   </header>
   <div class="container">
     <section id="blog">
@@ -27,5 +49,6 @@
       <p>Stay tuned for articles and updates from Rivaansh ENT Clinic.</p>
     </section>
   </div>
+  <script src="../js/script.js"></script>
 </body>
 </html>
