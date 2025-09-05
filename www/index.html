@@ -1,30 +1,3 @@
-    <section id="contact-info" style="margin:2em 0;">
-      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:stretch;gap:0;max-width:700px;margin:auto;box-shadow:0 2px 8px rgba(0,0,0,0.08);border-radius:12px;overflow:hidden;">
-        <div style="background:#1976d2;color:#fff;flex:2;padding:1.5em;min-width:260px;">
-          <p style="margin:0 0 0.5em 0;font-weight:600;"><span style="font-size:1.2em;">📍</span> 406, 4th Floor, Centre Point, Opp. Vrundavan Heights, Nr. Savvy Swaraj, New S.G.Road, Vandematram - Gota, Ahmedabad.</p>
-          <p style="margin:0;font-size:1.5em;font-weight:700;"><span style="font-size:1.2em;">📞</span> 91 90332 50621</p>
-        </div>
-        <div style="background:#f26522;color:#fff;flex:1;padding:1.5em;min-width:220px;display:flex;flex-direction:column;justify-content:flex-start;align-items:flex-end;text-align:right;">
-          <div style="font-weight:700;margin-bottom:0.5em;">FOR APPOINTMENT</div>
-          <div style="font-size:0.95em;line-height:1.5;">
-            Monday to Saturday<br>10:00 AM to 1:00 PM<br>05:30 PM to 8:30 PM<br>
-            Sunday: 10:00 AM to 01:00 PM
-          </div>
-          <div style="margin-top:0.7em;font-size:1.2em;font-weight:700;">+91 079 4845 0005</div>
-        </div>
-      </div>
-    </section>
-    <section id="doctors" style="margin-top:2em;">
-      <h2>Our Doctors</h2>
-      <div style="display:flex;gap:2em;flex-wrap:wrap;justify-content:center;">
-        <div class="doctor-card" style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);padding:1em;max-width:220px;text-align:center;">
-          <img src="images/gallery/Doctor 1.jpeg" alt="Dr. Rivaansh Kumar" style="width:100px;height:100px;border-radius:50%;object-fit:cover;margin-bottom:1em;">
-          <h3 style="color:#1976d2;">Dr. Rivaansh Kumar</h3>
-          <p style="color:#222;font-size:0.95em;">MBBS, MS (ENT)<br>Senior ENT Specialist<br>15+ years experience</p>
-        </div>
-        <!-- Add more doctor cards as needed -->
-      </div>
-    </section>
 
 
 <!DOCTYPE html>
@@ -36,64 +9,107 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <header>
-    <nav>
-      <ul class="nav-list">
-  <li><a href="/index.html">Home</a></li>
-  <li><a href="pages/about.html">About</a></li>
-  <li><a href="pages/locations.html">Locations</a></li>
-  <li><a href="pages/ent.html">E.N.T</a></li>
-  <li><a href="pages/surgeries.html">Our ENT Surgeries</a></li>
-  <li><a href="pages/gallery.html">Gallery</a></li>
-  <li><a href="pages/blog.html">Blog</a></li>
-  <li><a href="pages/contact.html">Contact</a></li>
-      </ul>
-    </nav>
+  <header class="site-header">
+    <div class="header-left">
+      <a href="/index.html" class="logo-link">
+        <img src="images/icons/logo.jpeg" alt="Rivaansh ENT Logo" class="site-logo">
+      </a>
+      <div class="site-title-group">
+        <span class="site-title">Rivaansh ENT Clinic</span>
+        <span class="site-tagline">Empowering Better Lives Through Expert ENT Care</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="hamburger" id="hamburger-menu" aria-label="Open menu" tabindex="0">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <nav>
+  <ul class="nav-list" id="main-nav">
+          <li><a href="/index.html">Home</a></li>
+          <li><a href="pages/about-us.html">About Us</a>
+            <ul class="dropdown">
+              <li><a href="pages/overview.html">Overview</a></li>
+              <li><a href="pages/team.html">Our Specialists</a></li>
+            </ul>
+          </li>
+          <li><a href="pages/care.html">Care</a></li>
+          <li><a href="pages/appointment.html">Appointment</a></li>
+          <li><a href="pages/blog.html">Blog</a></li>
+          <li><a href="pages/gallery.html">Gallery</a></li>
+          <li><a href="pages/locations.html">Locations</a></li>
+          <li><a href="pages/contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
   </header>
-  <div class="container">
-    <!-- Hero Image for Home Page -->
-    <section id="home">
-      <h2>Book Appointment</h2>
-      <form style="max-width:400px;margin:auto;display:flex;flex-direction:column;gap:1em;">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-        <label for="date">Select Date:</label>
-        <input type="date" id="date" name="date" required>
-        <label for="time">Select Time:</label>
-        <input type="time" id="time" name="time" required>
-        <button type="submit">Book Appointment</button>
-      </form>
-    </section>
-    <header>
-      <h1>Rivaansh ENT Clinic</h1>
-      <p class="subtitle">Ear, Nose & Throat Specialist</p>
-    </header>
-    <section id="about">
-      <h2>About Us</h2>
-      <p>Welcome to Rivaansh ENT Clinic, dedicated to providing expert care for ear, nose, and throat conditions. Our clinic offers comprehensive diagnosis, treatment, and preventive care for patients of all ages.</p>
-      <img src="images/gallery/Doctor 1.jpeg" alt="Doctor" style="width:180px;border-radius:50%;margin:1em 0;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
-    </section>
-  <!-- Gallery section removed. Now available as a separate page. -->
-    <section>
-      <h2>Services</h2>
-      <ul>
+  <!-- Hero Section (Slideshow) - now outside container for full width -->
+  <section class="hero">
+    <div class="slideshow">
+      <img src="images/gallery/Doctor 1.jpeg" class="active" alt="Doctor">
+      <img src="images/gallery/Facility 1.jpeg" alt="Facility 1">
+      <img src="images/gallery/Facility 2.jpeg" alt="Facility 2">
+    </div>
+    <div class="hero-floating" style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:12;">
+      <h1 style="color:#fff;font-size:4em;font-weight:800;letter-spacing:1px;text-shadow:0 2px 16px rgba(25,118,210,0.25);margin-bottom:0.5em;text-align:center;line-height:1.1;">Empowering Better Lives<br>Through Expert ENT Care</h1>
+      <div style="display:flex;gap:1.5em;justify-content:center;align-items:center;">
+        <a href="pages/about.html" class="btn floating-btn" style="padding:1em 2.5em;font-size:1.2em;border-radius:32px;box-shadow:0 2px 12px rgba(25,118,210,0.18);background:#fff;color:#1976d2;font-weight:700;border:2px solid #1976d2;display:flex;align-items:center;gap:0.5em;">READ MORE <span style="font-size:1.2em;">&#8594;</span></a>
+        <a href="pages/contact.html" class="btn floating-btn primary" style="padding:1em 2.5em;font-size:1.2em;border-radius:32px;box-shadow:0 2px 12px rgba(25,118,210,0.18);background:#1976d2;color:#fff;font-weight:700;border:none;display:flex;align-items:center;gap:0.5em;">CONTACT US <span style="font-size:1.2em;">&#8594;</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Three big service boxes under hero -->
+  <section class="main-services" style="display:flex;gap:2em;justify-content:center;align-items:stretch;margin:2em 0;flex-wrap:wrap;">
+  <div class="service-box ear">
+      <h2 style="color:#fff;margin-bottom:1em;">Ear</h2>
+      <ul style="list-style:none;padding:0;font-size:1.1em;color:#e3f2fd;">
+        <li>Micro Ear Surgery</li>
+        <li>Cochlear Implant</li>
+        <li>Vertigo Clinic</li>
         <li>Ear infection & hearing assessment</li>
+      </ul>
+    </div>
+  <div class="service-box nose">
+      <h2 style="color:#fff;margin-bottom:1em;">Nose</h2>
+      <ul style="list-style:none;padding:0;font-size:1.1em;color:#e3f2fd;">
+        <li>Endoscopic Sinus Surgery</li>
+        <li>Septoplasty & Turbinate Surgery</li>
+        <li>Allergy Clinic</li>
         <li>Sinus and allergy treatment</li>
+      </ul>
+    </div>
+  <div class="service-box throat">
+      <h2 style="color:#fff;margin-bottom:1em;">Throat</h2>
+      <ul style="list-style:none;padding:0;font-size:1.1em;color:#e3f2fd;">
+        <li>Voice Surgery</li>
+        <li>Speech Therapy</li>
+        <li>Sleep Apnea Clinic</li>
         <li>Throat disorders</li>
-        <li>Endoscopic procedures</li>
         <li>Voice & swallowing therapy</li>
       </ul>
-    </section>
-    <section>
-  <h2>Contact</h2>
-  <p>Email: <a href="mailto:rivaansh@email.com">rivaansh@email.com</a></p>
-  <p>Book your appointment or reach out for queries.</p>
-    </section>
-    <div style="text-align:center; margin-top:2em;">
-      <a href="menu.html"><button>Menu / Services</button></a>
     </div>
+  </section>
+
+  <!-- Sliding testimonials section under service boxes -->
+  <section class="testimonial-slider-section" style="margin:3em 0 2em 0;">
+    <h2 style="text-align:center;color:#1976d2;margin-bottom:1.5em;font-size:2em;">What Our Patients Say</h2>
+    <div class="testimonial-slider" style="display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:2em;padding:1em 0;">
+      <div class="testimonial-slide" style="min-width:340px;max-width:480px;flex:0 0 auto;background:#fff;border-radius:16px;box-shadow:0 2px 12px rgba(25,118,210,0.08);padding:2em 1.5em;text-align:center;scroll-snap-align:center;font-size:1.5em;color:#1976d2;font-weight:600;">
+        "Amazing care and staff!"
+      </div>
+      <div class="testimonial-slide" style="min-width:340px;max-width:480px;flex:0 0 auto;background:#fff;border-radius:16px;box-shadow:0 2px 12px rgba(25,118,210,0.08);padding:2em 1.5em;text-align:center;scroll-snap-align:center;font-size:1.5em;color:#1976d2;font-weight:600;">
+        "Best ENT doctors in town."
+      </div>
+      <div class="testimonial-slide" style="min-width:340px;max-width:480px;flex:0 0 auto;background:#fff;border-radius:16px;box-shadow:0 2px 12px rgba(25,118,210,0.08);padding:2em 1.5em;text-align:center;scroll-snap-align:center;font-size:1.5em;color:#1976d2;font-weight:600;">
+        "Highly recommend their services."
+      </div>
+    </div>
+  </section>
+
+  <!-- ...existing code... -->
   </div>
+  <script src="js/script.js"></script>
 </body>
 </html>
