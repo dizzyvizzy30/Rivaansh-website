@@ -4,29 +4,53 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About Us | Rivaansh ENT Clinic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@400;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/pages.css">
 </head>
 <body>
-  <header>
-    <nav>
-      <ul class="nav-list">
-        <li><a href="about.html">About</a></li>
-        <li><a href="locations.html">Locations</a></li>
-        <li><a href="ent.html">E.N.T</a></li>
-        <li><a href="surgeries.html">Our ENT Surgeries</a></li>
-        <li><a href="gallery.html">Gallery</a></li>
-        <li><a href="blog.html">Blog</a></li>
-        <li><a href="contact.html">Contact</a></li>
-  <li><a href="/index.html">Home</a></li>
-      </ul>
-    </nav>
+  <header class="site-header">
+    <div class="header-left">
+      <a href="../index.html" class="logo-link">
+        <img src="../images/icons/logo.jpeg" alt="Rivaansh ENT Logo" class="site-logo">
+      </a>
+      <div class="site-title-group">
+        <span class="site-title">Rivaansh ENT Clinic</span>
+        <span class="site-tagline">Empowering Better Lives Through Expert ENT Care</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="hamburger" id="hamburger-menu" aria-label="Open menu" tabindex="0">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <nav>
+        <ul class="nav-list" id="main-nav">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="about-us.html">About Us</a></li>
+          <li><a href="#">Services</a>
+            <ul class="dropdown">
+              <li><a href="ent.html">ENT</a></li>
+              <li><a href="specialities.html">Specialities</a></li>
+              <li><a href="surgeries.html">Surgeries</a></li>
+            </ul>
+          </li>
+          <li><a href="care.html">Care</a></li>
+          <li><a href="appointment.html">Appointment</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="locations.html">Locations</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
   </header>
-  <div class="container">
-    <section id="about">
-      <h2>About Us</h2>
-      <p>Welcome to Rivaansh ENT Clinic, dedicated to providing expert care for ear, nose, and throat conditions. Our clinic offers comprehensive diagnosis, treatment, and preventive care for patients of all ages.</p>
-      <img src="../images/Doctor 1.jpeg" alt="Doctor" style="width:180px;border-radius:50%;margin:1em 0;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
-    </section>
+  <div class="page-container">
+    <h1>About Rivaansh ENT Clinic</h1>
+    <p>Welcome to Rivaansh ENT Clinic, dedicated to providing expert care for ear, nose, and throat conditions. Our clinic offers comprehensive diagnosis, treatment, and preventive care for patients of all ages.</p>
     <section id="services" style="margin-top:2em;">
       <h2>Our ENT Services</h2>
       <ul style="columns:2;max-width:700px;margin:auto;">
@@ -49,14 +73,15 @@
     </section>
     <section id="doctors" style="margin-top:2em;">
       <h2>Our Doctors</h2>
-      <div style="display:flex;gap:2em;flex-wrap:wrap;justify-content:center;">
-        <div class="doctor-card" style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);padding:1em;max-width:220px;text-align:center;">
-          <img src="images/gallery/Doctor 1.jpeg" alt="Dr. Rivaansh Kumar" style="width:100px;height:100px;border-radius:50%;object-fit:cover;margin-bottom:1em;">
-          <h3 style="color:#1976d2;">Dr. Rivaansh Kumar</h3>
-          <p style="color:#222;font-size:0.95em;">MBBS, MS (ENT)<br>Senior ENT Specialist<br>15+ years experience</p>
+      <div class="team-members">
+        <div class="team-member">
+          <img src="../images/team/doctor1.jpg" alt="Dr. Rivaansh Kumar">
+          <h3>Dr. Rivaansh Kumar</h3>
+          <p>MBBS, MS (ENT)<br>Senior ENT Specialist<br>15+ years experience</p>
         </div>
       </div>
     </section>
   </div>
+  <script src="../js/script.js"></script>
 </body>
 </html>

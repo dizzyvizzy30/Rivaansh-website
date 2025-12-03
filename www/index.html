@@ -6,6 +6,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rivaansh ENT Clinic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@400;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -28,10 +31,12 @@
       <nav>
   <ul class="nav-list" id="main-nav">
           <li><a href="/index.html">Home</a></li>
-          <li><a href="pages/about-us.html">About Us</a>
+          <li><a href="pages/about-us.html">About Us</a></li>
+          <li><a href="#">Services</a>
             <ul class="dropdown">
-              <li><a href="pages/overview.html">Overview</a></li>
-              <li><a href="pages/team.html">Our Specialists</a></li>
+              <li><a href="pages/ent.html">ENT</a></li>
+              <li><a href="pages/specialities.html">Specialities</a></li>
+              <li><a href="pages/surgeries.html">Surgeries</a></li>
             </ul>
           </li>
           <li><a href="pages/care.html">Care</a></li>
@@ -51,59 +56,89 @@
       <img src="images/gallery/Facility 1.jpeg" alt="Facility 1">
       <img src="images/gallery/Facility 2.jpeg" alt="Facility 2">
     </div>
-    <div class="hero-floating" style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:12;">
-      <h1 style="color:#fff;font-size:4em;font-weight:800;letter-spacing:1px;text-shadow:0 2px 16px rgba(25,118,210,0.25);margin-bottom:0.5em;text-align:center;line-height:1.1;">Empowering Better Lives<br>Through Expert ENT Care</h1>
-      <div style="display:flex;gap:1.5em;justify-content:center;align-items:center;">
-        <a href="pages/about.html" class="btn floating-btn" style="padding:1em 2.5em;font-size:1.2em;border-radius:32px;box-shadow:0 2px 12px rgba(25,118,210,0.18);background:#fff;color:#1976d2;font-weight:700;border:2px solid #1976d2;display:flex;align-items:center;gap:0.5em;">READ MORE <span style="font-size:1.2em;">&#8594;</span></a>
-        <a href="pages/contact.html" class="btn floating-btn primary" style="padding:1em 2.5em;font-size:1.2em;border-radius:32px;box-shadow:0 2px 12px rgba(25,118,210,0.18);background:#1976d2;color:#fff;font-weight:700;border:none;display:flex;align-items:center;gap:0.5em;">CONTACT US <span style="font-size:1.2em;">&#8594;</span></a>
+    <div class="hero-floating">
+      <h1 class="hero-title">Empowering Better Lives<br>Through Expert ENT Care</h1>
+      <div class="hero-buttons">
+        <a href="pages/about.html" class="btn floating-btn">READ MORE <span>&#8594;</span></a>
+        <a href="pages/contact.html" class="btn floating-btn primary">CONTACT US <span>&#8594;</span></a>
       </div>
     </div>
   </section>
 
   <!-- Three big service boxes under hero -->
-  <section class="main-services" style="display:flex;gap:2em;justify-content:center;align-items:stretch;margin:2em 0;flex-wrap:wrap;">
+  <section class="main-services">
   <div class="service-box ear">
-      <h2 style="color:#fff;margin-bottom:1em;">Ear</h2>
-      <ul style="list-style:none;padding:0;font-size:1.1em;color:#e3f2fd;">
+      <h2>Ear</h2>
+      <ul>
         <li>Micro Ear Surgery</li>
         <li>Cochlear Implant</li>
         <li>Vertigo Clinic</li>
         <li>Ear infection & hearing assessment</li>
+        <li>Tinnitus Clinic</li>
+        <li>Hearing Aid Clinic</li>
       </ul>
     </div>
   <div class="service-box nose">
-      <h2 style="color:#fff;margin-bottom:1em;">Nose</h2>
-      <ul style="list-style:none;padding:0;font-size:1.1em;color:#e3f2fd;">
+      <h2>Nose</h2>
+      <ul>
         <li>Endoscopic Sinus Surgery</li>
         <li>Septoplasty & Turbinate Surgery</li>
         <li>Allergy Clinic</li>
         <li>Sinus and allergy treatment</li>
+        <li>Nasal Polyps Treatment</li>
+        <li>Smell and Taste Disorders</li>
       </ul>
     </div>
   <div class="service-box throat">
-      <h2 style="color:#fff;margin-bottom:1em;">Throat</h2>
-      <ul style="list-style:none;padding:0;font-size:1.1em;color:#e3f2fd;">
+      <h2>Throat</h2>
+      <ul>
         <li>Voice Surgery</li>
         <li>Speech Therapy</li>
         <li>Sleep Apnea Clinic</li>
         <li>Throat disorders</li>
         <li>Voice & swallowing therapy</li>
+        <li>Tonsils and Adenoids</li>
       </ul>
     </div>
   </section>
 
   <!-- Sliding testimonials section under service boxes -->
-  <section class="testimonial-slider-section" style="margin:3em 0 2em 0;">
-    <h2 style="text-align:center;color:#1976d2;margin-bottom:1.5em;font-size:2em;">What Our Patients Say</h2>
-    <div class="testimonial-slider" style="display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:2em;padding:1em 0;">
-      <div class="testimonial-slide" style="min-width:340px;max-width:480px;flex:0 0 auto;background:#fff;border-radius:16px;box-shadow:0 2px 12px rgba(25,118,210,0.08);padding:2em 1.5em;text-align:center;scroll-snap-align:center;font-size:1.5em;color:#1976d2;font-weight:600;">
-        "Amazing care and staff!"
+  <section class="testimonial-slider-section">
+    <h2 class="testimonial-title">What Our Patients Say</h2>
+    <div class="testimonial-slider">
+      <div class="testimonial-slide">
+        <p>"I had been suffering from chronic sinusitis for years, and Dr. Rivaansh's treatment has been a game-changer. I can finally breathe freely again!"</p>
+        <p>- John Doe</p>
       </div>
-      <div class="testimonial-slide" style="min-width:340px;max-width:480px;flex:0 0 auto;background:#fff;border-radius:16px;box-shadow:0 2px 12px rgba(25,118,210,0.08);padding:2em 1.5em;text-align:center;scroll-snap-align:center;font-size:1.5em;color:#1976d2;font-weight:600;">
-        "Best ENT doctors in town."
+      <div class="testimonial-slide">
+        <p>"The staff at Rivaansh ENT Clinic are incredibly professional and caring. They made my daughter feel comfortable during her tonsillectomy."</p>
+        <p>- Jane Smith</p>
       </div>
-      <div class="testimonial-slide" style="min-width:340px;max-width:480px;flex:0 0 auto;background:#fff;border-radius:16px;box-shadow:0 2px 12px rgba(25,118,210,0.08);padding:2em 1.5em;text-align:center;scroll-snap-align:center;font-size:1.5em;color:#1976d2;font-weight:600;">
-        "Highly recommend their services."
+      <div class="testimonial-slide">
+        <p>"I was nervous about my hearing test, but the audiologist was so patient and explained everything clearly. I'm very happy with my new hearing aids."</p>
+        <p>- Robert Brown</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Meet the Team Section -->
+  <section class="team-section">
+    <h2 class="team-title">Meet Our Specialists</h2>
+    <div class="team-members">
+      <div class="team-member">
+        <img src="images/team/doctor1.jpg" alt="Dr. Rivaansh">
+        <h3>Dr. Rivaansh</h3>
+        <p>ENT Specialist</p>
+      </div>
+      <div class="team-member">
+        <img src="images/team/doctor2.jpg" alt="Dr. Emily Carter">
+        <h3>Dr. Emily Carter</h3>
+        <p>Audiologist</p>
+      </div>
+      <div class="team-member">
+        <img src="images/team/doctor3.jpg" alt="Dr. Ben Hanson">
+        <h3>Dr. Ben Hanson</h3>
+        <p>Speech Therapist</p>
       </div>
     </div>
   </section>

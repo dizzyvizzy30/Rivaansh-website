@@ -3,50 +3,65 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>E.N.T | Rivaansh ENT Clinic</title>
+  <title>ENT Services | Rivaansh ENT Clinic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@400;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/pages.css">
 </head>
 <body>
-  <header>
-    <nav>
-      <ul class="nav-list">
-        <li><a href="about.html">About</a></li>
-        <li><a href="locations.html">Locations</a></li>
-        <li><a href="ent.html">E.N.T</a></li>
-        <li><a href="surgeries.html">Our ENT Surgeries</a></li>
-        <li><a href="gallery.html">Gallery</a></li>
-        <li><a href="blog.html">Blog</a></li>
-        <li><a href="contact.html">Contact</a></li>
-  <li><a href="/index.html">Home</a></li>
-      </ul>
-    </nav>
-  </header>
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E.N.T Services | Rivaansh ENT Clinic</title>
-    <link rel="stylesheet" href="../css/style.css">
-  </head>
-  <body>
-    <header>
+  <header class="site-header">
+    <div class="header-left">
+      <a href="../index.html" class="logo-link">
+        <img src="../images/icons/logo.jpeg" alt="Rivaansh ENT Logo" class="site-logo">
+      </a>
+      <div class="site-title-group">
+        <span class="site-title">Rivaansh ENT Clinic</span>
+        <span class="site-tagline">Empowering Better Lives Through Expert ENT Care</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="hamburger" id="hamburger-menu" aria-label="Open menu" tabindex="0">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
       <nav>
-        <ul class="nav-list">
-          <li><a href="about.html">About</a></li>
-          <li><a href="locations.html">Locations</a></li>
-          <li><a href="ent.html">E.N.T</a></li>
-          <li><a href="surgeries.html">Our ENT Surgeries</a></li>
-          <li><a href="gallery.html">Gallery</a></li>
+        <ul class="nav-list" id="main-nav">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="about-us.html">About Us</a></li>
+          <li><a href="#">Services</a>
+            <ul class="dropdown">
+              <li><a href="ent.html">ENT</a></li>
+              <li><a href="specialities.html">Specialities</a></li>
+              <li><a href="surgeries.html">Surgeries</a></li>
+            </ul>
+          </li>
+          <li><a href="care.html">Care</a></li>
+          <li><a href="appointment.html">Appointment</a></li>
           <li><a href="blog.html">Blog</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="locations.html">Locations</a></li>
           <li><a href="contact.html">Contact</a></li>
-          <li><a href="/index.html">Home</a></li>
         </ul>
       </nav>
-    </header>
-    <div class="container">
-      <!-- ENT Services page intentionally left blank -->
     </div>
-  </body>
-  </html>
-              <li>Allergy Clinic</li>
+  </header>
+  <div class="page-container">
+    <h1>E.N.T. Services</h1>
+    <p>Otolaryngology, or Ear, Nose, and Throat (ENT), is a medical specialty focused on the diagnosis and treatment of conditions affecting these areas. At Rivaansh ENT Clinic, our specialists are equipped to handle a wide range of ENT issues.</p>
+    <h2>Common Conditions We Treat</h2>
+    <ul>
+      <li>Ear Infections</li>
+      <li>Sinusitis</li>
+      <li>Tonsillitis</li>
+      <li>Sleep Apnea</li>
+      <li>Hearing Loss</li>
+      <li>Allergies</li>
+      <li>And many more...</li>
+    </ul>
+  </div>
+  <script src="../js/script.js"></script>
+</body>
+</html>

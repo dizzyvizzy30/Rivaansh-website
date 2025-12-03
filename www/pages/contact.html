@@ -4,7 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact | Rivaansh ENT Clinic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@400;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/pages.css">
 </head>
 <body>
   <header class="site-header">
@@ -26,10 +30,12 @@
       <nav>
         <ul class="nav-list" id="main-nav">
           <li><a href="../index.html">Home</a></li>
-          <li><a href="about-us.html">About Us</a>
+          <li><a href="about-us.html">About Us</a></li>
+          <li><a href="#">Services</a>
             <ul class="dropdown">
-              <li><a href="overview.html">Overview</a></li>
-              <li><a href="team.html">Our Specialists</a></li>
+              <li><a href="ent.html">ENT</a></li>
+              <li><a href="specialities.html">Specialities</a></li>
+              <li><a href="surgeries.html">Surgeries</a></li>
             </ul>
           </li>
           <li><a href="care.html">Care</a></li>
@@ -42,14 +48,30 @@
       </nav>
     </div>
   </header>
-  <div class="container">
-    <section id="contact">
-      <h2>Contact Us</h2>
+  <div class="page-container">
+    <h1>Contact Us</h1>
+    <div class="contact-info">
       <p><strong>Address:</strong> 406, 4th Floor, Centre Point, Opp. Vrundavan Heights, Nr. Savvy Swaraj, New S.G.Road, Vandematram - Gota, Ahmedabad.</p>
       <p><strong>Phone:</strong> 91 90332 50621</p>
       <p><strong>Appointment:</strong> +91 079 4845 0005</p>
       <p><strong>Email:</strong> <a href="mailto:rivaansh@email.com">rivaansh@email.com</a></p>
-    </section>
+    </div>
+    <form class="contact-form">
+      <h2>Send us a Message</h2>
+      <div class="form-group">
+        <label for="name">Your Name</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Your Email</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" rows="5"></textarea>
+      </div>
+      <button type="submit" class="btn floating-btn primary">Send Message</button>
+    </form>
   </div>
   <script src="../js/script.js"></script>
 </body>

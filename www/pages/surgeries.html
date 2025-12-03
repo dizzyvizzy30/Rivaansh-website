@@ -4,34 +4,76 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Our ENT Surgeries | Rivaansh ENT Clinic</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/pages.css">
 </head>
 <body>
-  <header>
-    <nav>
-      <ul class="nav-list">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="locations.html">Locations</a></li>
-        <li><a href="ent.html">E.N.T</a></li>
-        <li><a href="surgeries.html">Our ENT Surgeries</a></li>
-        <li><a href="gallery.html">Gallery</a></li>
-        <li><a href="blog.html">Blog</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </nav>
+  <header class="site-header">
+    <div class="header-left">
+      <a href="../index.html" class="logo-link">
+        <img src="../images/icons/logo.jpeg" alt="Rivaansh ENT Logo" class="site-logo">
+      </a>
+      <div class="site-title-group">
+        <span class="site-title">Rivaansh ENT Clinic</span>
+        <span class="site-tagline">Empowering Better Lives Through Expert ENT Care</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="hamburger" id="hamburger-menu" aria-label="Open menu" tabindex="0">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <nav>
+        <ul class="nav-list" id="main-nav">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="about-us.html">About Us</a></li>
+          <li><a href="#">Services</a>
+            <ul class="dropdown">
+              <li><a href="ent.html">ENT</a></li>
+              <li><a href="specialities.html">Specialities</a></li>
+              <li><a href="surgeries.html">Surgeries</a></li>
+            </ul>
+          </li>
+          <li><a href="care.html">Care</a></li>
+          <li><a href="appointment.html">Appointment</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="locations.html">Locations</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
   </header>
-  <div class="container">
-    <section id="surgeries">
-      <h2>Our ENT Surgeries</h2>
-      <ul>
-        <li>Tympanoplasty</li>
-        <li>Septoplasty</li>
-        <li>Sinus Surgery</li>
-        <li>Tonsillectomy</li>
-        <li>Microlaryngeal Surgery</li>
-      </ul>
-    </section>
+  <div class="page-container">
+    <h1>Our ENT Surgeries</h1>
+    <p>At Rivaansh ENT Clinic, we offer a wide range of surgical procedures to treat a variety of ear, nose, and throat conditions. Our experienced surgeons use the latest technology and techniques to ensure the best possible outcomes for our patients.</p>
+    <div class="surgeries">
+      <div class="surgery">
+        <h2>Tympanoplasty</h2>
+        <p>A surgical procedure to repair a perforated eardrum.</p>
+      </div>
+      <div class="surgery">
+        <h2>Septoplasty</h2>
+        <p>A surgical procedure to correct a deviated septum.</p>
+      </div>
+      <div class="surgery">
+        <h2>Sinus Surgery</h2>
+        <p>A surgical procedure to treat chronic sinusitis and other sinus problems.</p>
+      </div>
+      <div class="surgery">
+        <h2>Tonsillectomy</h2>
+        <p>A surgical procedure to remove the tonsils.</p>
+      </div>
+      <div class="surgery">
+        <h2>Microlaryngeal Surgery</h2>
+        <p>A surgical procedure to treat voice and swallowing disorders.</p>
+      </div>
+    </div>
   </div>
+  <script src="../js/script.js"></script>
 </body>
 </html>

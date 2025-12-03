@@ -4,30 +4,76 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Specialities | Rivaansh ENT Clinic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@400;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/pages.css">
 </head>
 <body>
-  <header>
-    <nav>
-      <ul class="nav-list">
-        <li><a href="about.html">About</a></li>
-        <li><a href="locations.html">Locations</a></li>
-        <li><a href="ent.html">E.N.T</a></li>
-        <li><a href="specialities.html">Specialities</a></li>
-        <li><a href="surgeries.html">Our ENT Surgeries</a></li>
-        <li><a href="gallery.html">Gallery</a></li>
-        <li><a href="blog.html">Blog</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li><a href="/index.html">Home</a></li>
-      </ul>
-    </nav>
+  <header class="site-header">
+    <div class="header-left">
+      <a href="../index.html" class="logo-link">
+        <img src="../images/icons/logo.jpeg" alt="Rivaansh ENT Logo" class="site-logo">
+      </a>
+      <div class="site-title-group">
+        <span class="site-title">Rivaansh ENT Clinic</span>
+        <span class="site-tagline">Empowering Better Lives Through Expert ENT Care</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="hamburger" id="hamburger-menu" aria-label="Open menu" tabindex="0">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <nav>
+        <ul class="nav-list" id="main-nav">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="about-us.html">About Us</a></li>
+          <li><a href="#">Services</a>
+            <ul class="dropdown">
+              <li><a href="ent.html">ENT</a></li>
+              <li><a href="specialities.html">Specialities</a></li>
+              <li><a href="surgeries.html">Surgeries</a></li>
+            </ul>
+          </li>
+          <li><a href="care.html">Care</a></li>
+          <li><a href="appointment.html">Appointment</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="locations.html">Locations</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
   </header>
-  <div class="container">
-    <section id="specialities">
-      <h2>Our Specialities</h2>
-      <p>Explore the range of ENT specialities and advanced care offered at Rivaansh ENT Clinic.</p>
-      <!-- Add speciality details here -->
-    </section>
+  <div class="page-container">
+    <h1>Our Specialities</h1>
+    <p>At Rivaansh ENT Clinic, we offer a wide range of specialized services to address all your ear, nose, and throat needs. Our team of experts is dedicated to providing the highest quality care in a variety of sub-specialties.</p>
+    <div class="specialities">
+      <div class="speciality">
+        <h2>Pediatric ENT</h2>
+        <p>We provide specialized care for children with ENT conditions, including ear infections, tonsillitis, and breathing problems.</p>
+      </div>
+      <div class="speciality">
+        <h2>Rhinology</h2>
+        <p>Our rhinology specialists focus on the treatment of nasal and sinus disorders, including chronic sinusitis, nasal polyps, and allergies.</p>
+      </div>
+      <div class="speciality">
+        <h2>Laryngology</h2>
+        <p>We offer advanced diagnosis and treatment for voice and swallowing disorders, including vocal cord paralysis, polyps, and nodules.</p>
+      </div>
+      <div class="speciality">
+        <h2>Otology & Neurotology</h2>
+        <p>Our otology experts specialize in the treatment of ear and hearing disorders, including hearing loss, tinnitus, and vertigo.</p>
+      </div>
+      <div class="speciality">
+        <h2>Head & Neck Surgery</h2>
+        <p>We provide comprehensive care for patients with head and neck cancers, including tumors of the mouth, throat, and larynx.</p>
+      </div>
+    </div>
   </div>
+  <script src="../js/script.js"></script>
 </body>
 </html>

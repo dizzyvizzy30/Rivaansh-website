@@ -4,7 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gallery | Rivaansh ENT Clinic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@400;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/pages.css">
 </head>
 <body>
   <header class="site-header">
@@ -26,10 +30,12 @@
       <nav>
         <ul class="nav-list" id="main-nav">
           <li><a href="../index.html">Home</a></li>
-          <li><a href="about-us.html">About Us</a>
+          <li><a href="about-us.html">About Us</a></li>
+          <li><a href="#">Services</a>
             <ul class="dropdown">
-              <li><a href="overview.html">Overview</a></li>
-              <li><a href="team.html">Our Specialists</a></li>
+              <li><a href="ent.html">ENT</a></li>
+              <li><a href="specialities.html">Specialities</a></li>
+              <li><a href="surgeries.html">Surgeries</a></li>
             </ul>
           </li>
           <li><a href="care.html">Care</a></li>
@@ -42,36 +48,22 @@
       </nav>
     </div>
   </header>
-  <div class="container">
-    <section id="gallery">
-      <h2>Gallery</h2>
-      <div style="display:flex;gap:1em;flex-wrap:wrap;justify-content:center;">
-  <img src="../images/gallery/Facility 1.jpeg" alt="Facility 1" style="width:140px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
-  <img src="../images/gallery/Facility 2.jpeg" alt="Facility 2" style="width:140px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
-  <img src="../images/gallery/facility 3.jpeg" alt="Facility 3" style="width:140px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
-  <img src="../images/gallery/Doctor 1.jpeg" alt="Doctor" style="width:140px;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+  <div class="page-container">
+    <h1>Gallery</h1>
+    <div class="gallery">
+      <div class="gallery-item">
+        <img src="../images/gallery/Facility 1.jpeg" alt="Facility 1">
       </div>
-    </section>
-      <section class="testimonial-slider-section" style="margin:3em 0 2em 0;">
-        <h2 style="text-align:center;color:#1976d2;margin-bottom:1.5em;font-size:2em;">What Our Patients Say</h2>
-        <div class="testimonial-slider" style="display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:2em;padding:1em 0;">
-          <div class="testimonial-slide" style="min-width:340px;max-width:480px;flex:0 0 auto;background:#fff;border-radius:16px;box-shadow:0 2px 12px rgba(25,118,210,0.08);padding:2em 1.5em;text-align:center;scroll-snap-align:center;font-size:1.5em;color:#1976d2;font-weight:600;">
-            "Amazing care and staff!"
-          </div>
-          <div class="testimonial-slide" style="min-width:340px;max-width:480px;flex:0 0 auto;background:#fff;border-radius:16px;box-shadow:0 2px 12px rgba(25,118,210,0.08);padding:2em 1.5em;text-align:center;scroll-snap-align:center;font-size:1.5em;color:#1976d2;font-weight:600;">
-            "Best ENT doctors in town."
-          </div>
-          <div class="testimonial-slide" style="min-width:340px;max-width:480px;flex:0 0 auto;background:#fff;border-radius:16px;box-shadow:0 2px 12px rgba(25,118,210,0.08);padding:2em 1.5em;text-align:center;scroll-snap-align:center;font-size:1.5em;color:#1976d2;font-weight:600;">
-            "Highly recommend their services."
-          </div>
-        </div>
-      </section>
-    <section id="blog">
-      <h2>Blog</h2>
-      <div style="display:flex;justify-content:center;">
-  <img src="../images/blog/blog.jpeg" alt="Blog" style="width:220px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+      <div class="gallery-item">
+        <img src="../images/gallery/Facility 2.jpeg" alt="Facility 2">
       </div>
-    </section>
+      <div class="gallery-item">
+        <img src="../images/gallery/facility 3.jpeg" alt="Facility 3">
+      </div>
+      <div class="gallery-item">
+        <img src="../images/gallery/Doctor 1.jpeg" alt="Doctor">
+      </div>
+    </div>
   </div>
   <script src="../js/script.js"></script>
 </body>

@@ -4,7 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Blog | Rivaansh ENT Clinic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@400;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/pages.css">
 </head>
 <body>
   <header class="site-header">
@@ -26,10 +30,12 @@
       <nav>
         <ul class="nav-list" id="main-nav">
           <li><a href="../index.html">Home</a></li>
-          <li><a href="about-us.html">About Us</a>
+          <li><a href="about-us.html">About Us</a></li>
+          <li><a href="#">Services</a>
             <ul class="dropdown">
-              <li><a href="overview.html">Overview</a></li>
-              <li><a href="team.html">Our Specialists</a></li>
+              <li><a href="ent.html">ENT</a></li>
+              <li><a href="specialities.html">Specialities</a></li>
+              <li><a href="surgeries.html">Surgeries</a></li>
             </ul>
           </li>
           <li><a href="care.html">Care</a></li>
@@ -42,12 +48,28 @@
       </nav>
     </div>
   </header>
-  <div class="container">
-    <section id="blog">
-      <h2>Blog</h2>
-      <img src="images/blog/blog.jpeg" alt="Blog" style="width:220px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);margin-bottom:1em;">
-      <p>Stay tuned for articles and updates from Rivaansh ENT Clinic.</p>
-    </section>
+  <div class="page-container">
+    <h1>Our Blog</h1>
+    <div class="blog-posts">
+      <div class="blog-post">
+        <img src="../images/blog/blog1.jpg" alt="Blog Post 1">
+        <h2>Understanding Tinnitus</h2>
+        <p>Tinnitus, often described as a ringing in the ears, is a common condition that affects millions of people worldwide. In this post, we explore the causes, symptoms, and treatment options for tinnitus.</p>
+        <a href="#" class="btn floating-btn">Read More</a>
+      </div>
+      <div class="blog-post">
+        <img src="../images/blog/blog2.jpg" alt="Blog Post 2">
+        <h2>The Importance of Hearing Protection</h2>
+        <p>Exposure to loud noises can cause permanent damage to your hearing. Learn how to protect your ears and prevent noise-induced hearing loss.</p>
+        <a href="#" class="btn floating-btn">Read More</a>
+      </div>
+      <div class="blog-post">
+        <img src="../images/blog/blog3.jpg" alt="Blog Post 3">
+        <h2>Allergies and Your ENT Health</h2>
+        <p>Allergies can have a significant impact on your ear, nose, and throat health. Discover how to manage your allergies and breathe easier.</p>
+        <a href="#" class="btn floating-btn">Read More</a>
+      </div>
+    </div>
   </div>
   <script src="../js/script.js"></script>
 </body>
