@@ -8,10 +8,13 @@
   <title>Rivaansh ENT Clinic</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@400;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <!-- Scroll Progress Indicator -->
+  <div class="scroll-progress" aria-hidden="true"></div>
+
   <header class="site-header">
     <div class="header-left">
       <a href="/index.html" class="logo-link">
@@ -37,9 +40,9 @@
               <li><a href="pages/ent.html">ENT</a></li>
               <li><a href="pages/specialities.html">Specialities</a></li>
               <li><a href="pages/surgeries.html">Surgeries</a></li>
+              <li><a href="pages/care.html">Care</a></li>
             </ul>
           </li>
-          <li><a href="pages/care.html">Care</a></li>
           <li><a href="pages/appointment.html">Appointment</a></li>
           <li><a href="pages/blog.html">Blog</a></li>
           <li><a href="pages/gallery.html">Gallery</a></li>
@@ -58,16 +61,31 @@
     </div>
     <div class="hero-floating">
       <h1 class="hero-title">Empowering Better Lives<br>Through Expert ENT Care</h1>
+      <p class="hero-subtitle">Comprehensive ear, nose, and throat services with compassion, expertise, and cutting-edge technology.</p>
       <div class="hero-buttons">
         <a href="pages/about.html" class="btn floating-btn">READ MORE <span>&#8594;</span></a>
         <a href="pages/contact.html" class="btn floating-btn primary">CONTACT US <span>&#8594;</span></a>
       </div>
     </div>
+    <!-- Wave divider -->
+    <div class="hero-wave">
+      <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path fill="#ffffff" d="M0,64 C288,120 720,0 1440,64 L1440,120 L0,120 Z"></path>
+      </svg>
+    </div>
   </section>
 
   <!-- Three big service boxes under hero -->
   <section class="main-services">
-  <div class="service-box ear">
+    <div class="service-box ear" data-animate="fade-up" data-animate-delay="1" data-tilt>
+      <div class="service-icon">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M32 4C19.85 4 10 13.85 10 26c0 8.5 4.8 15.9 11.8 19.6.5.3.8.8.8 1.4v9c0 2.2 1.8 4 4 4h10.8c2.2 0 4-1.8 4-4v-9c0-.6.3-1.1.8-1.4C49.2 41.9 54 34.5 54 26 54 13.85 44.15 4 32 4z" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          <path d="M26 26c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          <path d="M20 26c0-6.6 5.4-12 12-12s12 5.4 12 12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="32" cy="26" r="2" fill="currentColor"/>
+        </svg>
+      </div>
       <h2>Ear</h2>
       <ul>
         <li>Micro Ear Surgery</li>
@@ -78,7 +96,16 @@
         <li>Hearing Aid Clinic</li>
       </ul>
     </div>
-  <div class="service-box nose">
+    <div class="service-box nose" data-animate="fade-up" data-animate-delay="2" data-tilt>
+      <div class="service-icon">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M32 6v20" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          <path d="M32 26c0 0-12 8-12 20 0 6 4 12 12 12s12-6 12-12c0-12-12-20-12-20z" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M26 46c0 3.3 2.7 6 6 6s6-2.7 6-6" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="28" cy="42" r="2" fill="currentColor"/>
+          <circle cx="36" cy="42" r="2" fill="currentColor"/>
+        </svg>
+      </div>
       <h2>Nose</h2>
       <ul>
         <li>Endoscopic Sinus Surgery</li>
@@ -89,7 +116,17 @@
         <li>Smell and Taste Disorders</li>
       </ul>
     </div>
-  <div class="service-box throat">
+    <div class="service-box throat" data-animate="fade-up" data-animate-delay="3" data-tilt>
+      <div class="service-icon">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="32" cy="20" rx="16" ry="12" stroke="currentColor" stroke-width="3"/>
+          <path d="M20 28c0 0 0 12 0 18 0 8 5.4 14 12 14s12-6 12-14c0-6 0-18 0-18" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          <path d="M26 20h12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          <path d="M28 16v8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M36 16v8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M26 38h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
       <h2>Throat</h2>
       <ul>
         <li>Voice Surgery</li>
@@ -103,39 +140,42 @@
   </section>
 
   <!-- Sliding testimonials section under service boxes -->
-  <section class="testimonial-slider-section">
+  <section class="testimonial-slider-section" data-animate="fade-up">
     <h2 class="testimonial-title">What Our Patients Say</h2>
-    <div class="testimonial-slider">
-      <div class="testimonial-slide">
-        <p>"I had been suffering from chronic sinusitis for years, and Dr. Rivaansh's treatment has been a game-changer. I can finally breathe freely again!"</p>
-        <p>- John Doe</p>
+    <div class="testimonial-wrapper">
+      <div class="testimonial-slider" id="testimonial-slider">
+        <div class="testimonial-slide">
+          <p>"I had been suffering from chronic sinusitis for years, and Dr. Tanay Parikh's treatment has been a game-changer. I can finally breathe freely again!"</p>
+          <p>- John Doe</p>
+        </div>
+        <div class="testimonial-slide">
+          <p>"The staff at Rivaansh ENT Clinic are incredibly professional and caring. They made my daughter feel comfortable during her tonsillectomy."</p>
+          <p>- Jane Smith</p>
+        </div>
+        <div class="testimonial-slide">
+          <p>"I was nervous about my hearing test, but the audiologist was so patient and explained everything clearly. I'm very happy with my new hearing aids."</p>
+          <p>- Robert Brown</p>
+        </div>
       </div>
-      <div class="testimonial-slide">
-        <p>"The staff at Rivaansh ENT Clinic are incredibly professional and caring. They made my daughter feel comfortable during her tonsillectomy."</p>
-        <p>- Jane Smith</p>
-      </div>
-      <div class="testimonial-slide">
-        <p>"I was nervous about my hearing test, but the audiologist was so patient and explained everything clearly. I'm very happy with my new hearing aids."</p>
-        <p>- Robert Brown</p>
-      </div>
+      <div class="testimonial-dots" id="testimonial-dots"></div>
     </div>
   </section>
 
   <!-- Meet the Team Section -->
   <section class="team-section">
-    <h2 class="team-title">Meet Our Specialists</h2>
+    <h2 class="team-title" data-animate="fade-up">Meet Our Specialists</h2>
     <div class="team-members">
-      <div class="team-member">
-        <img src="images/team/doctor1.jpg" alt="Dr. Rivaansh">
-        <h3>Dr. Rivaansh</h3>
+      <div class="team-member" data-animate="scale-up" data-animate-delay="1">
+        <img src="images/team/doctor1.jpg" alt="Dr. Tanay Parikh">
+        <h3>Dr. Tanay Parikh</h3>
         <p>ENT Specialist</p>
       </div>
-      <div class="team-member">
+      <div class="team-member" data-animate="scale-up" data-animate-delay="2">
         <img src="images/team/doctor2.jpg" alt="Dr. Emily Carter">
         <h3>Dr. Emily Carter</h3>
         <p>Audiologist</p>
       </div>
-      <div class="team-member">
+      <div class="team-member" data-animate="scale-up" data-animate-delay="3">
         <img src="images/team/doctor3.jpg" alt="Dr. Ben Hanson">
         <h3>Dr. Ben Hanson</h3>
         <p>Speech Therapist</p>
@@ -143,8 +183,65 @@
     </div>
   </section>
 
-  <!-- ...existing code... -->
-  </div>
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-brand" data-animate="fade-up" data-animate-delay="1">
+        <div class="footer-logo">Rivaansh ENT Clinic</div>
+        <p>Empowering Better Lives Through Expert ENT Care. Providing comprehensive ear, nose, and throat services with compassion and expertise.</p>
+      </div>
+
+      <div class="footer-section" data-animate="fade-up" data-animate-delay="2">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="/index.html">Home</a></li>
+          <li><a href="pages/about-us.html">About Us</a></li>
+          <li><a href="pages/appointment.html">Book Appointment</a></li>
+          <li><a href="pages/blog.html">Blog</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section" data-animate="fade-up" data-animate-delay="3">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="pages/ent.html">ENT Care</a></li>
+          <li><a href="pages/specialities.html">Specialities</a></li>
+          <li><a href="pages/surgeries.html">Surgeries</a></li>
+          <li><a href="pages/care.html">Patient Care</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section footer-contact" data-animate="fade-up" data-animate-delay="4">
+        <h4>Contact Us</h4>
+        <p><strong>Address:</strong> 123 Medical Center Drive, Healthcare City</p>
+        <p><strong>Phone:</strong> (555) 123-4567</p>
+        <p><strong>Email:</strong> info@rivaanshent.com</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook">FB</a>
+          <a href="#" aria-label="Twitter">TW</a>
+          <a href="#" aria-label="Instagram">IG</a>
+          <a href="#" aria-label="LinkedIn">LI</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2024 Rivaansh ENT Clinic. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Floating CTA Button -->
+  <a href="pages/appointment.html" class="floating-cta" id="floating-cta" aria-label="Book Appointment">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M19 4H5C3.89 4 3 4.9 3 6V20C3 21.1 3.89 22 5 22H19C20.1 22 21 21.1 21 20V6C21 4.9 20.1 4 19 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M16 2V6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <path d="M8 2V6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <path d="M3 10H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <path d="M9 14L11 16L15 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span>Book Now</span>
+  </a>
+
   <script src="js/script.js"></script>
 </body>
 </html>

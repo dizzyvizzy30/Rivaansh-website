@@ -1,0 +1,470 @@
+/* ============================================
+   ABOUT PAGE - Creative Styles
+   ============================================ */
+
+/* ============================================
+   DOCTOR HERO SECTION
+   ============================================ */
+.doctor-hero {
+  position: relative;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  padding: 6rem 2rem 4rem;
+  overflow: hidden;
+}
+
+.doctor-hero-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #f8fafc 0%, #e8f5e9 50%, #f8fafc 100%);
+  z-index: 0;
+}
+
+.doctor-hero-bg::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 80%;
+  height: 150%;
+  background: radial-gradient(circle, rgba(143, 188, 143, 0.15) 0%, transparent 70%);
+  z-index: 1;
+}
+
+.doctor-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.doctor-hero-image {
+  position: relative;
+}
+
+.doctor-hero-image img {
+  width: 100%;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+}
+
+.doctor-hero-badge {
+  position: absolute;
+  bottom: -20px;
+  right: -20px;
+  background: linear-gradient(135deg, #8fbc8f, #6b9e6b);
+  color: white;
+  padding: 1.25rem;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(143, 188, 143, 0.4);
+}
+
+.doctor-hero-badge span {
+  display: block;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.doctor-hero-badge small {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.9;
+}
+
+.doctor-hero-info {
+  padding: 2rem 0;
+}
+
+.doctor-hero-label {
+  display: inline-block;
+  background: rgba(143, 188, 143, 0.15);
+  color: #6b9e6b;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+}
+
+.doctor-hero-info h1 {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.doctor-hero-title {
+  font-size: 1.25rem;
+  color: #8fbc8f;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.doctor-hero-bio {
+  font-size: 1.1rem;
+  color: #64748b;
+  line-height: 1.8;
+  margin-bottom: 2rem;
+}
+
+.doctor-credentials-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.credential-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.credential-item svg {
+  width: 24px;
+  height: 24px;
+  color: #8fbc8f;
+  flex-shrink: 0;
+}
+
+.credential-item span {
+  font-size: 0.9rem;
+  color: #1e293b;
+  font-weight: 500;
+}
+
+/* ============================================
+   FACILITY SECTION
+   ============================================ */
+.facility-section {
+  padding: 5rem 2rem;
+  background: #fff;
+}
+
+.facility-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.facility-images {
+  display: grid;
+  gap: 1rem;
+}
+
+.facility-main-image img {
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+  border-radius: 16px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+}
+
+.facility-secondary-images {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.facility-secondary-images img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
+}
+
+.facility-secondary-images img:hover {
+  transform: scale(1.03);
+}
+
+.section-label {
+  display: inline-block;
+  color: #8fbc8f;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.75rem;
+}
+
+.facility-content h2 {
+  font-size: 2.25rem;
+  color: #1e293b;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.facility-content > p {
+  font-size: 1.1rem;
+  color: #64748b;
+  line-height: 1.8;
+  margin-bottom: 2rem;
+}
+
+.facility-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.facility-features li {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.facility-features li:last-child {
+  border-bottom: none;
+}
+
+.facility-features svg {
+  width: 40px;
+  height: 40px;
+  color: #8fbc8f;
+  flex-shrink: 0;
+  padding: 8px;
+  background: #e8f5e9;
+  border-radius: 10px;
+}
+
+.facility-features strong {
+  display: block;
+  font-size: 1rem;
+  color: #1e293b;
+  margin-bottom: 0.25rem;
+}
+
+.facility-features span {
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+/* ============================================
+   VISION & MISSION SECTION
+   ============================================ */
+.vm-section {
+  padding: 5rem 2rem;
+  background: linear-gradient(180deg, #f8fafc 0%, #fff 100%);
+}
+
+.vm-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+.vm-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 2.5rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.vm-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+}
+
+.vm-icon-wrapper {
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.vm-icon-wrapper svg {
+  width: 32px;
+  height: 32px;
+  color: #6b9e6b;
+}
+
+.vm-card h2 {
+  font-size: 1.5rem;
+  color: #1e293b;
+  margin-bottom: 1rem;
+}
+
+.vm-card p {
+  font-size: 1rem;
+  color: #64748b;
+  line-height: 1.8;
+}
+
+.vm-accent {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #8fbc8f, #6b9e6b);
+}
+
+/* ============================================
+   STATS SECTION
+   ============================================ */
+.stats-section {
+  padding: 4rem 2rem;
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+}
+
+.stats-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  text-align: center;
+}
+
+.stat-item {
+  padding: 1rem;
+}
+
+.stat-number {
+  display: block;
+  font-size: 3rem;
+  font-weight: 700;
+  color: #8fbc8f;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 1024px) {
+  .doctor-hero-content {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    text-align: center;
+  }
+
+  .doctor-hero-image {
+    max-width: 350px;
+    margin: 0 auto;
+  }
+
+  .doctor-hero-badge {
+    right: 0;
+  }
+
+  .doctor-credentials-grid {
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 2rem;
+  }
+
+  .doctor-hero-info .btn {
+    margin: 0 auto;
+  }
+
+  .facility-container {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .vm-container {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .doctor-hero {
+    padding: 5rem 1rem 3rem;
+    min-height: auto;
+  }
+
+  .doctor-hero-info h1 {
+    font-size: 2rem;
+  }
+
+  .doctor-credentials-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .facility-section,
+  .vm-section {
+    padding: 3rem 1rem;
+  }
+
+  .facility-content h2 {
+    font-size: 1.75rem;
+  }
+
+  .facility-secondary-images {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-number {
+    font-size: 2.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .doctor-hero-image {
+    max-width: 280px;
+  }
+
+  .doctor-hero-badge {
+    padding: 1rem;
+    bottom: -15px;
+    right: -10px;
+  }
+
+  .doctor-hero-badge span {
+    font-size: 1.5rem;
+  }
+
+  .stats-container {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .stat-number {
+    font-size: 2rem;
+  }
+}
