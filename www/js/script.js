@@ -319,3 +319,21 @@ document.addEventListener('DOMContentLoaded', function() {
   // Observe all animated elements
   animatedElements.forEach(el => observer.observe(el));
 });
+
+// ============================================
+// FAQ Accordion
+// ============================================
+document.addEventListener('DOMContentLoaded', function() {
+  const faqItems = document.querySelectorAll('.faq-item');
+
+  faqItems.forEach(item => {
+    const question = item.querySelector('.faq-question');
+    question.addEventListener('click', () => {
+      const currentlyActive = document.querySelector('.faq-item.active');
+      if (currentlyActive && currentlyActive !== item) {
+        currentlyActive.classList.remove('active');
+      }
+      item.classList.toggle('active');
+    });
+  });
+});
