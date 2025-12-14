@@ -796,6 +796,51 @@ ul {
 }
 
 /* ============================================
+   STATS SECTION - SCORECARDS
+   ============================================ */
+.stats-section {
+  background-color: var(--bg-gray);
+  padding: 4rem 2rem;
+}
+
+.stats-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.stat-item {
+  background: var(--bg-white);
+  padding: 2.5rem 2rem;
+  border-radius: var(--radius-lg);
+  text-align: center;
+  border: 1px solid var(--border);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-item:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+.stat-number {
+  display: block;
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* ============================================
    FOOTER
    ============================================ */
 .site-footer {
@@ -873,18 +918,24 @@ ul {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   background: rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-full);
   color: var(--bg-gray);
-  font-size: 1.125rem;
   transition: all 0.2s ease;
 }
 
 .footer-social a:hover {
   background: var(--primary);
   color: var(--bg-white);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.footer-social a svg {
+  width: 24px;
+  height: 24px;
 }
 
 .footer-bottom {
