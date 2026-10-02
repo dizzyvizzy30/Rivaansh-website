@@ -1,0 +1,295 @@
+/* ============================================
+   RIVAANSH ENT — GLOBAL STYLES
+   Reset, base typography, buttons, reveal animations, page prose, utilities.
+   Component-specific styles live in each component's scoped <style>.
+   ============================================ */
+
+@import './tokens.css';
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: clip;
+  /* The sticky header changes height while scrolling; scroll anchoring would "correct" scrollY for it,
+     which reads as a backward jerk. Images reserve their space, so anchoring isn't needed elsewhere. */
+  overflow-anchor: none;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  color: var(--color-text);
+  background: var(--color-bg);
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--color-text);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img, picture, video, svg {
+  max-width: 100%;
+  display: block;
+}
+
+img {
+  height: auto;
+}
+
+ul {
+  list-style: none;
+}
+
+button {
+  font: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ---------- Accessibility utilities ---------- */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -100px;
+  z-index: calc(var(--z-progress) + 1);
+  padding: 0.75rem 1.25rem;
+  background: var(--color-primary-ink);
+  color: var(--color-text-on-dark);
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  transition: top var(--duration-fast) ease;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+/* ---------- Layout utilities ---------- */
+.page-container {
+  max-width: var(--width-page);
+  margin: 0 auto;
+  padding: 2em;
+}
+
+/* Breaks a block out of a centered container to the full viewport width. */
+.bleed {
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+}
+
+/* ---------- Page prose (simple inner pages) ---------- */
+.page-container h1 {
+  font-size: 2.5em;
+  color: var(--color-primary-dark);
+  margin-bottom: 1em;
+}
+
+.page-container p {
+  font-size: 1.1em;
+  line-height: 1.7;
+  color: var(--color-text);
+  margin-bottom: 1em;
+}
+
+.page-container p a,
+.page-container li a {
+  color: var(--color-primary-ink);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  transition: all var(--duration-base) var(--ease-standard);
+  cursor: pointer;
+  border: 2px solid transparent;
+  position: relative;
+  overflow: hidden;
+  line-height: 1.6;
+}
+
+.btn--light {
+  background: var(--color-bg);
+  color: var(--color-text);
+  border-color: var(--color-bg);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn--primary {
+  background: var(--color-primary-ink);
+  color: var(--color-text-on-dark);
+  border-color: var(--color-primary-ink);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+  .btn--light,
+  .btn--primary {
+    width: 100%;
+    max-width: 280px;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .btn--light,
+  .btn--primary {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9375rem;
+  }
+}
+
+.btn.btn--large {
+  padding: 0.8em 2em;
+  font-size: 1.1em;
+}
+
+/* Ripple that grows from the center on hover */
+.btn--light::before,
+.btn--primary::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width var(--duration-slow) ease, height var(--duration-slow) ease;
+}
+
+.btn--light::before {
+  background: rgba(143, 188, 143, 0.2);
+}
+
+.btn--primary::before {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.btn--light:hover::before,
+.btn--primary:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.btn--light:hover,
+.btn--primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+.btn--primary:hover {
+  background: var(--color-primary-ink-hover);
+  border-color: var(--color-primary-ink-hover);
+}
+
+.btn__arrow {
+  font-size: 1.125rem;
+  transition: transform var(--duration-base) ease;
+  position: relative;
+  z-index: 1;
+}
+
+.btn:hover .btn__arrow {
+  transform: translateX(4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .btn::before,
+  .btn__arrow {
+    transition: none;
+  }
+
+  .btn:hover {
+    transform: none;
+  }
+}
+
+/* ---------- Scroll reveal ----------
+   Content is only hidden when JS is running (html.js), so nothing disappears without JS. */
+.js [data-animate] {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity var(--duration-slow) var(--ease-out-expo),
+              transform var(--duration-slow) var(--ease-out-expo);
+}
+
+.js [data-animate].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.js [data-animate="fade-down"] { transform: translateY(-40px); }
+.js [data-animate="fade-left"] { transform: translateX(40px); }
+.js [data-animate="fade-right"] { transform: translateX(-40px); }
+.js [data-animate="scale-up"] { transform: scale(0.9); }
+
+.js [data-animate="fade-up"].is-visible,
+.js [data-animate="fade-down"].is-visible,
+.js [data-animate="fade-left"].is-visible,
+.js [data-animate="fade-right"].is-visible {
+  transform: translate(0);
+}
+
+.js [data-animate="scale-up"].is-visible {
+  transform: scale(1);
+}
+
+[data-animate-delay="1"] { transition-delay: 0.1s; }
+[data-animate-delay="2"] { transition-delay: 0.2s; }
+[data-animate-delay="3"] { transition-delay: 0.3s; }
+[data-animate-delay="4"] { transition-delay: 0.4s; }
+[data-animate-delay="5"] { transition-delay: 0.5s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .js [data-animate],
+  .js [data-animate].is-visible {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

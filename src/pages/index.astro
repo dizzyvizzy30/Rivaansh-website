@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroSlideshow from '../components/home/HeroSlideshow.astro';
+import StatsBand from '../components/sections/StatsBand.astro';
+import ServiceColumns from '../components/home/ServiceColumns.astro';
+import TestimonialSlider from '../components/home/TestimonialSlider.astro';
+import SpecialistGrid from '../components/home/SpecialistGrid.astro';
+import { hero, heroSlides, stats, serviceColumns, testimonials, specialists } from '../data/home';
+---
+
+<BaseLayout showScrollProgress showFloatingCta>
+  <HeroSlideshow slides={heroSlides} {...hero} />
+  <StatsBand stats={stats} variant="cards" />
+  <ServiceColumns columns={serviceColumns} />
+  <TestimonialSlider title={testimonials.title} items={testimonials.items} />
+  <section class="team-section" aria-labelledby="team-title">
+    <h2 class="team-title" id="team-title" data-animate="fade-up">{specialists.title}</h2>
+    <SpecialistGrid members={specialists.members} animate />
+  </section>
+</BaseLayout>
+
+<style>
+  .team-section {
+    padding: 4rem 2rem;
+    max-width: var(--width-wide);
+    margin: 0 auto;
+  }
+
+  .team-title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: 2.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .team-section {
+      padding: 3rem 1rem;
+    }
+
+    .team-title {
+      font-size: 1.5rem;
+    }
+  }
+</style>

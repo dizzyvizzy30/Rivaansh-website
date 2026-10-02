@@ -1,0 +1,17 @@
+---
+// Simple inner page: shared chrome + the 960px `.page-container` column.
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="page-container">
+    <slot />
+  </div>
+</BaseLayout>

@@ -1,0 +1,22 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { servicesEnt as page } from '../../data/services-ent';
+import { routes } from '../../config/navigation';
+---
+
+<PageLayout title="ENT">
+  <h1>{page.title}</h1>
+  <p>{page.intro}</p>
+  <h2>{page.conditionsHeading}</h2>
+  <ul>
+    {page.conditions.map((condition) => <li>{condition}</li>)}
+  </ul>
+  <h2>{page.proceduresHeading}</h2>
+  <ul>
+    {page.procedures.map((procedure) => <li>{procedure}</li>)}
+  </ul>
+  <p>
+    For more detailed information on specific conditions or treatments, please explore our
+    <a href={routes.specialities}>Specialities</a> and <a href={routes.surgeries}>Surgeries</a> pages.
+  </p>
+</PageLayout>

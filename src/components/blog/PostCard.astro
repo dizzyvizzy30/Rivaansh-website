@@ -1,0 +1,79 @@
+---
+import PostCover from './PostCover.astro';
+import { blogPostHref } from '../../config/navigation';
+import type { BlogPost } from '../../data/blog';
+
+interface Props {
+  post: BlogPost;
+}
+
+const { post } = Astro.props;
+---
+
+<article class="blog-post">
+  <a href={blogPostHref(post.id)} class="blog-post-link">
+    <PostCover
+      cover={post.data.cover}
+      alt={post.data.coverAlt}
+      sizes="(max-width: 767px) calc(100vw - 4rem), 300px"
+      class="blog-post-cover"
+    />
+    <div class="blog-post-content">
+      <h2>{post.data.title}</h2>
+      <p>{post.data.description}</p>
+      <span class="read-more">Read More &rarr;</span>
+    </div>
+  </a>
+</article>
+
+<style>
+  .blog-post-link {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5em;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 2em;
+    transition: background-color var(--duration-fast) ease;
+  }
+
+  .blog-post-link:hover {
+    background-color: var(--color-bg-alt);
+  }
+
+  @media (min-width: 768px) {
+    .blog-post-link {
+      grid-template-columns: 300px 1fr;
+    }
+  }
+
+  .blog-post-link :global(.blog-post-cover) {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+  }
+
+  .blog-post-content h2 {
+    font-size: 1.75em;
+    color: var(--color-text);
+    margin: 0 0 0.5em;
+  }
+
+  .blog-post-content p {
+    font-size: 1em;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+    margin: 0 0 1em;
+  }
+
+  .read-more {
+    font-weight: 600;
+    color: var(--color-primary-ink);
+    transition: color var(--duration-fast) ease;
+  }
+
+  .blog-post:hover .read-more {
+    color: var(--color-primary-ink-hover);
+    text-decoration: underline;
+  }
+</style>

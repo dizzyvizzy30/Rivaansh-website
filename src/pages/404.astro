@@ -1,0 +1,11 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import Button from '../components/ui/Button.astro';
+import { routes } from '../config/navigation';
+---
+
+<PageLayout title="Page not found" description="The page you were looking for could not be found.">
+  <h1>Page not found</h1>
+  <p>Sorry, we couldn't find that page. It may have moved.</p>
+  <Button href={routes.home} variant="primary" size="large" arrow>Back to home</Button>
+</PageLayout>

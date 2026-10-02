@@ -1,0 +1,80 @@
+---
+import { render } from 'astro:content';
+import PageLayout from '../../../layouts/PageLayout.astro';
+import PostCover from '../../../components/blog/PostCover.astro';
+import { getPublishedPosts, type BlogPost } from '../../../data/blog';
+
+export async function getStaticPaths() {
+  const posts = await getPublishedPosts();
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+interface Props {
+  post: BlogPost;
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const published = post.data.publishDate?.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<PageLayout title={post.data.title} description={post.data.description}>
+  <article class="blog-article">
+    {post.data.cover && (
+      <PostCover
+        cover={post.data.cover}
+        alt={post.data.coverAlt}
+        sizes="(max-width: 960px) calc(100vw - 4rem), 896px"
+        priority
+        class="blog-article-cover"
+      />
+    )}
+    <h1>{post.data.title}</h1>
+    {(published || post.data.author) && (
+      <p class="blog-article-meta">
+        {post.data.author}
+        {post.data.author && published && ' · '}
+        {published && <time datetime={post.data.publishDate?.toISOString()}>{published}</time>}
+      </p>
+    )}
+    <div class="blog-article-body">
+      <Content />
+    </div>
+  </article>
+</PageLayout>
+
+<style>
+  .blog-article :global(.blog-article-cover) {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-sm);
+    margin-bottom: 2em;
+  }
+
+  .blog-article-meta {
+    margin-top: -0.5em;
+    color: var(--color-text-muted);
+    font-size: 0.9375em;
+  }
+
+  .blog-article-body :global(h2) {
+    margin: 1.5em 0 0.5em;
+  }
+
+  .blog-article-body :global(ul),
+  .blog-article-body :global(ol) {
+    margin: 0 0 1em 1.25em;
+    list-style: revert;
+  }
+
+  .blog-article-body :global(li) {
+    margin-bottom: 0.4em;
+    font-size: 1.1em;
+    line-height: 1.7;
+  }
+
+  .blog-article-body :global(img) {
+    border-radius: var(--radius-sm);
+    margin: 1.5em 0;
+  }
+</style>

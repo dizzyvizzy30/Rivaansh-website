@@ -1,0 +1,28 @@
+---
+// Appointment request form (in-clinic and online consultation).
+// NOTE: no backend yet — see owner-content/08-appointment-booking/README.md.
+import FormField from './FormField.astro';
+import Button from '../ui/Button.astro';
+
+interface Props {
+  messageLabel: string;
+  submitLabel: string;
+}
+
+const { messageLabel, submitLabel } = Astro.props;
+---
+
+<form class="appointment-form">
+  <FormField id="name" label="Your Name" required autocomplete="name" />
+  <FormField id="email" label="Your Email" type="email" required autocomplete="email" />
+  <FormField id="phone" label="Your Phone" type="tel" required autocomplete="tel" />
+  <FormField id="date" label="Preferred Date" type="date" required />
+  <FormField id="message" label={messageLabel} type="textarea" />
+  <Button type="submit" variant="primary" size="large">{submitLabel}</Button>
+</form>
+
+<style>
+  .appointment-form {
+    margin-top: 2em;
+  }
+</style>

@@ -1,0 +1,58 @@
+---
+// Labelled input/textarea with the site's form styling.
+interface Props {
+  id: string;
+  label: string;
+  type?: 'text' | 'email' | 'tel' | 'date' | 'textarea';
+  required?: boolean;
+  autocomplete?: string;
+  rows?: number;
+}
+
+const { id, label, type = 'text', required = false, autocomplete, rows = 5 } = Astro.props;
+---
+
+<div class="form-group">
+  <label for={id}>{label}</label>
+  {type === 'textarea' ? (
+    <textarea id={id} name={id} rows={rows} required={required}></textarea>
+  ) : (
+    <input type={type} id={id} name={id} required={required} autocomplete={autocomplete} />
+  )}
+</div>
+
+<style>
+  .form-group {
+    margin-bottom: 1.5em;
+  }
+
+  label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 0.5em;
+    color: var(--color-primary-ink);
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    padding: 0.8em;
+    border: 1px solid var(--color-field-border);
+    border-radius: var(--radius-xs);
+    font-size: 1em;
+    font-family: inherit;
+    color: var(--color-text);
+    background: var(--color-bg);
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  input:focus-visible,
+  textarea:focus-visible {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 1px;
+    border-color: var(--color-primary-dark);
+  }
+</style>

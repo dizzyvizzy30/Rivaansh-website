@@ -1,0 +1,10 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import AppointmentForm from '../../components/forms/AppointmentForm.astro';
+import { appointmentBooking as page } from '../../data/appointment-booking';
+---
+
+<PageLayout title="Appointment">
+  <h1>{page.title}</h1>
+  <AppointmentForm messageLabel={page.messageLabel} submitLabel={page.submitLabel} />
+</PageLayout>

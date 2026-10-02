@@ -1,0 +1,193 @@
+---
+// Facility photo collage (one large, two small — each opens in the lightbox) beside a feature list.
+import MediaImage from '../media/MediaImage.astro';
+import LightboxItem from '../media/LightboxItem.astro';
+import Icon, { type IconName } from '../ui/Icon.astro';
+import type { ImageItem } from '../media/types';
+
+interface Props {
+  facility: {
+    label: string;
+    heading: string;
+    text: string;
+    images: ReadonlyArray<ImageItem>;
+    features: ReadonlyArray<{ icon: IconName; title: string; text: string }>;
+  };
+}
+
+const { facility } = Astro.props;
+const [mainImage, ...secondaryImages] = facility.images;
+---
+
+<section class="facility-section" aria-labelledby="facility-heading">
+  <div class="facility-container">
+    <div class="facility-images" data-animate="fade-up" data-lightbox="facility">
+      <div class="facility-main-image">
+        <LightboxItem item={mainImage}>
+          <MediaImage image={mainImage} sizes="(max-width: 1024px) calc(100vw - 4rem), 568px" />
+        </LightboxItem>
+      </div>
+      <div class="facility-secondary-images">
+        {secondaryImages.map((image) => (
+          <LightboxItem item={image}>
+            <MediaImage image={image} sizes="(max-width: 768px) calc(100vw - 2rem), (max-width: 1024px) 50vw, 276px" />
+          </LightboxItem>
+        ))}
+      </div>
+    </div>
+
+    <div class="facility-content" data-animate="fade-up" data-animate-delay="1">
+      <p class="section-label">{facility.label}</p>
+      <h2 id="facility-heading">{facility.heading}</h2>
+      <p class="facility-text">{facility.text}</p>
+      <ul class="facility-features">
+        {facility.features.map((feature) => (
+          <li>
+            <Icon name={feature.icon} />
+            <div>
+              <strong>{feature.title}</strong>
+              <span>{feature.text}</span>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .facility-section {
+    padding: 5rem 2rem;
+    background: var(--color-bg);
+  }
+
+  .facility-container {
+    max-width: var(--width-wide);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .facility-images {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .facility-main-image :global(img) {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+  }
+
+  .facility-secondary-images {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .facility-secondary-images :global(img) {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    transition: transform var(--duration-base) ease;
+  }
+
+  .facility-secondary-images :global(a:hover img) {
+    transform: scale(1.03);
+  }
+
+  .section-label {
+    display: inline-block;
+    color: var(--color-text-muted);
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 2rem;
+  }
+
+  .facility-content h2 {
+    font-size: 2.25rem;
+    color: var(--color-text);
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+
+  .facility-text {
+    font-size: 1.1rem;
+    color: var(--color-text-muted);
+    line-height: 1.8;
+    margin-bottom: 2rem;
+  }
+
+  .facility-features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .facility-features li:last-child {
+    border-bottom: none;
+  }
+
+  .facility-features :global(svg) {
+    width: 40px;
+    height: 40px;
+    color: var(--color-primary);
+    flex-shrink: 0;
+    padding: 8px;
+    background: var(--color-primary-light);
+    border-radius: 10px;
+  }
+
+  .facility-features strong {
+    display: block;
+    font-size: 1rem;
+    color: var(--color-text);
+    margin-bottom: 0.25rem;
+  }
+
+  .facility-features span {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+  }
+
+  @media (max-width: 1024px) {
+    .facility-container {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .facility-section {
+      padding: 3rem 1rem;
+    }
+
+    .facility-content h2 {
+      font-size: 1.75rem;
+    }
+
+    .facility-secondary-images {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .facility-secondary-images :global(img) {
+      transition: none;
+    }
+
+    .facility-secondary-images :global(a:hover img) {
+      transform: none;
+    }
+  }
+</style>

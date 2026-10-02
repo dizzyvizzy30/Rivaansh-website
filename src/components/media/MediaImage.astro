@@ -1,0 +1,57 @@
+---
+// The one way to render a photo: a WebP srcset (max three widths, shared with the lightbox), intrinsic
+// aspect ratio (no layout shift), lazy by default, `priority` for the single above-the-fold image.
+// Rules: .claude/skills/rivaansh-media-presentation/SKILL.md
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+import { PHOTO_FORMAT, PHOTO_QUALITY, PHOTO_WIDTHS, metaOf, widthsFor } from './photo-sizes';
+
+interface Props {
+  image: { src: ImageMetadata; alt: string; focus?: string };
+  /** Must describe the rendered width at each breakpoint (see the sizes cheat-sheet). */
+  sizes: string;
+  /** Eager + high fetch priority. Use for at most one image per page. */
+  priority?: boolean;
+  class?: string;
+  /** Override the width steps — only for small fixed-size images such as avatars. */
+  widths?: number[];
+  [key: `data-${string}`]: string | undefined;
+}
+
+const { image, sizes, priority = false, class: className, widths = PHOTO_WIDTHS, ...rest } = Astro.props;
+const { src, alt, focus } = image;
+const focusStyle = focus ? `object-position: ${focus}` : undefined;
+
+const meta = metaOf(src);
+const variantWidths = widthsFor(meta.width, widths);
+// The fallback `src` reuses the largest variant, so no full-resolution copy is generated.
+const largest = Math.max(...variantWidths);
+---
+
+{meta.format === 'svg' ? (
+  <img
+    src={src.src}
+    width={meta.width}
+    height={meta.height}
+    alt={alt}
+    class={className}
+    style={focusStyle}
+    loading={priority ? 'eager' : 'lazy'}
+    decoding="async"
+    {...rest}
+  />
+) : (
+  <Image
+    src={src}
+    alt={alt}
+    format={PHOTO_FORMAT}
+    quality={PHOTO_QUALITY}
+    width={largest}
+    widths={variantWidths}
+    sizes={sizes}
+    priority={priority}
+    class={className}
+    style={focusStyle}
+    {...rest}
+  />
+)}
