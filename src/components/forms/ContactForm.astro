@@ -1,0 +1,26 @@
+---
+// General enquiry form. NOTE: no backend yet.
+import FormField from './FormField.astro';
+import Button from '../ui/Button.astro';
+
+interface Props {
+  heading: string;
+  submitLabel: string;
+}
+
+const { heading, submitLabel } = Astro.props;
+---
+
+<form class="contact-form" aria-labelledby="contact-form-heading">
+  <h2 id="contact-form-heading">{heading}</h2>
+  <FormField id="name" label="Your Name" required autocomplete="name" />
+  <FormField id="email" label="Your Email" type="email" required autocomplete="email" />
+  <FormField id="message" label="Message" type="textarea" />
+  <Button type="submit" variant="primary" size="large">{submitLabel}</Button>
+</form>
+
+<style>
+  .contact-form {
+    margin-top: 2em;
+  }
+</style>

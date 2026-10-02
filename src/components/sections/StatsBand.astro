@@ -1,0 +1,138 @@
+---
+// Headline numbers. `cards` = light band with bordered cards (home); `dark` = slate band (About Us).
+import type { Stat } from '../../data/stats';
+
+interface Props {
+  stats: Stat[];
+  variant?: 'cards' | 'dark';
+}
+
+const { stats, variant = 'cards' } = Astro.props;
+---
+
+<section class:list={['stats-section', `stats-section--${variant}`]} aria-label="Clinic in numbers" data-animate="fade-up">
+  <dl class="stats-container">
+    {stats.map((stat) => (
+      <div class="stat-item">
+        <dt class="stat-label">
+          {stat.label}
+          {stat.note && <small> {stat.note}</small>}
+        </dt>
+        <dd class="stat-number">{stat.value}</dd>
+      </div>
+    ))}
+  </dl>
+</section>
+
+<style>
+  .stats-section {
+    padding: 4rem 2rem;
+  }
+
+  .stats-container {
+    display: grid;
+    margin: 0 auto;
+  }
+
+  /* Visually the number sits above the label; in the DOM the label (dt) comes first for screen readers. */
+  .stat-item {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    background: var(--color-bg);
+    border-radius: var(--radius-lg);
+    text-align: center;
+    border: 1px solid var(--color-border);
+    transition: transform var(--duration-base) ease, box-shadow var(--duration-base) ease;
+  }
+
+  .stat-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .stat-number {
+    display: block;
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--color-primary-dark);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  /* ---------- Home: light band, roomy cards ---------- */
+  .stats-section--cards {
+    background-color: var(--color-bg-alt);
+  }
+
+  .stats-section--cards .stats-container {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    max-width: var(--width-wide);
+  }
+
+  .stats-section--cards .stat-item {
+    padding: 2.5rem 2rem;
+  }
+
+  .stats-section--cards .stat-label {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    font-weight: 500;
+  }
+
+  /* ---------- About Us: dark band, compact cards ---------- */
+  .stats-section--dark {
+    background: linear-gradient(135deg, var(--color-surface-dark) 0%, var(--color-surface-dark-2) 100%);
+  }
+
+  .stats-section--dark .stats-container {
+    max-width: 1000px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+
+  .stats-section--dark .stat-item {
+    padding: 1rem;
+  }
+
+  .stats-section--dark .stat-label {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  @media (max-width: 1024px) {
+    .stats-section--dark .stats-container {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .stats-section--dark .stat-number {
+      font-size: 2.25rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .stats-section--dark .stats-container {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .stats-section--dark .stat-number {
+      font-size: 2rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .stat-item {
+      transition: none;
+    }
+
+    .stat-item:hover {
+      transform: none;
+    }
+  }
+</style>

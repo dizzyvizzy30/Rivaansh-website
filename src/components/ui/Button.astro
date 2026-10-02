@@ -1,0 +1,27 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+type Props = HTMLAttributes<'a'> &
+  HTMLAttributes<'button'> & {
+    href?: string;
+    variant?: 'light' | 'primary';
+    size?: 'default' | 'large';
+    /** Show the trailing → arrow. */
+    arrow?: boolean;
+  };
+
+const { href, variant = 'primary', size = 'default', arrow = false, type, class: className, ...rest } = Astro.props;
+const classes = ['btn', `btn--${variant}`, size === 'large' && 'btn--large', className];
+---
+
+{href ? (
+  <a href={href} class:list={classes} {...rest}>
+    <slot />
+    {arrow && <span class="btn__arrow" aria-hidden="true">→</span>}
+  </a>
+) : (
+  <button type={type ?? 'button'} class:list={classes} {...rest}>
+    <slot />
+    {arrow && <span class="btn__arrow" aria-hidden="true">→</span>}
+  </button>
+)}

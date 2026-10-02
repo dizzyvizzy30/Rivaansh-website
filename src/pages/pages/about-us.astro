@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import DoctorHero from '../../components/about/DoctorHero.astro';
+import FacilityShowcase from '../../components/about/FacilityShowcase.astro';
+import VisionMission from '../../components/about/VisionMission.astro';
+import StatsBand from '../../components/sections/StatsBand.astro';
+import { doctor, facility, visionMission, stats } from '../../data/about-us';
+---
+
+<BaseLayout title="About Us" showScrollProgress>
+  <DoctorHero doctor={doctor} />
+  <FacilityShowcase facility={facility} />
+  <VisionMission cards={visionMission} />
+  <StatsBand stats={stats} variant="dark" />
+</BaseLayout>

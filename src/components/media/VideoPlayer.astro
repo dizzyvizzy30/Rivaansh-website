@@ -1,0 +1,52 @@
+---
+// Inline video for future use (clinic tour, procedure explainer). Nothing downloads until the visitor
+// presses play: preload="none" + an optimized poster that reserves the space.
+import { getImage } from 'astro:assets';
+import type { VideoItem } from './types';
+import { PHOTO_FORMAT, PHOTO_QUALITY, metaOf, widthsFor } from './photo-sizes';
+
+interface Props {
+  video: VideoItem;
+  class?: string;
+}
+
+const { video, class: className } = Astro.props;
+const posterMeta = metaOf(video.poster);
+const poster = await getImage({
+  src: video.poster,
+  width: Math.max(...widthsFor(posterMeta.width)),
+  format: PHOTO_FORMAT,
+  quality: PHOTO_QUALITY,
+});
+---
+
+<figure class:list={['video-player', className]}>
+  <video
+    controls
+    playsinline
+    preload="none"
+    poster={poster.src}
+    width={posterMeta.width}
+    height={posterMeta.height}
+    aria-label={video.alt}
+  >
+    <source src={video.src} type="video/mp4" />
+  </video>
+  {video.caption && <figcaption>{video.caption}</figcaption>}
+</figure>
+
+<style>
+  .video-player video {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-lg);
+    background: var(--color-surface-dark);
+  }
+
+  .video-player figcaption {
+    margin-top: 0.75rem;
+    font-size: 0.9375rem;
+    color: var(--color-text-muted);
+    text-align: center;
+  }
+</style>

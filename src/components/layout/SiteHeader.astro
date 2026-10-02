@@ -1,0 +1,464 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../../assets/images/brand/logo.jpeg';
+import { site } from '../../config/site';
+import { mainNav, isNavGroup, routes } from '../../config/navigation';
+
+const currentPath = Astro.url.pathname.replace(/\/index\.html$|\/$/, '') || '/';
+const normalize = (href: string) => href.replace(/\.html$/, '').replace(/\/$/, '') || '/';
+const isCurrent = (href: string) => normalize(href) === normalize(currentPath);
+---
+
+<header class="site-header" data-site-header>
+  <div class="header-left">
+    <a href={routes.home} class="logo-link" aria-label={`${site.name} — home`}>
+      <Image src={logo} alt="" class="site-logo" width={60} height={60} densities={[1, 2]} loading="eager" />
+    </a>
+    <div class="site-title-group">
+      <span class="site-title">{site.name}</span>
+      <span class="site-tagline">{site.tagline}</span>
+    </div>
+  </div>
+  <div class="header-right">
+    <button
+      class="hamburger"
+      type="button"
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="main-nav"
+      data-menu-toggle
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <nav aria-label="Main">
+      <ul class="nav-list" id="main-nav" data-menu>
+        {mainNav.map((item, index) =>
+          isNavGroup(item) ? (
+            <li class="has-dropdown">
+              <button
+                class="nav-link nav-toggle"
+                type="button"
+                aria-expanded="false"
+                aria-controls={`nav-group-${index}`}
+                data-dropdown-toggle
+              >
+                {item.label}
+              </button>
+              <ul class="dropdown" id={`nav-group-${index}`}>
+                {item.children.map((child) => (
+                  <li>
+                    <a href={child.href} aria-current={isCurrent(child.href) ? 'page' : undefined}>
+                      {child.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ) : (
+            <li>
+              <a class="nav-link" href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ),
+        )}
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem var(--gutter);
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    min-height: var(--header-height);
+    transition:
+      padding var(--duration-base) var(--ease-standard),
+      min-height var(--duration-base) var(--ease-standard),
+      background-color var(--duration-base) var(--ease-standard),
+      box-shadow var(--duration-base) var(--ease-standard);
+  }
+
+  .site-header.is-scrolled {
+    min-height: var(--header-height-compact);
+    padding: 0.5rem var(--gutter);
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .site-header.is-scrolled .site-logo {
+    height: 50px;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .logo-link {
+    display: flex;
+    align-items: center;
+    padding: 5px 0;
+  }
+
+  .site-logo {
+    height: 60px;
+    width: auto;
+    transition: height var(--duration-base) var(--ease-standard), transform var(--duration-fast) ease;
+  }
+
+  .site-logo:hover {
+    transform: scale(1.02);
+  }
+
+  .site-title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+
+  .site-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-primary-dark);
+    letter-spacing: -0.025em;
+  }
+
+  .site-tagline {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    font-weight: 400;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  /* ---------- Desktop navigation ---------- */
+  .nav-list {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .nav-list li {
+    position: relative;
+  }
+
+  .nav-link {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 1.6;
+    color: var(--color-text);
+    background: none;
+    border: 0;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--duration-fast) ease;
+  }
+
+  .nav-link:hover {
+    background: var(--color-primary-light);
+    color: var(--color-primary-ink);
+  }
+
+  .dropdown {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: calc(100% + 0.5rem);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    min-width: 200px;
+    box-shadow: var(--shadow-lg);
+    padding: 0.5rem;
+    z-index: var(--z-dropdown);
+  }
+
+  /* Invisible bridge over the 0.5rem gap so the menu stays open while the pointer moves into it. */
+  .dropdown::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -0.5rem;
+    height: 0.5rem;
+  }
+
+  .nav-toggle[aria-expanded='true'] + .dropdown {
+    display: block;
+  }
+
+  @media (min-width: 769px) and (hover: hover) {
+    .has-dropdown:hover > .dropdown {
+      display: block;
+    }
+  }
+
+  .dropdown a {
+    display: block;
+    padding: 0.625rem 1rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--color-text);
+    border-radius: var(--radius-sm);
+    transition: all 0.15s ease;
+  }
+
+  .dropdown a:hover {
+    background: var(--color-primary-light);
+    color: var(--color-primary-ink);
+  }
+
+  /* ---------- Hamburger (mobile only) ---------- */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 44px;
+    height: 44px;
+    background: var(--color-primary);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    position: fixed;
+    top: 18px;
+    right: 18px;
+    z-index: var(--z-menu-button);
+    box-shadow: var(--shadow-md);
+    border: none;
+    transition: background var(--duration-fast) ease;
+  }
+
+  .hamburger:hover {
+    background: var(--color-primary-dark);
+  }
+
+  .hamburger span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--color-bg);
+    margin: 3px 0;
+    border-radius: 2px;
+    transition: all var(--duration-base) ease;
+  }
+
+  @media (max-width: 768px) {
+    .site-header {
+      padding: 0.75rem var(--gutter-mobile);
+      min-height: var(--header-height-compact);
+    }
+
+    .site-header.is-scrolled {
+      padding: 0.5rem var(--gutter-mobile);
+    }
+
+    .site-title {
+      font-size: 1.25rem;
+    }
+
+    .site-tagline {
+      font-size: 0.75rem;
+    }
+
+    .site-logo {
+      height: 44px;
+    }
+
+    .site-header.is-scrolled .site-logo {
+      height: 44px;
+    }
+
+    .hamburger {
+      display: flex;
+    }
+
+    /* Off-canvas drawer. Hidden with transform + visibility so it never widens the page. */
+    .nav-list {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 80vw;
+      max-width: 320px;
+      height: 100vh;
+      height: 100dvh;
+      background: var(--color-bg);
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+      padding: 5rem 1.5rem 2rem;
+      box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+      z-index: var(--z-drawer);
+      overflow-y: auto;
+      transform: translateX(100%);
+      visibility: hidden;
+      transition: transform var(--duration-base) ease, visibility 0s linear var(--duration-base);
+    }
+
+    .nav-list.open {
+      transform: translateX(0);
+      visibility: visible;
+      transition: transform var(--duration-base) ease, visibility 0s;
+    }
+
+    .nav-list li {
+      width: 100%;
+    }
+
+    .nav-link {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 0.875rem 0;
+      font-size: 1rem;
+      border-bottom: 1px solid var(--color-border);
+      border-radius: 0;
+    }
+
+    .nav-link:hover {
+      background: none;
+    }
+
+    .dropdown {
+      position: static;
+      box-shadow: none;
+      border: none;
+      border-radius: 0;
+      min-width: 0;
+      background: var(--color-bg-alt);
+      padding: 0.5rem 0 0.5rem 1rem;
+      margin-top: 0;
+    }
+
+    .dropdown::before {
+      display: none;
+    }
+
+    .dropdown a {
+      padding: 0.625rem 0;
+      font-size: 0.9375rem;
+      border-radius: 0;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .header-left {
+      gap: 0.75rem;
+    }
+
+    .site-tagline {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .site-header,
+    .site-logo,
+    .nav-list,
+    .nav-list.open {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { onFrame } from '../../scripts/motion';
+
+  const header = document.querySelector<HTMLElement>('[data-site-header]');
+  const menuToggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const menu = document.querySelector<HTMLElement>('[data-menu]');
+  const dropdownToggles = document.querySelectorAll<HTMLButtonElement>('[data-dropdown-toggle]');
+  const desktopQuery = window.matchMedia('(min-width: 769px)');
+
+  // Compact, blurred header once the page scrolls. The shrink/expand points are 60px apart — more than
+  // the ~26px the header changes height — so shrinking can never pull scrollY back across the threshold
+  // and flip it back (a single 50px threshold made the page bounce on trackpad scrolls).
+  if (header) {
+    const SHRINK_AT = 80;
+    const EXPAND_AT = 20;
+    const update = () => {
+      const y = window.scrollY;
+      const compact = header.classList.contains('is-scrolled');
+      if (!compact && y > SHRINK_AT) header.classList.add('is-scrolled');
+      else if (compact && y < EXPAND_AT) header.classList.remove('is-scrolled');
+    };
+    window.addEventListener('scroll', onFrame(update), { passive: true });
+    update();
+  }
+
+  const closeDropdowns = (except?: HTMLButtonElement) => {
+    dropdownToggles.forEach((toggle) => {
+      if (toggle !== except) toggle.setAttribute('aria-expanded', 'false');
+    });
+  };
+
+  const setMenuOpen = (open: boolean) => {
+    if (!menu || !menuToggle) return;
+    menu.classList.toggle('open', open);
+    menuToggle.setAttribute('aria-expanded', String(open));
+    menuToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  };
+
+  menuToggle?.addEventListener('click', () => {
+    setMenuOpen(!menu?.classList.contains('open'));
+  });
+
+  dropdownToggles.forEach((toggle) => {
+    toggle.addEventListener('click', () => {
+      const expanded = toggle.getAttribute('aria-expanded') === 'true';
+      closeDropdowns(toggle);
+      toggle.setAttribute('aria-expanded', String(!expanded));
+    });
+  });
+
+  // Keyboard users: close a dropdown once focus moves outside its menu group.
+  document.querySelectorAll<HTMLElement>('.has-dropdown').forEach((group) => {
+    group.addEventListener('focusout', (event) => {
+      if (group.contains(event.relatedTarget as Node)) return;
+      group.querySelector('[data-dropdown-toggle]')?.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  menu?.addEventListener('click', (event) => {
+    if ((event.target as HTMLElement).closest('a')) setMenuOpen(false);
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!(event.target as HTMLElement).closest('.has-dropdown')) closeDropdowns();
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return;
+    const openToggle = [...dropdownToggles].find((t) => t.getAttribute('aria-expanded') === 'true');
+    if (openToggle) {
+      closeDropdowns();
+      openToggle.focus();
+    } else if (menu?.classList.contains('open')) {
+      setMenuOpen(false);
+      menuToggle?.focus();
+    }
+  });
+
+  desktopQuery.addEventListener('change', (event) => {
+    if (event.matches) setMenuOpen(false);
+    closeDropdowns();
+  });
+</script>

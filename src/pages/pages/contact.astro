@@ -1,0 +1,27 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import ContactForm from '../../components/forms/ContactForm.astro';
+import { contact as page } from '../../data/contact';
+---
+
+<PageLayout title="Contact">
+  <h1>{page.title}</h1>
+  <div class="contact-info">
+    {page.details.map((detail) => (
+      <p>
+        <strong>{detail.label}:</strong> {detail.href ? <a href={detail.href}>{detail.text}</a> : detail.text}
+      </p>
+    ))}
+  </div>
+  <ContactForm heading={page.formHeading} submitLabel={page.submitLabel} />
+</PageLayout>
+
+<style>
+  .contact-info {
+    margin-bottom: 2em;
+  }
+
+  .contact-info p {
+    margin-bottom: 0.5em;
+  }
+</style>

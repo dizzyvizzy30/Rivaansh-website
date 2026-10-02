@@ -1,0 +1,11 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import InfoCardGrid from '../../components/ui/InfoCardGrid.astro';
+import { servicesSurgeries as page } from '../../data/services-surgeries';
+---
+
+<PageLayout title="Our ENT Surgeries">
+  <h1>{page.title}</h1>
+  <p>{page.intro}</p>
+  <InfoCardGrid items={page.items} />
+</PageLayout>

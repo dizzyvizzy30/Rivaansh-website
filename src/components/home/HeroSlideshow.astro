@@ -1,0 +1,275 @@
+---
+// Full-bleed homepage hero: cross-fading photo slideshow, animated slate→sage overlay, wave divider.
+import MediaImage from '../media/MediaImage.astro';
+import Button from '../ui/Button.astro';
+import type { ImageItem } from '../media/types';
+
+interface Props {
+  slides: ImageItem[];
+  titleLines: string[];
+  subtitle: string;
+  primaryCta: { label: string; href: string };
+  secondaryCta: { label: string; href: string };
+}
+
+const { slides, titleLines, subtitle, primaryCta, secondaryCta } = Astro.props;
+---
+
+<section class="hero" data-hero>
+  <div class="slideshow" data-slideshow>
+    {slides.map((slide, index) => (
+      <MediaImage
+        image={slide}
+        sizes="100vw"
+        priority={index === 0}
+        class:list={['slide', index === 0 && 'active']}
+        data-slide
+      />
+    ))}
+  </div>
+  <div class="hero-floating">
+    <h1 class="hero-title">
+      {titleLines.map((line, index) => (
+        <>
+          {index > 0 && <br />}
+          {line}
+        </>
+      ))}
+    </h1>
+    <p class="hero-subtitle">{subtitle}</p>
+    <div class="hero-buttons">
+      <Button href={primaryCta.href} variant="light" arrow>{primaryCta.label}</Button>
+      <Button href={secondaryCta.href} variant="primary" arrow>{secondaryCta.label}</Button>
+    </div>
+  </div>
+  <div class="hero-wave" aria-hidden="true">
+    <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+      <path d="M0,64 C288,120 720,0 1440,64 L1440,120 L0,120 Z"></path>
+    </svg>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    width: 100%;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .slideshow {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  /* Animated gradient overlay keeps white text legible on any photo. */
+  .slideshow::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(107, 158, 107, 0.4) 50%, rgba(30, 41, 59, 0.7) 100%);
+    background-size: 200% 200%;
+    animation: gradient-shift 8s ease infinite;
+    z-index: 2;
+  }
+
+  /* Bottom fade into the page */
+  .slideshow::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 150px;
+    background: linear-gradient(to top, var(--color-bg) 0%, transparent 100%);
+    z-index: 3;
+  }
+
+  @keyframes gradient-shift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .slideshow :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+    opacity: 0;
+    position: absolute;
+    inset: 0;
+    transition: opacity 1.5s ease-in-out;
+    transform: scale(1.05);
+    animation: slow-zoom 8s ease-in-out infinite alternate;
+  }
+
+  .slideshow :global(img.active) {
+    opacity: 1;
+    z-index: 1;
+  }
+
+  @keyframes slow-zoom {
+    0% { transform: scale(1.05); }
+    100% { transform: scale(1.1); }
+  }
+
+  .hero-floating {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 2rem;
+    max-width: 900px;
+  }
+
+  .hero-title {
+    color: var(--color-text-on-dark);
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+    line-height: 1.15;
+    text-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+    animation: fade-in-up 1s ease-out 0.3s both;
+  }
+
+  .hero-subtitle {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    font-weight: 400;
+    margin-bottom: 2rem;
+    animation: fade-in-up 1s ease-out 0.5s both;
+  }
+
+  .hero-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: fade-in-up 1s ease-out 0.7s both;
+  }
+
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .hero-wave {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    z-index: 5;
+    line-height: 0;
+  }
+
+  .hero-wave svg {
+    display: block;
+    width: 100%;
+    height: 80px;
+  }
+
+  .hero-wave path {
+    fill: var(--color-bg);
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      min-height: 70vh;
+    }
+
+    .hero-title {
+      font-size: 1.75rem;
+    }
+
+    .hero-subtitle {
+      font-size: 0.9375rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-floating {
+      padding: 1.5rem;
+    }
+
+    .hero-buttons {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-wave svg {
+      height: 50px;
+    }
+
+    .slideshow::after {
+      height: 100px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero {
+      min-height: 350px;
+    }
+
+    .hero-title {
+      font-size: 1.5rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .slideshow::before,
+    .slideshow :global(img),
+    .hero-title,
+    .hero-subtitle,
+    .hero-buttons {
+      animation: none;
+    }
+
+    .slideshow :global(img) {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { prefersReducedMotion } from '../../scripts/motion';
+
+  const slides = document.querySelectorAll<HTMLImageElement>('[data-slideshow] [data-slide]');
+
+  if (slides.length > 1 && !prefersReducedMotion()) {
+    let current = 0;
+    let timer: number | undefined;
+
+    const show = (index: number) => slides.forEach((img, i) => img.classList.toggle('active', i === index));
+    const next = () => {
+      const upcoming = (current + 1) % slides.length;
+      const img = slides[upcoming];
+      // Only advance once the next photo has loaded, so a slow connection never shows a blank slide.
+      if (!img.complete) {
+        img.loading = 'eager';
+        return;
+      }
+      current = upcoming;
+      show(current);
+    };
+    const start = () => {
+      if (timer === undefined) timer = window.setInterval(next, 3500);
+    };
+    const stop = () => {
+      window.clearInterval(timer);
+      timer = undefined;
+    };
+
+    // Pause while the tab is hidden to save battery and data.
+    document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
+    start();
+  }
+</script>

@@ -1,0 +1,57 @@
+---
+// Numbered "how it works" steps.
+interface Props {
+  steps: ReadonlyArray<{ title: string; text: string }>;
+}
+
+const { steps } = Astro.props;
+---
+
+<ol class="steps">
+  {steps.map((step, index) => (
+    <li class="step">
+      <div class="step-number" aria-hidden="true">{index + 1}</div>
+      <h3>{step.title}</h3>
+      <p>{step.text}</p>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2em;
+    list-style: none;
+  }
+
+  .step {
+    padding: 2em;
+  }
+
+  .step-number {
+    width: 50px;
+    height: 50px;
+    background-color: var(--color-primary-light);
+    color: var(--color-primary-ink);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5em;
+    font-weight: 700;
+    margin: 0 auto 1em;
+    border: 2px solid var(--color-primary-dark);
+  }
+
+  .step h3 {
+    font-size: 1.25em;
+    color: var(--color-text);
+    margin-bottom: 0.5em;
+  }
+
+  .step p {
+    color: var(--color-text-muted);
+    font-size: 1em;
+  }
+</style>
