@@ -22,11 +22,12 @@ No Railway is needed. Expected yearly cost: the domain only (~$10.46/year for `.
 6. **Email** — Cloudflare → Email → Email Routing → forward `info@<domain>` to the clinic Gmail. This only *receives*; sending as `info@` later needs Google Workspace or Zoho (switching takes ~15 minutes and doesn't affect the website).
 7. **Tell the developer the domain is live** so the site config can be updated:
    - set `site` in `astro.config.mjs` to `https://<domain>` (enables canonical URLs and the sitemap),
-   - update the clinic email in `src/config/site.ts` if the domain differs from the one shown there.
+   - update the clinic email in `src/config/site.ts` if the domain differs from the one shown there,
+   - optionally add a sitemap (`@astrojs/sitemap`) — it needs `site` to be set.
 
 ## Netlify build settings for the Astro site
 
-The site source moved from `www/` (plain HTML served by Caddy locally) to Astro. Netlify must build it:
+The site is built with Astro (the old `www/` folder and Caddy are gone). `netlify.toml` already contains:
 
 | Setting | Value |
 |---|---|
@@ -34,4 +35,5 @@ The site source moved from `www/` (plain HTML served by Caddy locally) to Astro.
 | Publish directory | `dist` |
 | Node version | 22 (set via `NODE_VERSION` or `.nvmrc`) |
 
-These live in `netlify.toml`. Change them only together with removing `www/`, and only after approval.
+Deploy previews and branch deploys also set `SHOW_DRAFTS=true`, so unreviewed pages can be checked on a phone before
+they go live. Old page addresses are redirected in the same file.

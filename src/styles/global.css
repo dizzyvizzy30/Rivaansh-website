@@ -293,3 +293,74 @@ button {
     transition: none;
   }
 }
+
+/* ---------- Page sections (homepage and long pages) ---------- */
+.section {
+  padding: 4rem var(--gutter);
+  scroll-margin-top: calc(var(--header-height) + 1rem);
+}
+
+.section--alt {
+  background: var(--color-bg-alt);
+}
+
+.section-inner {
+  max-width: var(--width-wide);
+  margin: 0 auto;
+}
+
+.section-title {
+  font-size: 2rem;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+}
+
+.section-lede {
+  color: var(--color-text-muted);
+  font-size: 1.0625rem;
+  max-width: 46rem;
+  margin-bottom: 2rem;
+}
+
+.section-link {
+  display: inline-block;
+  margin-top: 1.5rem;
+  font-weight: 600;
+  color: var(--color-primary-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+[id] {
+  scroll-margin-top: calc(var(--header-height) + 1rem);
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 3rem var(--gutter-mobile);
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+}
+
+/* ---------- Disclaimers / review lines ---------- */
+.review-note {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.draft-banner {
+  margin-bottom: 1.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  background: #fff7e6;
+  border: 1px solid #f3c56b;
+  color: #6b4400;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}

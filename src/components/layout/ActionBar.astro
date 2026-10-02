@@ -1,0 +1,103 @@
+---
+// Phones only: Call · WhatsApp (or Directions until WhatsApp is staffed) · Book, fixed to the bottom of every page.
+// Hidden while a form field is focused so it never covers the keyboard.
+import Icon from '../ui/Icon.astro';
+import { site, whatsappHref } from '../../config/site';
+import { routes } from '../../config/navigation';
+
+const whatsapp = whatsappHref();
+---
+
+<nav class="action-bar" aria-label="Contact the clinic" data-action-bar>
+  <a href={`tel:${site.contact.phone.tel}`}>
+    <Icon name="phone" />
+    <span>Call</span>
+  </a>
+  {whatsapp ? (
+    <a href={whatsapp} target="_blank" rel="noopener">
+      <Icon name="chat" />
+      <span>WhatsApp</span>
+    </a>
+  ) : (
+    <a href={site.contact.mapsUrl} target="_blank" rel="noopener">
+      <Icon name="map-pin" />
+      <span>Directions</span>
+    </a>
+  )}
+  <a href={routes.book} class="action-bar__primary">
+    <Icon name="calendar-check" />
+    <span>Book</span>
+  </a>
+</nav>
+
+<style>
+  .action-bar {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    .action-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: var(--z-floating);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      padding: 0.5rem 0.75rem calc(0.5rem + env(safe-area-inset-bottom));
+      background: var(--color-bg);
+      border-top: 1px solid var(--color-border);
+      box-shadow: 0 -4px 16px rgba(30, 41, 59, 0.08);
+    }
+
+    .action-bar.is-hidden {
+      display: none;
+    }
+
+    .action-bar a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      height: 44px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--color-border);
+      font-weight: 600;
+      font-size: 0.9375rem;
+      color: var(--color-primary-ink);
+    }
+
+    .action-bar :global(svg) {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    .action-bar .action-bar__primary {
+      background: var(--color-primary-ink);
+      border-color: var(--color-primary-ink);
+      color: var(--color-text-on-dark);
+    }
+  }
+</style>
+
+<style is:global>
+  /* Keep the footer clear of the fixed bar on phones. */
+  @media (max-width: 768px) {
+    body {
+      padding-bottom: calc(61px + env(safe-area-inset-bottom));
+    }
+  }
+</style>
+
+<script>
+  const bar = document.querySelector<HTMLElement>('[data-action-bar]');
+  const isField = (el: EventTarget | null) =>
+    el instanceof HTMLElement && el.matches('input, textarea, select, [contenteditable="true"]');
+
+  if (bar) {
+    document.addEventListener('focusin', (event) => bar.classList.toggle('is-hidden', isField(event.target)));
+    document.addEventListener('focusout', () => bar.classList.remove('is-hidden'));
+  }
+</script>

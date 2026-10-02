@@ -1,27 +1,107 @@
 ---
+// Visit Us (old URL kept). Anchors: #timings #first-visit #faq. Old locations.html / faq.html redirect here.
 import PageLayout from '../../layouts/PageLayout.astro';
-import ContactForm from '../../components/forms/ContactForm.astro';
-import { contact as page } from '../../data/contact';
+import LocationCard from '../../components/visit/LocationCard.astro';
+import StepList from '../../components/ui/StepList.astro';
+import FaqAccordion from '../../components/ui/FaqAccordion.astro';
+import ContactActions from '../../components/ui/ContactActions.astro';
+import { visitPage as page, firstVisit, quickAnswers } from '../../data/visit';
+import { site } from '../../config/site';
 ---
 
-<PageLayout title="Contact">
+<PageLayout title="Visit Us" description="Timings, address, map and first-visit information for Rivaansh ENT, 4th floor, Centre Point, Gota, Ahmedabad." clinicSchema>
   <h1>{page.title}</h1>
-  <div class="contact-info">
-    {page.details.map((detail) => (
-      <p>
-        <strong>{detail.label}:</strong> {detail.href ? <a href={detail.href}>{detail.text}</a> : detail.text}
-      </p>
-    ))}
-  </div>
-  <ContactForm heading={page.formHeading} submitLabel={page.submitLabel} />
+  <p>{page.intro}</p>
+
+  <nav class="jump" aria-label="On this page">
+    <a href="#timings">Timings &amp; address</a><a href="#first-visit">First visit</a><a href="#faq">FAQ</a>
+  </nav>
+
+  <section id="timings" aria-label="Timings and address">
+    <LocationCard />
+    <p class="email">Email: <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a></p>
+  </section>
+
+  <section id="first-visit" class="block" aria-labelledby="first-visit-title">
+    <h2 id="first-visit-title">{firstVisit.title}</h2>
+    <StepList steps={firstVisit.steps} />
+    <h3>What to bring</h3>
+    <ul class="ticks">{firstVisit.bring.map((item) => <li>{item}</li>)}</ul>
+    {page.fees && <p><strong>Fees:</strong> {page.fees}</p>}
+  </section>
+
+  <section id="faq" class="block" aria-labelledby="faq-title">
+    <h2 id="faq-title">Frequently asked questions</h2>
+    <FaqAccordion items={quickAnswers} />
+  </section>
+
+  <ContactActions showBook />
 </PageLayout>
 
 <style>
-  .contact-info {
-    margin-bottom: 2em;
+  .jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0 0 2rem;
   }
 
-  .contact-info p {
-    margin-bottom: 0.5em;
+  .jump a {
+    padding: 0.4rem 0.9rem;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-border);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--color-primary-ink);
+  }
+
+  .jump a:hover {
+    background: var(--color-primary-light);
+  }
+
+  .email {
+    margin-top: 1rem;
+  }
+
+  .email a {
+    color: var(--color-primary-ink);
+    font-weight: 600;
+  }
+
+  .block {
+    margin-top: 3rem;
+  }
+
+  .block h2 {
+    margin-bottom: 1rem;
+  }
+
+  .block h3 {
+    margin: 1rem 0 0.5rem;
+  }
+
+  .block :global(.step) {
+    padding: 1rem 0;
+  }
+
+  .block :global(.step-number) {
+    margin: 0 0 0.75rem;
+  }
+
+  .ticks li {
+    padding: 0.35rem 0 0.35rem 1.5rem;
+    position: relative;
+  }
+
+  .ticks li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--color-primary-dark);
+    font-weight: 700;
+  }
+
+  #faq :global(.faq-container) {
+    margin: 0 0 2rem;
   }
 </style>

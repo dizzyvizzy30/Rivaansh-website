@@ -1,22 +1,115 @@
 ---
+// Treatments hub. Anchors: #ear #nose #throat #head-neck #children #urgent #procedures (targets of old-URL redirects).
 import PageLayout from '../../layouts/PageLayout.astro';
-import { servicesEnt as page } from '../../data/services-ent';
-import { routes } from '../../config/navigation';
+import ConditionGroups from '../../components/treatments/ConditionGroups.astro';
+import ContactActions from '../../components/ui/ContactActions.astro';
+import { treatmentsPage as page, procedures, urgentProblems } from '../../data/treatments';
+import { conditionHref } from '../../config/navigation';
+import { getConditions } from '../../data/collections';
+
+const published = new Set((await getConditions()).map((c) => c.id));
 ---
 
-<PageLayout title="ENT">
+<PageLayout title="Treatments" description="Ear, nose, throat, thyroid, head & neck and children’s ENT conditions treated at Rivaansh ENT, Gota, Ahmedabad.">
   <h1>{page.title}</h1>
   <p>{page.intro}</p>
-  <h2>{page.conditionsHeading}</h2>
-  <ul>
-    {page.conditions.map((condition) => <li>{condition}</li>)}
-  </ul>
-  <h2>{page.proceduresHeading}</h2>
-  <ul>
-    {page.procedures.map((procedure) => <li>{procedure}</li>)}
-  </ul>
-  <p>
-    For more detailed information on specific conditions or treatments, please explore our
-    <a href={routes.specialities}>Specialities</a> and <a href={routes.surgeries}>Surgeries</a> pages.
-  </p>
+
+  <nav class="jump" aria-label="Jump to">
+    <a href="#ear">Ear</a><a href="#nose">Nose</a><a href="#throat">Throat</a><a href="#head-neck">Head &amp; neck</a><a href="#children">Children</a><a href="#urgent">Urgent</a><a href="#procedures">Procedures</a>
+  </nav>
+
+  <ConditionGroups variant="list" />
+  <p class="not-listed">{page.notListed}</p>
+
+  <section class="urgent" id="urgent" aria-labelledby="urgent-title">
+    <h2 id="urgent-title">{urgentProblems.title}</h2>
+    <ul>{urgentProblems.items.map((item) => <li>{item}</li>)}</ul>
+    <p>{urgentProblems.advice}</p>
+    <ContactActions />
+  </section>
+
+  <section class="procedures" id="procedures" aria-labelledby="procedures-title">
+    <h2 id="procedures-title">Procedures</h2>
+    <p>Operations are only advised after an examination, when they are likely to help more than medicines.</p>
+    <ul>
+      {procedures.map((p) => (
+        <li>
+          {p.slug && published.has(p.slug) ? <a href={`${conditionHref(p.slug)}#${p.anchor}`}>{p.name}</a> : p.name}
+        </li>
+      ))}
+    </ul>
+  </section>
 </PageLayout>
+
+<style>
+  .jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0 0 2rem;
+  }
+
+  .jump a {
+    padding: 0.4rem 0.9rem;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-border);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--color-primary-ink);
+    text-decoration: none;
+  }
+
+  .jump a:hover {
+    background: var(--color-primary-light);
+  }
+
+  .not-listed {
+    margin-top: 1.5rem;
+    font-weight: 600;
+  }
+
+  .urgent {
+    margin: 3rem 0;
+    padding: 1.75rem;
+    border-radius: var(--radius-lg);
+    background: #fff5f5;
+    border: 1px solid #f3c5c5;
+  }
+
+  .urgent h2 {
+    color: #9b1c1c;
+    margin-bottom: 1rem;
+  }
+
+  .urgent li {
+    padding: 0.35rem 0 0.35rem 1.5rem;
+    position: relative;
+  }
+
+  .urgent li::before {
+    content: '!';
+    position: absolute;
+    left: 0;
+    font-weight: 800;
+    color: #9b1c1c;
+  }
+
+  .urgent p {
+    margin: 1rem 0;
+    font-weight: 600;
+  }
+
+  .procedures h2 {
+    margin-bottom: 0.75rem;
+  }
+
+  .procedures li {
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .procedures li a {
+    color: var(--color-primary-ink);
+    font-weight: 600;
+  }
+</style>

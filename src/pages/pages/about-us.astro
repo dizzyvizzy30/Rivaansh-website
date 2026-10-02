@@ -1,15 +1,48 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import DoctorHero from '../../components/about/DoctorHero.astro';
-import FacilityShowcase from '../../components/about/FacilityShowcase.astro';
-import VisionMission from '../../components/about/VisionMission.astro';
-import StatsBand from '../../components/sections/StatsBand.astro';
-import { doctor, facility, visionMission, stats } from '../../data/about-us';
+// Doctor & Clinic (old URL kept). Anchors: #doctor #clinic (#surgery once confirmed). Old /pages/gallery.html redirects to #clinic.
+import PageLayout from '../../layouts/PageLayout.astro';
+import DoctorCard from '../../components/doctor/DoctorCard.astro';
+import MediaGallery from '../../components/media/MediaGallery.astro';
+import ContactActions from '../../components/ui/ContactActions.astro';
+import { doctorClinicPage as page, clinicPhotos } from '../../data/doctor-clinic';
 ---
 
-<BaseLayout title="About Us" showScrollProgress>
-  <DoctorHero doctor={doctor} />
-  <FacilityShowcase facility={facility} />
-  <VisionMission cards={visionMission} />
-  <StatsBand stats={stats} variant="dark" />
-</BaseLayout>
+<PageLayout title="Doctor & Clinic" description="Dr. Tanay S Parikh, MS (ENT), Fellowship in Otology, and the Rivaansh ENT clinic at Centre Point, Gota, Ahmedabad.">
+  <h1>{page.title}</h1>
+  <p>{page.intro}</p>
+
+  <section id="doctor" aria-label="The doctor">
+    <DoctorCard headingLevel={2} showLink={false} />
+  </section>
+
+  <section id="clinic" class="clinic" aria-labelledby="clinic-title">
+    <h2 id="clinic-title">{page.clinicHeading}</h2>
+    <p>{page.clinicIntro}</p>
+    <MediaGallery items={clinicPhotos} id="clinic" label="Clinic photos" showCaptions />
+  </section>
+
+  {page.surgery && (
+    <section id="surgery" aria-labelledby="surgery-title">
+      <h2 id="surgery-title">{page.surgery.heading}</h2>
+      <p>{page.surgery.text}</p>
+    </section>
+  )}
+
+  <section class="cta" aria-label="Book a visit">
+    <ContactActions showBook />
+  </section>
+</PageLayout>
+
+<style>
+  .clinic {
+    margin-top: 3rem;
+  }
+
+  .clinic h2 {
+    margin-bottom: 0.5rem;
+  }
+
+  .cta {
+    margin-top: 2.5rem;
+  }
+</style>

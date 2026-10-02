@@ -1,15 +1,82 @@
 ---
+// Before & After Surgery (old /pages/care.html URL kept). Per-procedure sections (#<procedure>) arrive in Phase 2.
 import PageLayout from '../../layouts/PageLayout.astro';
-import { servicesPatientCare as page } from '../../data/services-patient-care';
+import ContactActions from '../../components/ui/ContactActions.astro';
+import { carePage as page } from '../../data/care';
 ---
 
-<PageLayout title="Care">
+<PageLayout title="Before & After Surgery" description="General guidance for patients before and after an ENT procedure at Rivaansh ENT, Gota, Ahmedabad.">
   <h1>{page.title}</h1>
   <p>{page.intro}</p>
-  <h2>{page.commitmentsHeading}</h2>
-  <ul>
-    {page.commitments.map((item) => (
-      <li><strong>{item.title}</strong> {item.text}</li>
-    ))}
-  </ul>
+
+  <section class="block">
+    <h2>{page.before.heading}</h2>
+    <ul class="ticks">{page.before.items.map((item) => <li>{item}</li>)}</ul>
+  </section>
+
+  <section class="block">
+    <h2>{page.after.heading}</h2>
+    <ul class="ticks">{page.after.items.map((item) => <li>{item}</li>)}</ul>
+  </section>
+
+  <section class="warning" aria-labelledby="warning-title">
+    <h2 id="warning-title">{page.warning.heading}</h2>
+    <ul>{page.warning.items.map((item) => <li>{item}</li>)}</ul>
+    <p>{page.warning.outOfHours}</p>
+    <ContactActions />
+  </section>
 </PageLayout>
+
+<style>
+  .block {
+    margin-top: 2rem;
+  }
+
+  .block h2 {
+    margin-bottom: 0.75rem;
+  }
+
+  .ticks li {
+    padding: 0.35rem 0 0.35rem 1.5rem;
+    position: relative;
+  }
+
+  .ticks li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--color-primary-dark);
+    font-weight: 700;
+  }
+
+  .warning {
+    margin-top: 2.5rem;
+    padding: 1.75rem;
+    border-radius: var(--radius-lg);
+    background: #fff5f5;
+    border: 1px solid #f3c5c5;
+  }
+
+  .warning h2 {
+    color: #9b1c1c;
+    margin-bottom: 0.75rem;
+  }
+
+  .warning li {
+    padding: 0.35rem 0 0.35rem 1.5rem;
+    position: relative;
+  }
+
+  .warning li::before {
+    content: '!';
+    position: absolute;
+    left: 0;
+    font-weight: 800;
+    color: #9b1c1c;
+  }
+
+  .warning p {
+    margin: 1rem 0;
+    font-weight: 600;
+  }
+</style>

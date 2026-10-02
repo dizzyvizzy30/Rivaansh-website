@@ -2,7 +2,12 @@
 
 _Decided 2026-10-02 through a structured debate: an Advocate (3–4 intent sections with dropdowns), a Challenger
 (flat, task-first, fewer pages) and an Arbitrator (healthcare product/UX lead judging against the clinic's real
-visitors). This is the Arbitrator's final plan. Nothing in it is built yet._
+visitors). This is the Arbitrator's final plan._
+
+> **Status:** Phase 1 implemented on branch `astro-migration` (2026-10-02), plus three simplifications: solid header,
+> one fixed header height, still hero photo. Phases 2–3 wait for owner content. Deviations from this plan: the
+> homepage hero keeps a photo of the doctor's office until a wide clinic photo arrives; sitemap waits for the live
+> domain; the Gujarati tagline uses neutral "કાન · નાક · ગળું" until the "hospital" wording is confirmed.
 
 ## 1. Verdict
 **B's structure wins**: four plain destinations, no dropdowns, fewer and richer pages (doctor + clinic on one page;

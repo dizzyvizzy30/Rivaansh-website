@@ -1,46 +1,175 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import HeroSlideshow from '../components/home/HeroSlideshow.astro';
-import StatsBand from '../components/sections/StatsBand.astro';
-import ServiceColumns from '../components/home/ServiceColumns.astro';
-import TestimonialSlider from '../components/home/TestimonialSlider.astro';
-import SpecialistGrid from '../components/home/SpecialistGrid.astro';
-import { hero, heroSlides, stats, serviceColumns, testimonials, specialists } from '../data/home';
+import HomeHero from '../components/home/HomeHero.astro';
+import ConditionGroups from '../components/treatments/ConditionGroups.astro';
+import DoctorCard from '../components/doctor/DoctorCard.astro';
+import MediaGallery from '../components/media/MediaGallery.astro';
+import StepList from '../components/ui/StepList.astro';
+import LocationCard from '../components/visit/LocationCard.astro';
+import FaqAccordion from '../components/ui/FaqAccordion.astro';
+import PostCard from '../components/blog/PostCard.astro';
+import { homeSections as s } from '../data/home';
+import { treatmentsPage } from '../data/treatments';
+import { clinicPhotos } from '../data/doctor-clinic';
+import { firstVisit, quickAnswers, visitPage } from '../data/visit';
+import { getTips } from '../data/collections';
+import { routes } from '../config/navigation';
+import { site } from '../config/site';
+
+const tips = (await getTips()).slice(0, 3);
+const homePhotos = clinicPhotos.filter((p) => p.kind === 'image' && !p.alt.startsWith('Centre Point')).slice(0, 4);
 ---
 
-<BaseLayout showScrollProgress showFloatingCta>
-  <HeroSlideshow slides={heroSlides} {...hero} />
-  <StatsBand stats={stats} variant="cards" />
-  <ServiceColumns columns={serviceColumns} />
-  <TestimonialSlider title={testimonials.title} items={testimonials.items} />
-  <section class="team-section" aria-labelledby="team-title">
-    <h2 class="team-title" id="team-title" data-animate="fade-up">{specialists.title}</h2>
-    <SpecialistGrid members={specialists.members} animate />
+<BaseLayout clinicSchema>
+  <HomeHero />
+
+  <section class="section" aria-labelledby="treat-title">
+    <div class="section-inner">
+      <h2 class="section-title" id="treat-title">{s.treatTitle}</h2>
+      <p class="section-lede">{treatmentsPage.notListed}</p>
+      <ConditionGroups variant="chips" />
+      <a class="section-link" href={routes.treatments}>See all treatments</a>
+    </div>
   </section>
+
+  <section class="section section--alt" aria-labelledby="doctor-title">
+    <div class="section-inner">
+      <h2 class="section-title" id="doctor-title">{s.doctorTitle}</h2>
+      <p class="section-lede">The doctor who will examine you.</p>
+      <DoctorCard />
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="clinic-title">
+    <div class="section-inner">
+      <h2 class="section-title" id="clinic-title">{s.clinicTitle}</h2>
+      <p class="section-lede">Select a photo to view it full screen.</p>
+      <MediaGallery items={homePhotos} id="home-clinic" label="Clinic photos" showCaptions />
+      <a class="section-link" href={`${routes.doctorClinic}#clinic`}>More about the clinic</a>
+    </div>
+  </section>
+
+  <section class="section section--alt" aria-labelledby="visit-title">
+    <div class="section-inner">
+      <h2 class="section-title" id="visit-title">{firstVisit.title}</h2>
+      <div class="first-visit">
+        <StepList steps={firstVisit.steps} />
+        <div class="bring">
+          <h3>What to bring</h3>
+          <ul>{firstVisit.bring.map((item) => <li>{item}</li>)}</ul>
+          {visitPage.fees && <p class="fees">{visitPage.fees}</p>}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="location-title">
+    <div class="section-inner">
+      <h2 class="section-title" id="location-title">{s.locationTitle}</h2>
+      <p class="section-lede">{site.contact.address.short}</p>
+      <LocationCard />
+    </div>
+  </section>
+
+  <section class="section section--alt" aria-labelledby="answers-title">
+    <div class="section-inner">
+      <div class="narrow">
+        <h2 class="section-title" id="answers-title">{s.answersTitle}</h2>
+        <FaqAccordion items={quickAnswers} name="home-faq" />
+        <a class="section-link" href={`${routes.visit}#faq`}>More questions and answers</a>
+      </div>
+    </div>
+  </section>
+
+  {tips.length > 0 && (
+    <section class="section" aria-labelledby="tips-title">
+      <div class="section-inner">
+        <div class="narrow">
+          <h2 class="section-title" id="tips-title">{s.tipsTitle}</h2>
+          <div class="tips">{tips.map((post) => <PostCard post={post} />)}</div>
+          <a class="section-link" href={routes.tips}>All health tips</a>
+        </div>
+      </div>
+    </section>
+  )}
 </BaseLayout>
 
 <style>
-  .team-section {
-    padding: 4rem 2rem;
-    max-width: var(--width-wide);
-    margin: 0 auto;
+  .narrow {
+    max-width: var(--width-narrow);
   }
 
-  .team-title {
-    text-align: center;
-    font-size: 2rem;
+  .narrow :global(.faq-container) {
+    margin: 1rem 0 0;
+  }
+
+  .first-visit {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: 2rem;
+    align-items: start;
+    margin-top: 1.5rem;
+  }
+
+  .first-visit :global(.steps) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .first-visit :global(.step) {
+    padding: 1.25rem;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+
+  .first-visit :global(.step-number) {
+    margin: 0 0 0.75rem;
+  }
+
+  .bring {
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem 1.5rem;
+  }
+
+  .bring h3 {
+    margin-bottom: 0.75rem;
+  }
+
+  .bring li {
+    padding: 0.4rem 0 0.4rem 1.5rem;
+    position: relative;
+  }
+
+  .bring li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--color-primary-dark);
     font-weight: 700;
-    color: var(--color-text);
-    margin-bottom: 2.5rem;
   }
 
-  @media (max-width: 768px) {
-    .team-section {
-      padding: 3rem 1rem;
-    }
+  .fees {
+    margin-top: 0.75rem;
+    font-weight: 600;
+  }
 
-    .team-title {
-      font-size: 1.5rem;
+  .tips {
+    display: grid;
+    gap: 2rem;
+  }
+
+  @media (max-width: 900px) {
+    .first-visit {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .first-visit :global(.steps) {
+      grid-template-columns: 1fr;
     }
   }
 </style>

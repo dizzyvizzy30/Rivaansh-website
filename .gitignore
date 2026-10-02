@@ -12,4 +12,4 @@ owner-content/**/*
 !owner-content/**/
 !owner-content/**/*.md
 !owner-content/**/.gitkeep
-!owner-content/00-clinic-wide-details/reference/clinic-flyer.jpeg
+!owner-content/00-clinic-facts/reference/clinic-flyer.jpeg

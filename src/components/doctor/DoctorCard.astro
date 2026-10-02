@@ -1,0 +1,136 @@
+---
+// The doctor's photo, qualifications and short bio. `feature` on Home / Doctor & Clinic, `mini` on condition pages.
+import MediaImage from '../media/MediaImage.astro';
+import { doctor } from '../../data/doctor-clinic';
+import { site } from '../../config/site';
+import { routes } from '../../config/navigation';
+
+interface Props {
+  variant?: 'feature' | 'mini';
+  headingLevel?: 2 | 3;
+  showLink?: boolean;
+}
+
+const { variant = 'feature', headingLevel = 3, showLink = true } = Astro.props;
+---
+
+<div class:list={['doctor-card', `doctor-card--${variant}`]}>
+  <MediaImage
+    image={doctor.portrait}
+    sizes={variant === 'mini' ? '96px' : '(max-width: 768px) 60vw, 320px'}
+    class="doctor-photo"
+  />
+  <div class="doctor-body">
+    {headingLevel === 2 ? <h2 class="doctor-name">{doctor.name}</h2> : <h3 class="doctor-name">{doctor.name}</h3>}
+    <p class="doctor-role">{doctor.role}</p>
+    <ul class="doctor-qualifications">
+      {doctor.qualifications.map((q) => <li>{q}</li>)}
+      {site.doctor.registration && <li>Registration no. {site.doctor.registration}</li>}
+    </ul>
+    {variant === 'feature' && doctor.bio.map((paragraph) => <p class="doctor-bio">{paragraph}</p>)}
+    {variant === 'feature' && doctor.languages && <p class="doctor-bio">Languages: {doctor.languages}</p>}
+    {showLink && <a class="doctor-link" href={`${routes.doctorClinic}#doctor`}>About the doctor and the clinic</a>}
+  </div>
+</div>
+
+<style>
+  .doctor-card {
+    display: grid;
+    align-items: center;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+  }
+
+  .doctor-card--feature {
+    grid-template-columns: minmax(0, 320px) 1fr;
+    gap: 2.5rem;
+    padding: 2rem;
+  }
+
+  .doctor-card--mini {
+    grid-template-columns: 96px 1fr;
+    gap: 1.25rem;
+    padding: 1.25rem;
+  }
+
+  .doctor-card :global(.doctor-photo) {
+    width: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+  }
+
+  .doctor-card--feature :global(.doctor-photo) {
+    aspect-ratio: 4 / 5;
+  }
+
+  .doctor-card--mini :global(.doctor-photo) {
+    aspect-ratio: 1;
+    border-radius: var(--radius-full);
+  }
+
+  .doctor-name {
+    font-size: 1.5rem;
+    letter-spacing: -0.01em;
+  }
+
+  .doctor-card--mini .doctor-name {
+    font-size: 1.125rem;
+  }
+
+  .doctor-role {
+    color: var(--color-primary-ink);
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .doctor-card--mini .doctor-role {
+    margin-bottom: 0.25rem;
+    font-size: 0.9375rem;
+  }
+
+  .doctor-qualifications {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .doctor-qualifications li {
+    padding: 0.3rem 0.75rem;
+    border-radius: var(--radius-full);
+    background: var(--color-primary-light);
+    color: var(--color-primary-ink);
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  .doctor-card--mini .doctor-qualifications {
+    margin-bottom: 0.5rem;
+  }
+
+  .doctor-bio {
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin-bottom: 0.75rem;
+  }
+
+  .doctor-link {
+    font-weight: 600;
+    color: var(--color-primary-ink);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  @media (max-width: 768px) {
+    .doctor-card--feature {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      padding: 1.25rem;
+    }
+
+    .doctor-card--feature :global(.doctor-photo) {
+      max-width: 280px;
+    }
+  }
+</style>

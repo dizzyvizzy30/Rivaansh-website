@@ -1,52 +1,86 @@
 ---
-import Icon from '../ui/Icon.astro';
-import { site } from '../../config/site';
-import { footerNav } from '../../config/navigation';
+// Full site list for people who scroll to the bottom (and the no-JS fallback for the mobile "Menu").
+import { site, formatSessions, whatsappHref } from '../../config/site';
+import { routes, conditionHref } from '../../config/navigation';
+import { getConditions, hasTips } from '../../data/collections';
+
+const conditions = await getConditions();
+const showTips = await hasTips();
+const whatsapp = whatsappHref();
+const { phone, landline, email, address, mapsUrl } = site.contact;
+const year = new Date().getFullYear();
+
+const groups = [
+  {
+    label: 'Treatments',
+    links: [
+      ...conditions.map((c) => ({ label: c.data.title, href: conditionHref(c.id) })),
+      { label: 'All conditions', href: routes.treatments },
+    ],
+  },
+  {
+    label: 'Visit & Book',
+    links: [
+      { label: 'Visit Us', href: routes.visit },
+      { label: 'Book an appointment', href: routes.book },
+      { label: 'Before & after surgery', href: routes.care },
+      { label: 'FAQ', href: `${routes.visit}#faq` },
+    ],
+  },
+  {
+    label: 'About',
+    links: [
+      { label: 'Doctor & Clinic', href: routes.doctorClinic },
+      ...(showTips ? [{ label: 'Health Tips', href: routes.tips }] : []),
+    ],
+  },
+];
 ---
 
-<footer class="site-footer">
+<footer class="site-footer" id="site-footer">
   <div class="footer-container">
-    <div class="footer-brand" data-animate="fade-up" data-animate-delay="1">
-      <div class="footer-logo">{site.name}</div>
-      <p>{site.footerBlurb}</p>
-    </div>
-
-    {footerNav.map((group, index) => (
-      <nav class="footer-section" aria-label={group.label} data-animate="fade-up" data-animate-delay={String(index + 2)}>
+    {groups.map((group) => (
+      <nav class="footer-section" aria-label={group.label}>
         <h2 class="footer-heading">{group.label}</h2>
         <ul>
-          {group.children.map((link) => (
-            <li><a href={link.href}>{link.label}</a></li>
-          ))}
+          {group.links.map((link) => <li><a href={link.href}>{link.label}</a></li>)}
         </ul>
       </nav>
     ))}
 
-    <div class="footer-section footer-contact" data-animate="fade-up" data-animate-delay="4">
-      <h2 class="footer-heading">Contact Us</h2>
-      <p><strong>Address:</strong> <span>{site.contact.address}</span></p>
-      <p><strong>Phone:</strong> <a href={`tel:${site.contact.phone.tel}`}>{site.contact.phone.display}</a></p>
-      <p><strong>Email:</strong> <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a></p>
-      <div class="footer-social">
-        {site.social.map((profile) => (
-          <a href={profile.href} aria-label={profile.label}>
-            <Icon name={profile.icon} />
-          </a>
-        ))}
-      </div>
+    <div class="footer-section footer-contact">
+      <h2 class="footer-heading">Contact</h2>
+      <p class="footer-name">{site.name}</p>
+      <address>
+        {address.line1}<br />
+        {address.line2}<br />
+        {address.line3}
+      </address>
+      <p><a href={mapsUrl} target="_blank" rel="noopener">Open in Google Maps</a></p>
+      <p>{phone.label}: <a href={`tel:${phone.tel}`}>{phone.display}</a></p>
+      <p>{landline.label}: <a href={`tel:${landline.tel}`}>{landline.display}</a></p>
+      {whatsapp && <p><a href={whatsapp} target="_blank" rel="noopener">WhatsApp</a></p>}
+      <p><a href={`mailto:${email}`}>{email}</a></p>
+      <ul class="footer-hours">
+        {site.hours.map((h) => <li><strong>{h.label}:</strong> {formatSessions(h.sessions)}</li>)}
+      </ul>
     </div>
   </div>
 
   <div class="footer-bottom">
-    <p>&copy; {site.copyrightYear} {site.name}. All rights reserved.</p>
+    <p class="footer-local" lang="gu">{site.localTagline}</p>
+    <p>General information on this website is not a substitute for a consultation.</p>
+    {site.doctor.registration && <p>{site.doctor.name} · Registration no. {site.doctor.registration}</p>}
+    <p>&copy; {year} {site.name}</p>
   </div>
 </footer>
 
 <style>
   .site-footer {
     background: var(--color-surface-dark);
-    color: var(--color-bg-alt);
-    padding-top: 4rem;
+    color: var(--color-text-on-dark-muted);
+    padding-top: 3.5rem;
+    font-size: 0.9375rem;
   }
 
   .footer-container {
@@ -54,110 +88,75 @@ import { footerNav } from '../../config/navigation';
     margin: 0 auto;
     padding: 0 var(--gutter);
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.4fr);
     gap: 2.5rem;
   }
 
-  .footer-logo {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--color-text-on-dark);
-    margin-bottom: 0.75rem;
-  }
-
-  .footer-brand p {
-    font-size: 0.9375rem;
-    color: var(--color-text-on-dark-muted);
-    line-height: 1.6;
-  }
-
   .footer-heading {
-    font-size: 1rem;
+    font-size: 0.875rem;
     font-weight: 600;
     color: var(--color-text-on-dark);
-    margin-bottom: 1.25rem;
+    margin-bottom: 1rem;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.06em;
   }
 
   .footer-section li {
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.6rem;
   }
 
-  .footer-section li a {
-    font-size: 0.9375rem;
+  .footer-section a {
     color: var(--color-text-on-dark-muted);
     transition: color var(--duration-fast) ease;
   }
 
-  .footer-section li a:hover,
-  .footer-contact a:hover {
+  .footer-section a:hover {
     color: var(--color-primary);
+    text-decoration: underline;
   }
 
-  .footer-contact p {
-    font-size: 0.9375rem;
-    color: var(--color-text-on-dark-muted);
-    margin-bottom: 0.625rem;
-    display: flex;
-    align-items: flex-start;
-    gap: 0.5rem;
+  .footer-contact p,
+  .footer-contact address {
+    margin-bottom: 0.5rem;
+    font-style: normal;
   }
 
-  .footer-contact strong {
+  .footer-name {
     color: var(--color-text-on-dark);
+    font-weight: 600;
+  }
+
+  .footer-hours {
+    margin-top: 0.75rem;
+  }
+
+  .footer-hours strong {
+    color: var(--color-text-on-dark-soft);
     font-weight: 500;
-    flex-shrink: 0;
-  }
-
-  .footer-contact a {
-    transition: color var(--duration-fast) ease;
-    overflow-wrap: anywhere;
-  }
-
-  .footer-social {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
-  }
-
-  .footer-social a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 50px;
-    height: 50px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: var(--radius-full);
-    color: var(--color-bg-alt);
-    transition: all var(--duration-fast) ease;
-  }
-
-  .footer-social a:hover {
-    background: var(--color-primary);
-    color: var(--color-text-on-dark);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  }
-
-  .footer-social :global(svg) {
-    width: 24px;
-    height: 24px;
   }
 
   .footer-bottom {
-    margin-top: 3rem;
-    padding: 1.5rem var(--gutter);
+    margin-top: 2.5rem;
+    padding: 1.25rem var(--gutter);
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     text-align: center;
+    font-size: 0.8125rem;
+    display: grid;
+    gap: 0.25rem;
   }
 
-  .footer-bottom p {
-    font-size: 0.875rem;
-    color: var(--color-text-on-dark-muted);
+  .footer-local {
+    color: var(--color-text-on-dark-soft);
+    font-size: 0.9375rem;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 900px) {
+    .footer-container {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 560px) {
     .footer-container {
       grid-template-columns: 1fr;
       gap: 2rem;

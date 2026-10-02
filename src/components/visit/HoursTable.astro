@@ -1,0 +1,55 @@
+---
+// Weekly opening hours; today's row is highlighted with JS (India time).
+import { site, formatSessions } from '../../config/site';
+---
+
+<table class="hours-table" data-hours-table>
+  <caption class="sr-only">Opening hours</caption>
+  <tbody>
+    {site.hours.map((h) => (
+      <tr data-days={h.days.join(',')}>
+        <th scope="row">{h.label}</th>
+        <td>{formatSessions(h.sessions)}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+<style>
+  .hours-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1rem;
+  }
+
+  .hours-table th,
+  .hours-table td {
+    text-align: left;
+    padding: 0.65rem 0.75rem;
+    border-bottom: 1px solid var(--color-border);
+    vertical-align: top;
+  }
+
+  .hours-table th {
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .hours-table tr.is-today {
+    background: var(--color-primary-light);
+  }
+
+  .hours-table tr.is-today th::after {
+    content: ' (today)';
+    font-weight: 500;
+    color: var(--color-primary-ink);
+  }
+</style>
+
+<script>
+  const weekday = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Kolkata', weekday: 'short' }).format(new Date());
+  const today = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(weekday);
+  document.querySelectorAll<HTMLTableRowElement>('[data-hours-table] tr[data-days]').forEach((row) => {
+    if (row.dataset.days?.split(',').map(Number).includes(today)) row.classList.add('is-today');
+  });
+</script>

@@ -1,0 +1,157 @@
+---
+// Condition page template (one markdown file per condition in src/content/conditions/).
+// Structure: docs/site-restructure-plan.md §6 — In short → body headings → doctor card + actions → related tips → review line.
+import { render } from 'astro:content';
+import PageLayout from '../../../layouts/PageLayout.astro';
+import ContactActions from '../../../components/ui/ContactActions.astro';
+import DoctorCard from '../../../components/doctor/DoctorCard.astro';
+import TodayHours from '../../../components/layout/TodayHours.astro';
+import { getConditions, getTips, reviewLine, type Condition } from '../../../data/collections';
+import { routes, tipHref } from '../../../config/navigation';
+import { site } from '../../../config/site';
+
+export async function getStaticPaths() {
+  const conditions = await getConditions();
+  return conditions.map((condition) => ({ params: { slug: condition.id }, props: { condition } }));
+}
+
+interface Props {
+  condition: Condition;
+}
+
+const { condition } = Astro.props;
+const { data } = condition;
+const { Content } = await render(condition);
+const tips = (await getTips()).filter((t) => data.relatedTips.includes(t.id) || t.data.relatedConditions.includes(condition.id));
+const reviewed = reviewLine(data);
+---
+
+<PageLayout title={`${data.title} — ENT, Gota, Ahmedabad`} description={data.summary} noindex={data.draft}>
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href={routes.treatments}>Treatments</a> <span aria-hidden="true">›</span> <span aria-current="page">{data.title}</span>
+  </nav>
+
+  {data.draft && <p class="draft-banner">Draft — awaiting review by {site.doctor.name}. Not published on the live site.</p>}
+
+  <h1>{data.title}</h1>
+  {data.localNames && <p class="local-names" lang="gu">{data.localNames}</p>}
+
+  <aside class="in-short" aria-label="In short">
+    <h2>In short</h2>
+    <p>{data.summary}</p>
+    <ContactActions whatsappText={`Hello, I would like an appointment about ${data.title.toLowerCase()}.`} />
+  </aside>
+
+  <article class="condition-body">
+    <Content />
+  </article>
+
+  <section class="condition-contact" aria-labelledby="contact-title">
+    <h2 id="contact-title">See {site.doctor.shortName}</h2>
+    <DoctorCard variant="mini" headingLevel={3} />
+    <p class="contact-hours"><TodayHours /> · {site.contact.address.short}</p>
+    <ContactActions showBook />
+  </section>
+
+  {tips.length > 0 && (
+    <section class="related" aria-labelledby="related-title">
+      <h2 id="related-title">Related health tips</h2>
+      <ul>{tips.map((t) => <li><a href={tipHref(t.id)}>{t.data.title}</a></li>)}</ul>
+    </section>
+  )}
+
+  <p class="review-note">
+    {reviewed ?? `Written for ${site.name}; awaiting the doctor's review.`} · General information, not a diagnosis.
+  </p>
+</PageLayout>
+
+<style>
+  .breadcrumb {
+    font-size: 0.9375rem;
+    color: var(--color-text-muted);
+    margin-bottom: 1rem;
+  }
+
+  .breadcrumb a {
+    color: var(--color-primary-ink);
+    font-weight: 600;
+  }
+
+  .local-names {
+    margin-top: -0.75em;
+    color: var(--color-text-muted);
+  }
+
+  .in-short {
+    margin: 1.5rem 0 2rem;
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    background: var(--color-primary-light);
+    border-left: 4px solid var(--color-primary-dark);
+  }
+
+  .in-short h2 {
+    font-size: 1.125rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .in-short p {
+    margin-bottom: 1rem;
+  }
+
+  .condition-body :global(h2) {
+    font-size: 1.5rem;
+    margin: 2rem 0 0.75rem;
+  }
+
+  .condition-body :global(h3) {
+    font-size: 1.1875rem;
+    margin: 1.5rem 0 0.5rem;
+  }
+
+  .condition-body :global(ul),
+  .condition-body :global(ol) {
+    list-style: revert;
+    margin: 0 0 1em 1.25em;
+  }
+
+  .condition-body :global(li) {
+    font-size: 1.05em;
+    line-height: 1.7;
+    margin-bottom: 0.35em;
+  }
+
+  .condition-body :global(strong) {
+    color: var(--color-text);
+  }
+
+  .condition-body :global(a) {
+    color: var(--color-primary-ink);
+    text-decoration: underline;
+  }
+
+  .condition-contact {
+    margin-top: 3rem;
+    display: grid;
+    gap: 1rem;
+  }
+
+  .contact-hours {
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .related {
+    margin-top: 2.5rem;
+  }
+
+  .related li {
+    padding: 0.5rem 0;
+  }
+
+  .related a {
+    color: var(--color-primary-ink);
+    font-weight: 600;
+    text-decoration: underline;
+  }
+</style>

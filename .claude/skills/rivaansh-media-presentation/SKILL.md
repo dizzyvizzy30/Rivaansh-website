@@ -41,7 +41,7 @@ Only **one** `priority` image per page.
 ### `sizes` cheat-sheet (match the CSS, or the browser downloads the wrong width)
 | Layout | `sizes` |
 |---|---|
-| Full-bleed hero | `100vw` |
+| Home hero (right half ≥900px, full-bleed on phones) | `100vw` |
 | Justified gallery tile | `(max-width: 576px) calc(100vw - 2rem), (max-width: 992px) 60vw, 40vw` |
 | Two-column feature (About facility main) | `(max-width: 1024px) 100vw, 560px` |
 | Card thumbnail (locations/blog) | `(max-width: 768px) 100vw, 300px` |
@@ -49,7 +49,12 @@ Only **one** `priority` image per page.
 
 ## Layouts
 - **Full-bleed band**: break out of the content width with the `.bleed` utility; keep text inside `--width-wide`.
-- **Justified-row gallery** (`MediaGallery.astro`): flexbox rows where each tile's `flex-basis` and `flex-grow` are proportional to its aspect ratio (`--ratio`), so every row fills the width at one shared height with no cropping and no holes (CSS-column masonry was tried and left large gaps with few photos). Target row height 360px (280px ≤992px), a short last row is capped at 560px tall, single column ≤576px. DOM order = reading order = lightbox order. Pass `priorityFirst` when the gallery is the top of the page.
+- **Justified-row gallery** (`MediaGallery.astro`): every row fills the width at one shared height and each photo keeps
+  its aspect ratio. A small script (in the component) chooses row breaks by minimising squared deviation from
+  `--row-height` (320px; 260px ≤992px), so no photo is left alone on the last row; without JS a CSS flex fallback is
+  used. Single column ≤576px. `showCaptions` prints captions under tiles; `priorityFirst` when the gallery is the top
+  of the page. Used on Home ("The clinic", 4 photos) and Doctor & Clinic (`#clinic`, deep links `#clinic-<n>`); the old
+  gallery page redirects there.
 - **Narrative scroll** (pattern for future story pages): alternate full-bleed image → short caption block → next image; one idea per screen. Build it as a variant of `MediaGallery` when captioned stories exist — don't hand-roll per page.
 - Hover: subtle scale (≤1.05) and shadow; disabled under reduced motion.
 

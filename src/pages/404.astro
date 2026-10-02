@@ -1,11 +1,31 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
-import Button from '../components/ui/Button.astro';
-import { routes } from '../config/navigation';
+import ContactActions from '../components/ui/ContactActions.astro';
+import { mainNav, routes } from '../config/navigation';
 ---
 
-<PageLayout title="Page not found" description="The page you were looking for could not be found.">
+<PageLayout title="Page not found" description="The page you were looking for could not be found." noindex>
   <h1>Page not found</h1>
-  <p>Sorry, we couldn't find that page. It may have moved.</p>
-  <Button href={routes.home} variant="primary" size="large" arrow>Back to home</Button>
+  <p>Sorry, we couldn't find that page. It may have moved. Try one of these:</p>
+  <ul class="links">
+    <li><a href={routes.home}>Home</a></li>
+    {mainNav.filter((l) => !l.requiresTips).map((link) => <li><a href={link.href}>{link.label}</a></li>)}
+  </ul>
+  <ContactActions showBook />
 </PageLayout>
+
+<style>
+  .links {
+    margin: 1rem 0 2rem;
+  }
+
+  .links li {
+    padding: 0.4rem 0;
+  }
+
+  .links a {
+    color: var(--color-primary-ink);
+    font-weight: 600;
+    text-decoration: underline;
+  }
+</style>

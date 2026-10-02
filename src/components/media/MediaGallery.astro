@@ -1,7 +1,9 @@
 ---
 // Editorial photo/video gallery laid out as justified rows: every row fills the full width at one
-// shared height, each photo keeps its own aspect ratio (no cropping, no gaps), single column on
-// phones. Every tile opens the lightbox at that item; DOM order = reading order = lightbox order.
+// shared height and each photo keeps its own aspect ratio (no cropping). A small script picks the row
+// breaks so all rows are close to the target height (no lone photo on the last row); without JS a
+// CSS flex fallback is used. Single column on phones. Every tile opens the lightbox at that item;
+// DOM order = reading order = lightbox order.
 import MediaImage from './MediaImage.astro';
 import LightboxItem from './LightboxItem.astro';
 import Icon from '../ui/Icon.astro';
@@ -15,9 +17,11 @@ interface Props {
   label: string;
   /** Load the first tile eagerly at high priority — only when the gallery is the top of the page. */
   priorityFirst?: boolean;
+  /** Show each item's caption under its photo (always shown in the lightbox). */
+  showCaptions?: boolean;
 }
 
-const { items, id, label, priorityFirst = false } = Astro.props;
+const { items, id, label, priorityFirst = false, showCaptions = false } = Astro.props;
 const SIZES = '(max-width: 576px) calc(100vw - 2rem), (max-width: 992px) 60vw, 40vw';
 const ratioOf = (item: MediaItem) => {
   const { width, height } = metaOf(item.kind === 'image' ? item.src : item.poster);
@@ -25,7 +29,7 @@ const ratioOf = (item: MediaItem) => {
 };
 ---
 
-<ul class="media-gallery" data-lightbox={id} aria-label={label}>
+<ul class="media-gallery" data-lightbox={id} data-justified aria-label={label}>
   {items.map((item, index) => (
     <li class="media-tile" id={`${id}-${index + 1}`} style={`--ratio: ${ratioOf(item)}`}>
       <LightboxItem item={item}>
@@ -45,13 +49,14 @@ const ratioOf = (item: MediaItem) => {
           </>
         )}
       </LightboxItem>
+      {showCaptions && item.caption && <p class="media-tile__caption">{item.caption}</p>}
     </li>
   ))}
 </ul>
 
 <style>
   .media-gallery {
-    --row-height: 360px; /* target height a row is built around */
+    --row-height: 320px; /* target height a row is built around */
     --row-max: 560px; /* a short last row never grows taller than this */
     display: flex;
     flex-wrap: wrap;
@@ -72,6 +77,12 @@ const ratioOf = (item: MediaItem) => {
 
   .media-tile:hover {
     box-shadow: 0 12px 28px rgba(96, 125, 139, 0.22);
+  }
+
+  /* Script-computed widths (see below) replace the flex fallback. */
+  .media-gallery.is-justified .media-tile {
+    flex: none;
+    max-width: none;
   }
 
   .media-tile :global(.lightbox-item) {
@@ -95,6 +106,14 @@ const ratioOf = (item: MediaItem) => {
     outline-offset: -3px;
   }
 
+  .media-tile__caption {
+    padding: 0.6rem 0.85rem 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.45;
+    color: var(--color-text-muted);
+    background: var(--color-bg);
+  }
+
   .media-tile__play {
     position: absolute;
     inset: 0;
@@ -110,7 +129,7 @@ const ratioOf = (item: MediaItem) => {
 
   @media (max-width: 992px) {
     .media-gallery {
-      --row-height: 280px;
+      --row-height: 260px;
     }
   }
 
@@ -132,3 +151,65 @@ const ratioOf = (item: MediaItem) => {
     }
   }
 </style>
+
+<script>
+  // Balanced justified rows: choose row breaks that keep every row close to --row-height
+  // (minimum total squared deviation), then size each tile so the row exactly fills the width.
+  const phone = window.matchMedia('(max-width: 576px)');
+
+  function layout(gallery: HTMLElement) {
+    const tiles = [...gallery.querySelectorAll<HTMLElement>(':scope > .media-tile')];
+    if (phone.matches || tiles.length < 2) {
+      gallery.classList.remove('is-justified');
+      tiles.forEach((tile) => (tile.style.width = ''));
+      return;
+    }
+    const styles = getComputedStyle(gallery);
+    const width = gallery.clientWidth;
+    const gap = parseFloat(styles.columnGap) || 16;
+    const target = parseFloat(styles.getPropertyValue('--row-height')) || 320;
+    const maxHeight = target * 1.75;
+    const ratios = tiles.map((tile) => parseFloat(tile.style.getPropertyValue('--ratio')) || 1);
+    const n = ratios.length;
+
+    const cost = new Array<number>(n + 1).fill(Infinity);
+    const breakAt = new Array<number>(n + 1).fill(0);
+    cost[0] = 0;
+    for (let end = 1; end <= n; end++) {
+      let sum = 0;
+      for (let start = end - 1; start >= 0; start--) {
+        sum += ratios[start];
+        const count = end - start;
+        const height = (width - gap * (count - 1)) / sum;
+        if (height < target * 0.45) break;
+        const penalty = height > maxHeight ? (count === 1 ? 1e6 : Infinity) : (height - target) ** 2;
+        if (cost[start] + penalty < cost[end]) {
+          cost[end] = cost[start] + penalty;
+          breakAt[end] = start;
+        }
+      }
+    }
+
+    const rows: [number, number][] = [];
+    for (let end = n; end > 0; end = breakAt[end]) rows.unshift([breakAt[end], end]);
+    for (const [start, end] of rows) {
+      const slice = ratios.slice(start, end);
+      const sum = slice.reduce((a, b) => a + b, 0);
+      const height = Math.min((width - gap * (slice.length - 1)) / sum, maxHeight);
+      // Round down a fraction of a pixel so sub-pixel totals never push the last tile onto a new line.
+      slice.forEach((ratio, i) => (tiles[start + i].style.width = `${Math.floor(ratio * height * 100) / 100 - 0.05}px`));
+    }
+    gallery.classList.add('is-justified');
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-justified]').forEach((gallery) => {
+    let frame = 0;
+    const schedule = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => layout(gallery));
+    };
+    new ResizeObserver(schedule).observe(gallery);
+    phone.addEventListener('change', schedule);
+    layout(gallery);
+  });
+</script>
