@@ -23,7 +23,8 @@ Typical request: **"apply owner-content/02-about-us"** (or several folders, or "
 | `03-conditions-review` | Treatments hub + `/pages/ent/<slug>.html` | `src/content/conditions/<slug>.md` (approve: `draft: false`, `reviewedBy`, `reviewedDate`), `src/data/treatments.ts` |
 | `04-surgery-guides` | Before & After Surgery (`/pages/care.html#<procedure>`) | `src/data/care.ts` (+ per-procedure sections, Phase 2) |
 | `05-health-tips-review` | Health Tips `/pages/blog/<slug>.html` | `src/content/blog/<slug>.md` |
-| `06-faq` | Visit Us `#faq`, Home "Quick answers" | `src/data/visit.ts` (`quickAnswers`) |
+| `06-faq` | Visit Us `#faq` | `src/data/visit.ts` (`quickAnswers`) |
+| `07-numbers-and-reviews` | Home numbers band + reviews, Doctor & Clinic `#numbers` `#reviews` | `src/data/proof.ts` — set `confirmed: true` + `source` per number; add testimonials only with `consent.written: true` (never store patient contact details) |
 
 Draft review flow: the doctor reads drafts on a Netlify deploy-preview link (drafts are visible there with a banner)
 and replies "OK" or with corrections; record the approval in the markdown frontmatter.
@@ -52,6 +53,7 @@ and replies "OK" or with corrections; record the approval in the markdown frontm
    (`owner-content/00-clinic-wide-details/reference/clinic-flyer.jpeg`), or `site.ts`.
 7. **Compliance check (India)** before publishing — flag to the user, don't silently remove or publish:
    - superlatives or rankings ("best", "No. 1", "top", "most trusted"), guaranteed or exaggerated results;
+   - numbers without a stated source, or success/satisfaction rates without a documented survey;
    - patient testimonials, identifiable patients, before/after photos (need documented written consent; testimonials
      are generally discouraged for doctors under NMC professional-conduct rules);
    - unverifiable statistics (e.g. "98% satisfaction"), discounts/offers, comparisons with other doctors;

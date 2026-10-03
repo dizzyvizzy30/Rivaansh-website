@@ -9,6 +9,9 @@ import SlotGallery from '../components/media/SlotGallery.astro';
 import PhotoSlot from '../components/media/PhotoSlot.astro';
 import Icon from '../components/ui/Icon.astro';
 import InfoNeeded from '../components/ui/InfoNeeded.astro';
+import MetricsBand from '../components/proof/MetricsBand.astro';
+import Testimonials from '../components/proof/Testimonials.astro';
+import { liveTestimonials, googleReviews } from '../data/proof';
 import { homeSections as s } from '../data/home';
 import { treatmentsPage } from '../data/treatments';
 import { visitPage } from '../data/visit';
@@ -21,10 +24,12 @@ const tips = (await getTips()).slice(0, 3);
 // Live site: the clinic grid appears once at least two real clinic photos exist.
 const showClinicGrid = showDrafts || realSlots(s.clinicSlots).length >= 2;
 const { address, mapsUrl } = site.contact;
+const showReviews = showDrafts || liveTestimonials().length > 0 || Boolean(googleReviews);
 ---
 
 <BaseLayout clinicSchema>
   <HomeHero />
+  <MetricsBand variant="band" />
 
   <section class="section" aria-labelledby="treat-title">
     <div class="section-inner">
@@ -47,7 +52,15 @@ const { address, mapsUrl } = site.contact;
     </div>
   </section>
 
-  <section class="section" id="coming" aria-labelledby="coming-title">
+  {showReviews && (
+    <section class="section" id="reviews" aria-labelledby="home-reviews-title">
+      <div class="section-inner">
+        <Testimonials limit={3} headingId="home-reviews-title" />
+      </div>
+    </section>
+  )}
+
+  <section class="section section--alt" id="coming" aria-labelledby="coming-title">
     <div class="section-inner">
       <h2 class="section-title" id="coming-title">{s.comingTitle}</h2>
       <div class="coming">
@@ -71,7 +84,7 @@ const { address, mapsUrl } = site.contact;
   </section>
 
   {tips.length > 0 && (
-    <section class="section section--alt" aria-labelledby="tips-title">
+    <section class="section" aria-labelledby="tips-title">
       <div class="section-inner">
         <h2 class="section-title" id="tips-title">{s.tipsTitle}</h2>
         <ul class="link-rows tips">

@@ -123,7 +123,7 @@ const watch = (page) => page.on('pageerror', (e) => errors.push(`${page.url()}: 
   const page = await ctx.newPage();
   watch(page);
   await page.goto(base + '/', { waitUntil: 'networkidle' });
-  const { screens, photoAboveTitle, heroButtons } = await page.evaluate(() => {
+  const { screens, photoAboveTitle, heroButtons, preview } = await page.evaluate(() => {
     const footer = document.querySelector('.site-footer').getBoundingClientRect().top + scrollY;
     const photo = document.querySelector('.hero-media');
     const title = document.querySelector('.hero-title');
@@ -132,9 +132,12 @@ const watch = (page) => page.on('pageerror', (e) => errors.push(`${page.url()}: 
       screens: footer / innerHeight,
       photoAboveTitle: !photo || photo.getBoundingClientRect().bottom <= title.getBoundingClientRect().top + 1,
       heroButtons: visibleButtons,
+      preview: !!document.querySelector('.info-needed, .photo-slot--empty'),
     };
   });
-  check('homepage is a short summary on phones (≤ 5 screens before the footer)', screens <= 5, `${screens.toFixed(1)} screens`);
+  // Preview builds also show the owner's placeholders (photo frames, numbers, review cards), so allow more room.
+  const maxScreens = preview ? 8 : 5;
+  check(`homepage is a short summary on phones (≤ ${maxScreens} screens before the footer${preview ? ', preview' : ''})`, screens <= maxScreens, `${screens.toFixed(1)} screens`);
   check('phone hero photo sits above the heading (not behind it)', photoAboveTitle);
   check('phone hero shows a single button', heroButtons === 1, `${heroButtons} visible`);
   check('no duplicated FAQ or first-visit blocks on the homepage', (await page.$$('main .faq-container, main .steps')).length === 0);

@@ -6,6 +6,8 @@ import DoctorCard from '../../components/doctor/DoctorCard.astro';
 import SlotGallery from '../../components/media/SlotGallery.astro';
 import ContactActions from '../../components/ui/ContactActions.astro';
 import InfoNeeded from '../../components/ui/InfoNeeded.astro';
+import MetricsBand from '../../components/proof/MetricsBand.astro';
+import Testimonials from '../../components/proof/Testimonials.astro';
 import { doctorClinicPage as page } from '../../data/doctor-clinic';
 import { slotImage } from '../../data/photo-slots';
 import { showDrafts } from '../../data/collections';
@@ -21,6 +23,12 @@ const showSurgery = showDrafts || page.surgery;
 
   <section id="doctor" aria-label="The doctor">
     <DoctorCard headingLevel={2} showLink={false} />
+  </section>
+
+  <MetricsBand variant="detail" />
+
+  <section id="reviews" class="block" aria-labelledby="reviews-title">
+    <Testimonials />
   </section>
 
   <section id="clinic" class="block" aria-labelledby="clinic-title">

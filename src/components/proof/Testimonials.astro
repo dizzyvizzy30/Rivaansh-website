@@ -1,0 +1,171 @@
+---
+// Patient reviews. Live site: only quotes with written consent, plus the Google reviews link when set;
+// nothing at all if neither exists. Preview builds: amber placeholders showing where quotes will go.
+import InfoNeeded from '../ui/InfoNeeded.astro';
+import { liveTestimonials, googleReviews, proofSections } from '../../data/proof';
+import { showDrafts } from '../../data/collections';
+
+interface Props {
+  /** Max quotes to show (Home shows 3; Doctor & Clinic shows all). */
+  limit?: number;
+  headingId?: string;
+}
+
+const { limit = Infinity, headingId = 'reviews-title' } = Astro.props;
+const quotes = liveTestimonials().slice(0, limit);
+const show = quotes.length > 0 || googleReviews || showDrafts;
+const sourceLabel = { 'google-review': 'Google review', 'in-clinic': 'Shared at the clinic', whatsapp: 'Shared on WhatsApp' };
+---
+
+{show && (
+  <div class="reviews">
+    <h2 class="reviews-title" id={headingId}>{proofSections.reviewsTitle}</h2>
+
+    {googleReviews ? (
+      <p class="google">
+        <span class="stars" aria-hidden="true">★</span>
+        <strong>{googleReviews.rating}</strong> on Google from {googleReviews.count} reviews
+        <a href={googleReviews.url} target="_blank" rel="noopener">Read the reviews on Google</a>
+      </p>
+    ) : (
+      <InfoNeeded what="Google reviews link, rating and count" folder="07-numbers-and-reviews" />
+    )}
+
+    {quotes.length > 0 ? (
+      <ul class="quotes">
+        {quotes.map((t) => (
+          <li>
+            <figure class="quote">
+              <blockquote><p>{t.quote}</p></blockquote>
+              <figcaption>
+                <strong>{t.name}</strong>
+                {t.context && <span> · {t.context}</span>}
+                <small>{sourceLabel[t.source]}</small>
+              </figcaption>
+            </figure>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      showDrafts && (
+        <ul class="quotes">
+          {[1, 2].map(() => (
+            <li>
+              <div class="quote quote--placeholder">
+                <p>Patient quote needed — in the patient's own words, with their written consent.</p>
+                <small>owner-content/07-numbers-and-reviews/</small>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )
+    )}
+
+    {quotes.length > 0 && <p class="disclaimer">{proofSections.reviewsDisclaimer}</p>}
+  </div>
+)}
+
+<style>
+  .reviews-title {
+    font-size: 2rem;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+  }
+
+  .google {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 0.6rem;
+    margin-bottom: 1.25rem;
+    font-size: 1.0625rem;
+  }
+
+  .stars {
+    color: #e3a008;
+    font-size: 1.25rem;
+  }
+
+  .google a {
+    font-weight: 600;
+    color: var(--color-primary-ink);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .quotes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .quote {
+    position: relative;
+    height: 100%;
+    padding: 1.75rem 1.5rem 1.25rem;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+
+  .quote::before {
+    content: '“';
+    position: absolute;
+    top: 0.25rem;
+    left: 1rem;
+    font-family: var(--font-serif-accent);
+    font-size: 3.5rem;
+    line-height: 1;
+    color: var(--color-primary-tint);
+  }
+
+  .quote blockquote p {
+    position: relative;
+    color: var(--color-text);
+    line-height: 1.7;
+    margin-top: 0.75rem;
+  }
+
+  .quote figcaption {
+    margin-top: 1rem;
+    color: var(--color-primary-ink);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  .quote figcaption small {
+    width: 100%;
+    color: var(--color-text-muted);
+  }
+
+  .quote--placeholder {
+    display: grid;
+    gap: 0.5rem;
+    border: 2px dashed #f3c56b;
+    background: #fff7e6;
+    color: #6b4400;
+    font-weight: 600;
+  }
+
+  .quote--placeholder::before {
+    color: #f3c56b;
+  }
+
+  .quote--placeholder p {
+    margin-top: 0.75rem;
+  }
+
+  .disclaimer {
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+  }
+
+  @media (max-width: 768px) {
+    .reviews-title {
+      font-size: 1.5rem;
+    }
+  }
+</style>

@@ -63,6 +63,9 @@ The site's identity is a calm, clinical **sage-green + slate** palette, the **In
   (never behind it). White wave divider. No slideshow, zoom or animated gradient. Phones: one Call button only.
 - **Area tiles** — whole-card links (icon, title →, three example conditions), 3 / 2 / 1 columns.
 - **Link rows** — 56px full-width rows with "→" for onward navigation on summaries.
+- **Numbers band** — white cards on `--color-bg-alt`, big `--color-primary-dark` number above a muted label.
+- **Quote cards** — white card, pale-green serif “ mark, quote in `--color-text`, name in `--color-primary-ink`,
+  source line and a disclaimer under the set.
 - **Preview-only markers** — amber dashed "Photo needed" frames, "Stand-in" badges and "Info needed" chips
   (`#fff7e6` / `#f3c56b` / `#6b4400`); never rendered on the live site.
 - **Action bar (phones)** — fixed bottom bar, three equal 44px pills: Call · WhatsApp (or Directions) · Book (filled).

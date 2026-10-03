@@ -279,3 +279,21 @@ doctor-consultation-room, doctor-portrait, operating-microscope, operation-theat
 Preview builds show dashed amber "Photo needed" frames, stand-in badges, "Info needed" chips and the
 `/pages/photos-needed.html` checklist; the live site hides every empty slot and unknown fact. Production builds log
 missing required photos and **fail** if "PLACEHOLDER" or "___" reaches the output.
+
+
+---
+
+# Numbers and patient reviews (owner request, 2026-10-02)
+
+The owner asked for clinic numbers and testimonials. They are back, with safeguards that replace the earlier blanket
+"no stats / no testimonials" rule:
+
+- **Numbers** (`src/data/proof.ts` → `metrics`): shown on the live site only when `confirmed` and with a `source`
+  (how it was counted). Home: a band under the hero. Doctor & Clinic: `#numbers` with sources. The old site's 15+ /
+  10,000+ / 5,000+ are pre-filled as unconfirmed; "98% satisfaction" is dropped unless a documented survey exists.
+- **Reviews** (`testimonials`, `googleReviews`): only patients' own words with written consent (template:
+  `owner-content/07-numbers-and-reviews/consent-form.md`), shown with name as agreed, source and a disclaimer; plus a
+  link to the clinic's Google reviews. Home shows up to 3; Doctor & Clinic `#reviews` shows all.
+- Preview builds show amber markers for every unconfirmed number and missing quote; the live site hides them.
+- Risk accepted by the owner: NMC rules restrict doctors' advertising, especially testimonials. The doctor must agree
+  before quotes go live (question 7 in folder 07).

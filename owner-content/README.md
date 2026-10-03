@@ -15,6 +15,7 @@ it. **We write the medical pages; the doctor only reviews them.** Total owner ti
 | `04-surgery-guides` | Before & after surgery guides | about 15 minutes |
 | `05-health-tips-review` | Health tips — review our drafts | about 1 hour in total |
 | `06-faq` | Frequently asked questions | about 20 minutes (the receptionist can answer this) |
+| `07-numbers-and-reviews` | Numbers and patient reviews | about 30 minutes + consent forms |
 
 ## How it works
 1. Open a folder, read its `README.md`, and answer the questions in `text.md`.

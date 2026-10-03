@@ -31,6 +31,7 @@ src/
     home.ts  treatments.ts (hub groups, procedures, urgent, tests)  doctor-clinic.ts  visit.ts (getting here, fees,
     first visit, FAQ)  book.ts  care.ts (general + per-procedure guides)  collections.ts (getConditions/getTips/
     showDrafts/reviewLine)  photo-slots.ts (12 named photo slots)  facts-needed.ts (missing-facts list)
+    proof.ts (numbers + patient reviews, live only when confirmed / consented)
   assets/images/       optimizable photos (see rivaansh-media-presentation)
   layouts/
     BaseLayout.astro   head (meta, noindex, MedicalClinic JSON-LD), skip link, header, main, footer, ActionBar
@@ -40,6 +41,7 @@ src/
     home/        HomeHero (photo right on desktop / strip above text on phones), AreaTiles
     treatments/  ConditionGroups (chips | list — links only to published conditions)
     doctor/      DoctorCard (facts | mini | feature — one data source, more detail at each level)
+    proof/       MetricsBand (band | detail), Testimonials
     visit/       LocationCard (address + the only full hours table), HoursTable, GettingHere
     ui/          Button, ContactActions, Icon, FaqAccordion (<details name>), StepList, InfoNeeded (preview-only chip)
     media/       MediaImage, PhotoSlot, SlotGallery, MediaGallery, LightboxItem, VideoPlayer, photo-sizes.ts, types.ts
@@ -92,7 +94,8 @@ preview builds, and listed on /pages/photos-needed.html (`src/data/facts-needed.
 - Facts used on several pages come only from `src/config/site.ts`.
 - Mark unverified content with `PLACEHOLDER` (TS comment or `<!-- PLACEHOLDER: … -->` in markdown);
   `grep -rn PLACEHOLDER src` lists what still needs the owner.
-- Compliance (NMC): facts only — no superlatives, testimonials, unverifiable stats, guarantees. See the plan §7.
+- Compliance (NMC): facts only — no superlatives or guarantees; numbers only with a source; testimonials only with
+  written consent (see the plan's "Numbers and patient reviews" section).
 
 ## Recipes
 - **New condition:** copy a file in `src/content/conditions/`, keep the heading structure (What it is · Common symptoms ·
