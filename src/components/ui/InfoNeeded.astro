@@ -1,0 +1,32 @@
+---
+// Preview builds only: an amber chip marking a fact the owner still has to provide. Renders nothing on the live site.
+import { showDrafts } from '../../data/collections';
+
+interface Props {
+  /** What is missing, e.g. "consultation fee". */
+  what: string;
+  /** Owner folder that collects it, e.g. "00-clinic-facts". */
+  folder: string;
+}
+
+const { what, folder } = Astro.props;
+---
+
+{showDrafts && (
+  <span class="info-needed">Info needed: {what} → owner-content/{folder}</span>
+)}
+
+<style>
+  .info-needed {
+    display: inline-block;
+    margin: 0.25rem 0;
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-full);
+    background: #fff7e6;
+    border: 1px dashed #f3c56b;
+    color: #6b4400;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+</style>

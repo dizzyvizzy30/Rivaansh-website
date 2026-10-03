@@ -1,8 +1,8 @@
 ---
-// Building photo + address, landmarks, hours and a Google Maps button (Home and Visit Us).
-import MediaImage from '../media/MediaImage.astro';
+// Visit Us › Timings: address, landmark, the full weekly hours table (only here), phone numbers and Maps.
 import HoursTable from './HoursTable.astro';
 import Icon from '../ui/Icon.astro';
+import InfoNeeded from '../ui/InfoNeeded.astro';
 import { site } from '../../config/site';
 import { visitPage } from '../../data/visit';
 
@@ -10,20 +10,14 @@ const { address, mapsUrl, phone, landline } = site.contact;
 ---
 
 <div class="location-card">
-  <a class="location-photo" href={mapsUrl} target="_blank" rel="noopener" aria-label="Open the clinic location in Google Maps">
-    <MediaImage image={visitPage.building} sizes="(max-width: 900px) calc(100vw - 2rem), 560px" />
-  </a>
-  <div class="location-body">
+  <div class="location-address">
     <h3 class="location-name">{site.name}</h3>
     <address>
       {address.line1}<br />
       {address.line2}<br />
       {address.line3}
     </address>
-    <ul class="location-notes">
-      {visitPage.gettingThere.map((note) => <li>{note}</li>)}
-    </ul>
-    <HoursTable />
+    <p class="landmark">{visitPage.landmark}</p>
     <ul class="location-phones">
       <li><Icon name="phone" />{phone.label}: <a href={`tel:${phone.tel}`}>{phone.display}</a></li>
       <li><Icon name="phone" />{landline.label}: <a href={`tel:${landline.tel}`}>{landline.display}</a></li>
@@ -33,6 +27,11 @@ const { address, mapsUrl, phone, landline } = site.contact;
       Open in Google Maps
     </a>
   </div>
+  <div class="location-hours">
+    <h3 class="location-name">Timings</h3>
+    <HoursTable />
+    {visitPage.holidays ? <p class="holidays">{visitPage.holidays}</p> : <InfoNeeded what="holidays when the clinic is closed" folder="00-clinic-facts" />}
+  </div>
 </div>
 
 <style>
@@ -41,55 +40,30 @@ const { address, mapsUrl, phone, landline } = site.contact;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 2rem;
     align-items: start;
-  }
-
-  .location-photo {
-    display: block;
+    padding: 1.75rem;
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
-    overflow: hidden;
-  }
-
-  .location-photo :global(img) {
-    width: 100%;
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
   }
 
   .location-name {
-    font-size: 1.25rem;
+    font-size: 1.1875rem;
     margin-bottom: 0.5rem;
   }
 
   address {
     font-style: normal;
     line-height: 1.7;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
   }
 
-  .location-notes {
-    margin-bottom: 1.25rem;
+  .landmark,
+  .holidays {
     color: var(--color-text-muted);
-  }
-
-  .location-notes li {
-    padding-left: 1rem;
-    position: relative;
-    margin-bottom: 0.35rem;
-  }
-
-  .location-notes li::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0.65em;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--color-primary);
+    font-size: 1rem;
   }
 
   .location-phones {
-    margin: 1.25rem 0;
+    margin: 1rem 0 1.25rem;
   }
 
   .location-phones li {
@@ -115,13 +89,18 @@ const { address, mapsUrl, phone, landline } = site.contact;
     color: var(--color-primary-dark);
   }
 
-  .location-body .btn {
+  .location-card .btn {
     box-shadow: none;
+  }
+
+  .holidays {
+    margin-top: 0.75rem;
   }
 
   @media (max-width: 900px) {
     .location-card {
       grid-template-columns: 1fr;
+      padding: 1.25rem;
     }
   }
 </style>

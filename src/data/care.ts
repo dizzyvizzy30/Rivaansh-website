@@ -2,6 +2,61 @@
 // Owner input: owner-content/04-surgery-guides/ (per-procedure sections are added in Phase 2)
 // PLACEHOLDER: doctor to confirm all advice on this page.
 
+export interface GuidePart {
+  /** Filled from the clinic's own handout; null until then. */
+  text: string | null;
+  /** What the owner needs to provide (shown as an "Info needed" chip in preview builds). */
+  need: string;
+}
+
+export interface ProcedureGuide {
+  id: string;
+  title: string;
+  before: GuidePart;
+  whereToReport: GuidePart;
+  after: GuidePart;
+  /** Unreviewed guides are shown only in preview builds. */
+  draft: boolean;
+}
+
+const part = (need: string): GuidePart => ({ text: null, need });
+
+// PLACEHOLDER: per-procedure guides from the handouts in owner-content/04-surgery-guides — preview only until reviewed.
+export const procedureGuides: ProcedureGuide[] = [
+  {
+    id: 'tonsillectomy-adenoidectomy',
+    title: 'Tonsillectomy & adenoidectomy',
+    before: part('fasting time before the operation'),
+    whereToReport: part('hospital name, entrance and reporting time'),
+    after: part('diet, pain relief, return to school or work, follow-up visit'),
+    draft: true,
+  },
+  {
+    id: 'septoplasty',
+    title: 'Septoplasty',
+    before: part('fasting time before the operation'),
+    whereToReport: part('hospital name, entrance and reporting time'),
+    after: part('nasal packs or splints and when they are removed, nose blowing, follow-up visit'),
+    draft: true,
+  },
+  {
+    id: 'endoscopic-sinus-surgery',
+    title: 'Endoscopic sinus surgery',
+    before: part('fasting time before the operation'),
+    whereToReport: part('hospital name, entrance and reporting time'),
+    after: part('saline rinses, nasal sprays, follow-up cleaning visits'),
+    draft: true,
+  },
+  {
+    id: 'tympanoplasty',
+    title: 'Tympanoplasty (eardrum repair)',
+    before: part('fasting time before the operation'),
+    whereToReport: part('hospital name, entrance and reporting time'),
+    after: part('keeping the ear dry, ear packing and stitches, flying, follow-up visit'),
+    draft: true,
+  },
+];
+
 export const carePage = {
   title: 'Before & After Surgery',
   intro:
@@ -33,4 +88,5 @@ export const carePage = {
     ],
     outOfHours: 'Outside clinic hours, or if breathing is affected, go to the nearest hospital emergency department.',
   },
+  guidesHeading: 'Guides for each operation',
 };

@@ -20,6 +20,7 @@ const pages = [
   // Draft pages — only present in drafts builds (npm run dev, deploy previews); skipped when missing.
   '/pages/ent/vertigo-dizziness.html',
   '/pages/blog/when-to-see-an-ent-doctor.html',
+  '/pages/photos-needed.html',
 ];
 const selected = only ? pages.filter((p) => only.split(',').some((o) => p.includes(o))) : pages;
 const viewports = { desktop: { width: 1440, height: 900 }, mobile: { width: 390, height: 844 } };

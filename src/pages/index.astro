@@ -1,23 +1,26 @@
 ---
+// Homepage: a ~4-screen summary. Each block is generated from inner-page data and links onward;
+// detail (full hours table, first visit, FAQ, full gallery) lives only on the inner pages.
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HomeHero from '../components/home/HomeHero.astro';
-import ConditionGroups from '../components/treatments/ConditionGroups.astro';
+import AreaTiles from '../components/home/AreaTiles.astro';
 import DoctorCard from '../components/doctor/DoctorCard.astro';
-import MediaGallery from '../components/media/MediaGallery.astro';
-import StepList from '../components/ui/StepList.astro';
-import LocationCard from '../components/visit/LocationCard.astro';
-import FaqAccordion from '../components/ui/FaqAccordion.astro';
-import PostCard from '../components/blog/PostCard.astro';
+import SlotGallery from '../components/media/SlotGallery.astro';
+import PhotoSlot from '../components/media/PhotoSlot.astro';
+import Icon from '../components/ui/Icon.astro';
+import InfoNeeded from '../components/ui/InfoNeeded.astro';
 import { homeSections as s } from '../data/home';
 import { treatmentsPage } from '../data/treatments';
-import { clinicPhotos } from '../data/doctor-clinic';
-import { firstVisit, quickAnswers, visitPage } from '../data/visit';
-import { getTips } from '../data/collections';
-import { routes } from '../config/navigation';
+import { visitPage } from '../data/visit';
+import { realSlots } from '../data/photo-slots';
+import { getTips, showDrafts } from '../data/collections';
+import { routes, tipHref } from '../config/navigation';
 import { site } from '../config/site';
 
 const tips = (await getTips()).slice(0, 3);
-const homePhotos = clinicPhotos.filter((p) => p.kind === 'image' && !p.alt.startsWith('Centre Point')).slice(0, 4);
+// Live site: the clinic grid appears once at least two real clinic photos exist.
+const showClinicGrid = showDrafts || realSlots(s.clinicSlots).length >= 2;
+const { address, mapsUrl } = site.contact;
 ---
 
 <BaseLayout clinicSchema>
@@ -27,148 +30,131 @@ const homePhotos = clinicPhotos.filter((p) => p.kind === 'image' && !p.alt.start
     <div class="section-inner">
       <h2 class="section-title" id="treat-title">{s.treatTitle}</h2>
       <p class="section-lede">{treatmentsPage.notListed}</p>
-      <ConditionGroups variant="chips" />
+      <AreaTiles />
       <a class="section-link" href={routes.treatments}>See all treatments</a>
     </div>
   </section>
 
-  <section class="section section--alt" aria-labelledby="doctor-title">
+  <section class="section section--alt" id="doctor-clinic" aria-labelledby="doctor-clinic-title">
     <div class="section-inner">
-      <h2 class="section-title" id="doctor-title">{s.doctorTitle}</h2>
-      <p class="section-lede">The doctor who will examine you.</p>
-      <DoctorCard />
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="clinic-title">
-    <div class="section-inner">
-      <h2 class="section-title" id="clinic-title">{s.clinicTitle}</h2>
-      <p class="section-lede">Select a photo to view it full screen.</p>
-      <MediaGallery items={homePhotos} id="home-clinic" label="Clinic photos" showCaptions />
-      <a class="section-link" href={`${routes.doctorClinic}#clinic`}>More about the clinic</a>
-    </div>
-  </section>
-
-  <section class="section section--alt" aria-labelledby="visit-title">
-    <div class="section-inner">
-      <h2 class="section-title" id="visit-title">{firstVisit.title}</h2>
-      <div class="first-visit">
-        <StepList steps={firstVisit.steps} />
-        <div class="bring">
-          <h3>What to bring</h3>
-          <ul>{firstVisit.bring.map((item) => <li>{item}</li>)}</ul>
-          {visitPage.fees && <p class="fees">{visitPage.fees}</p>}
-        </div>
+      <h2 class="section-title" id="doctor-clinic-title">{showClinicGrid ? s.doctorClinicTitle : s.doctorOnlyTitle}</h2>
+      <div class:list={['doctor-clinic', showClinicGrid && 'doctor-clinic--with-grid']}>
+        <DoctorCard variant="facts" linkText="Doctor’s profile, equipment and hygiene" />
+        {showClinicGrid && (
+          <SlotGallery slots={s.clinicSlots} id="home-clinic" label="Clinic photos" limit={4} minLive={2} realOnly columns={2} />
+        )}
       </div>
     </div>
   </section>
 
-  <section class="section" aria-labelledby="location-title">
+  <section class="section" id="coming" aria-labelledby="coming-title">
     <div class="section-inner">
-      <h2 class="section-title" id="location-title">{s.locationTitle}</h2>
-      <p class="section-lede">{site.contact.address.short}</p>
-      <LocationCard />
-    </div>
-  </section>
-
-  <section class="section section--alt" aria-labelledby="answers-title">
-    <div class="section-inner">
-      <div class="narrow">
-        <h2 class="section-title" id="answers-title">{s.answersTitle}</h2>
-        <FaqAccordion items={quickAnswers} name="home-faq" />
-        <a class="section-link" href={`${routes.visit}#faq`}>More questions and answers</a>
+      <h2 class="section-title" id="coming-title">{s.comingTitle}</h2>
+      <div class="coming">
+        <PhotoSlot id="building-street-view" sizes="(max-width: 900px) calc(100vw - 2rem), 560px" class="coming-photo" />
+        <div class="coming-body">
+          <address>
+            {address.line1}<br />
+            {address.line2}
+          </address>
+          {visitPage.lift ? <p>{visitPage.lift}</p> : <InfoNeeded what="lift / stairs" folder="00-clinic-facts" />}
+          {visitPage.fees ? <p><strong>Consultation fee:</strong> {visitPage.fees}</p> : <InfoNeeded what="consultation fee" folder="00-clinic-facts" />}
+          <a class="btn btn--primary maps" href={mapsUrl} target="_blank" rel="noopener"><Icon name="map-pin" />Open in Google Maps</a>
+          <ul class="link-rows">
+            <li><a href={routes.visit}>Timings, getting here, fees &amp; FAQ</a></li>
+            <li><a href={`${routes.visit}#first-visit`}>Your first visit — what to bring</a></li>
+            <li><a href={routes.care}>Having an operation? Before &amp; after surgery</a></li>
+          </ul>
+        </div>
       </div>
     </div>
   </section>
 
   {tips.length > 0 && (
-    <section class="section" aria-labelledby="tips-title">
+    <section class="section section--alt" aria-labelledby="tips-title">
       <div class="section-inner">
-        <div class="narrow">
-          <h2 class="section-title" id="tips-title">{s.tipsTitle}</h2>
-          <div class="tips">{tips.map((post) => <PostCard post={post} />)}</div>
-          <a class="section-link" href={routes.tips}>All health tips</a>
-        </div>
+        <h2 class="section-title" id="tips-title">{s.tipsTitle}</h2>
+        <ul class="link-rows tips">
+          {tips.map((tip) => <li><a href={tipHref(tip.id)}>{tip.data.title}</a></li>)}
+        </ul>
+        <a class="section-link" href={routes.tips}>All health tips</a>
       </div>
     </section>
   )}
 </BaseLayout>
 
 <style>
-  .narrow {
+  .doctor-clinic {
+    display: grid;
+    gap: 1.5rem;
     max-width: var(--width-narrow);
   }
 
-  .narrow :global(.faq-container) {
-    margin: 1rem 0 0;
+  .doctor-clinic--with-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    max-width: none;
+    align-items: start;
   }
 
-  .first-visit {
+  .coming {
     display: grid;
-    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 2rem;
     align-items: start;
-    margin-top: 1.5rem;
   }
 
-  .first-visit :global(.steps) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem;
-  }
-
-  .first-visit :global(.step) {
-    padding: 1.25rem;
-    background: var(--color-bg);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-  }
-
-  .first-visit :global(.step-number) {
-    margin: 0 0 0.75rem;
-  }
-
-  .bring {
-    background: var(--color-bg);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    padding: 1.25rem 1.5rem;
-  }
-
-  .bring h3 {
+  .coming address {
+    font-style: normal;
+    font-size: 1.0625rem;
+    line-height: 1.7;
     margin-bottom: 0.75rem;
   }
 
-  .bring li {
-    padding: 0.4rem 0 0.4rem 1.5rem;
-    position: relative;
+  .coming-body p {
+    margin-bottom: 0.5rem;
   }
 
-  .bring li::before {
-    content: '✓';
-    position: absolute;
-    left: 0;
-    color: var(--color-primary-dark);
-    font-weight: 700;
+  .maps {
+    margin: 0.75rem 0 1.25rem;
+    box-shadow: none;
   }
 
-  .fees {
-    margin-top: 0.75rem;
+  .maps :global(svg) {
+    width: 18px;
+    height: 18px;
+  }
+
+  .link-rows {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .link-rows a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 56px;
+    padding: 0.5rem 0.25rem;
+    border-bottom: 1px solid var(--color-border);
     font-weight: 600;
+    color: var(--color-primary-ink);
+  }
+
+  .link-rows a::after {
+    content: '→';
+    margin-left: 1rem;
+  }
+
+  .link-rows a:hover {
+    background: var(--color-primary-light);
   }
 
   .tips {
-    display: grid;
-    gap: 2rem;
+    max-width: var(--width-narrow);
   }
 
   @media (max-width: 900px) {
-    .first-visit {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  @media (max-width: 560px) {
-    .first-visit :global(.steps) {
+    .doctor-clinic--with-grid,
+    .coming {
       grid-template-columns: 1fr;
     }
   }

@@ -11,7 +11,9 @@ interface Props {
 }
 
 const { variant = 'list' } = Astro.props;
-const published = new Set((await getConditions()).map((c) => c.id));
+const conditions = await getConditions();
+const published = new Set(conditions.map((c) => c.id));
+const localNames = new Map(conditions.map((c) => [c.id, c.data.localNames]));
 ---
 
 <div class:list={['condition-groups', `condition-groups--${variant}`]}>
@@ -25,7 +27,10 @@ const published = new Set((await getConditions()).map((c) => c.id));
         {group.items.map((item) => (
           <li>
             {item.slug && published.has(item.slug) ? (
-              <a href={conditionHref(item.slug)}>{item.name}</a>
+              <a href={conditionHref(item.slug)}>
+                {item.name}
+                {variant === 'list' && localNames.get(item.slug) && <small lang="gu"> {localNames.get(item.slug)}</small>}
+              </a>
             ) : (
               <span>{item.name}</span>
             )}
@@ -139,6 +144,12 @@ const published = new Set((await getConditions()).map((c) => c.id));
 
   .condition-groups--list li > a::after {
     content: ' →';
+  }
+
+  .condition-groups--list li > a small {
+    display: block;
+    font-weight: 400;
+    color: var(--color-text-muted);
   }
 
   .condition-groups--list li > a:hover {

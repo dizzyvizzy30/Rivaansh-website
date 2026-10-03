@@ -18,7 +18,7 @@ Typical request: **"apply owner-content/02-about-us"** (or several folders, or "
 | Owner folder | Feeds | Update |
 |---|---|---|
 | `00-clinic-facts` | every page (header, action bar, footer), Visit Us, Book, structured data | `src/config/site.ts`, `src/data/visit.ts`, `src/data/doctor-clinic.ts` (`surgery`) |
-| `01-photos` | Home hero + clinic, Doctor & Clinic `#clinic`, Visit Us | `src/assets/images/{team,clinic,locations}/`, `src/data/doctor-clinic.ts`, `src/data/home.ts`, `src/data/visit.ts` |
+| `01-photos/<slot-id>/` | wherever the slot is used (see `src/data/photo-slots.ts` → usedOn) | save the chosen photo as `src/assets/images/slots/<slot-id>.jpg` — filled automatically; delete the slot's `standIn` once real |
 | `02-doctor-profile` | Doctor & Clinic `#doctor`, DoctorCard everywhere | `src/data/doctor-clinic.ts`, `src/config/site.ts` (`doctor.registration`) |
 | `03-conditions-review` | Treatments hub + `/pages/ent/<slug>.html` | `src/content/conditions/<slug>.md` (approve: `draft: false`, `reviewedBy`, `reviewedDate`), `src/data/treatments.ts` |
 | `04-surgery-guides` | Before & After Surgery (`/pages/care.html#<procedure>`) | `src/data/care.ts` (+ per-procedure sections, Phase 2) |
@@ -37,7 +37,8 @@ and replies "OK" or with corrections; record the approval in the markdown frontm
 3. **Choose**: sharp, well lit, right orientation for the slot (hero = landscape ≥1600px wide; portraits = upright;
    gallery = any). Skip blurry/duplicate/screenshot/watermarked images and anything showing an identifiable patient
    without stated consent — list skipped files and why.
-4. **Convert & copy** into `src/assets/images/<area>/<kebab-case-description>.jpg`:
+4. **Convert & copy** — photos from `01-photos/<slot-id>/` go to `src/assets/images/slots/<slot-id>.jpg` (one per slot,
+   the best take); other images into `src/assets/images/<area>/<kebab-case-description>.jpg`:
    - HEIC/HEIF (iPhone), TIFF, or anything wider/taller than 2400px: `sips -s format jpeg -s formatOptions 85 -Z 2400 <in> --out <out>`
      (Astro's image pipeline can't read HEIC; 2400px leaves headroom over the 1600px max variant while keeping each
      committed master ~0.5–1 MB).

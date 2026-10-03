@@ -9,7 +9,7 @@ it. **We write the medical pages; the doctor only reviews them.** Total owner ti
 | Folder | What | Time |
 |---|---|---|
 | `00-clinic-facts` | Clinic facts (used on every page) | about 30 minutes |
-| `01-photos` | Photos (one phone photo session) | about 1 hour |
+| `01-photos` | Photos — 12 named spots, one walk through the clinic | 45–60 minutes |
 | `02-doctor-profile` | Doctor profile | about 20 minutes |
 | `03-conditions-review` | Condition pages — review our drafts | about 15 minutes per page |
 | `04-surgery-guides` | Before & after surgery guides | about 15 minutes |

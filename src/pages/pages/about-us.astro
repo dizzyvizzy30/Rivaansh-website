@@ -1,10 +1,18 @@
 ---
-// Doctor & Clinic (old URL kept). Anchors: #doctor #clinic (#surgery once confirmed). Old /pages/gallery.html redirects to #clinic.
+// Doctor & Clinic (old URL kept). Anchors: #doctor #clinic #surgery. Old /pages/gallery.html redirects to #clinic.
+// Live site shows only real/stand-in photos and confirmed facts; preview builds show every empty slot and missing fact.
 import PageLayout from '../../layouts/PageLayout.astro';
 import DoctorCard from '../../components/doctor/DoctorCard.astro';
-import MediaGallery from '../../components/media/MediaGallery.astro';
+import SlotGallery from '../../components/media/SlotGallery.astro';
 import ContactActions from '../../components/ui/ContactActions.astro';
-import { doctorClinicPage as page, clinicPhotos } from '../../data/doctor-clinic';
+import InfoNeeded from '../../components/ui/InfoNeeded.astro';
+import { doctorClinicPage as page } from '../../data/doctor-clinic';
+import { slotImage } from '../../data/photo-slots';
+import { showDrafts } from '../../data/collections';
+import { routes } from '../../config/navigation';
+
+const tourHasPhotos = page.tourSlots.some((id) => slotImage(id));
+const showSurgery = showDrafts || page.surgery;
 ---
 
 <PageLayout title="Doctor & Clinic" description="Dr. Tanay S Parikh, MS (ENT), Fellowship in Otology, and the Rivaansh ENT clinic at Centre Point, Gota, Ahmedabad.">
@@ -15,16 +23,37 @@ import { doctorClinicPage as page, clinicPhotos } from '../../data/doctor-clinic
     <DoctorCard headingLevel={2} showLink={false} />
   </section>
 
-  <section id="clinic" class="clinic" aria-labelledby="clinic-title">
+  <section id="clinic" class="block" aria-labelledby="clinic-title">
     <h2 id="clinic-title">{page.clinicHeading}</h2>
-    <p>{page.clinicIntro}</p>
-    <MediaGallery items={clinicPhotos} id="clinic" label="Clinic photos" showCaptions />
+    <p>
+      The clinic is office 406 on the 4th floor of Centre Point, Gota.
+      <a href={`${routes.visit}#getting-here`}>How to get here</a>.
+    </p>
+    {(tourHasPhotos || showDrafts) && <p class="muted">{page.clinicIntro}</p>}
+    <SlotGallery slots={page.tourSlots} id="clinic" label="Clinic tour" />
+
+    <h3>{page.equipmentHeading}</h3>
+    {page.equipment ? <ul class="ticks">{page.equipment.map((e) => <li>{e}</li>)}</ul> : <InfoNeeded what="equipment at the clinic, in plain words" folder="00-clinic-facts" />}
+
+    <h3>{page.hygieneHeading}</h3>
+    {page.hygiene ? <ul class="ticks">{page.hygiene.map((h) => <li>{h}</li>)}</ul> : <InfoNeeded what="sterilisation method, single-use items" folder="00-clinic-facts" />}
   </section>
 
-  {page.surgery && (
-    <section id="surgery" aria-labelledby="surgery-title">
-      <h2 id="surgery-title">{page.surgery.heading}</h2>
-      <p>{page.surgery.text}</p>
+  {showSurgery && (
+    <section id="surgery" class="block" aria-labelledby="surgery-title">
+      <h2 id="surgery-title">{page.surgeryHeading}</h2>
+      {page.surgery ? (
+        <>
+          <p>{page.surgery.where}</p>
+          <p>{page.surgery.anaesthesia}</p>
+        </>
+      ) : (
+        <>
+          <p class="draft-banner">Preview only — this section goes live once the clinic confirms where operations are done.</p>
+          <InfoNeeded what="where operations are done and who gives anaesthesia" folder="00-clinic-facts" />
+        </>
+      )}
+      <SlotGallery slots={page.surgerySlots} id="surgery" label="Surgery photos" columns={2} />
     </section>
   )}
 
@@ -34,12 +63,37 @@ import { doctorClinicPage as page, clinicPhotos } from '../../data/doctor-clinic
 </PageLayout>
 
 <style>
-  .clinic {
+  .block {
     margin-top: 3rem;
   }
 
-  .clinic h2 {
+  .block h2 {
     margin-bottom: 0.5rem;
+  }
+
+  .block h3 {
+    margin: 1.75rem 0 0.5rem;
+  }
+
+  .block :global(.slot-gallery) {
+    margin-top: 1rem;
+  }
+
+  .muted {
+    color: var(--color-text-muted);
+  }
+
+  .ticks li {
+    padding: 0.35rem 0 0.35rem 1.5rem;
+    position: relative;
+  }
+
+  .ticks li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--color-primary-dark);
+    font-weight: 700;
   }
 
   .cta {

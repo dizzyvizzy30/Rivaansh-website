@@ -1,13 +1,23 @@
 ---
-// Before & After Surgery (old /pages/care.html URL kept). Per-procedure sections (#<procedure>) arrive in Phase 2.
+// Before & After Surgery (old /pages/care.html URL kept). General guidance + per-procedure guides (#<procedure>),
+// which stay preview-only until the clinic's own handouts are applied and reviewed. Print + share for patients.
 import PageLayout from '../../layouts/PageLayout.astro';
 import ContactActions from '../../components/ui/ContactActions.astro';
-import { carePage as page } from '../../data/care';
+import InfoNeeded from '../../components/ui/InfoNeeded.astro';
+import { carePage as page, procedureGuides } from '../../data/care';
+import { showDrafts } from '../../data/collections';
+
+const guides = procedureGuides.filter((g) => showDrafts || !g.draft);
 ---
 
 <PageLayout title="Before & After Surgery" description="General guidance for patients before and after an ENT procedure at Rivaansh ENT, Gota, Ahmedabad.">
   <h1>{page.title}</h1>
   <p>{page.intro}</p>
+
+  <div class="share no-print" data-share hidden>
+    <button class="btn btn--light" type="button" data-print>Print this page</button>
+    <a class="btn btn--light" data-whatsapp-share target="_blank" rel="noopener">Share on WhatsApp</a>
+  </div>
 
   <section class="block">
     <h2>{page.before.heading}</h2>
@@ -23,11 +33,46 @@ import { carePage as page } from '../../data/care';
     <h2 id="warning-title">{page.warning.heading}</h2>
     <ul>{page.warning.items.map((item) => <li>{item}</li>)}</ul>
     <p>{page.warning.outOfHours}</p>
-    <ContactActions />
+    <div class="no-print"><ContactActions /></div>
   </section>
+
+  {guides.length > 0 && (
+    <section class="block" aria-labelledby="guides-title">
+      <h2 id="guides-title">{page.guidesHeading}</h2>
+      {guides.map((guide) => (
+        <article class="guide" id={guide.id}>
+          {guide.draft && <p class="draft-banner">Draft — waiting for the clinic's own instructions. Not published on the live site.</p>}
+          <h3>{guide.title}</h3>
+          {[
+            ['Before the operation', guide.before],
+            ['Where to report', guide.whereToReport],
+            ['After the operation', guide.after],
+          ].map(([label, part]) => (
+            <div class="guide-part">
+              <h4>{label as string}</h4>
+              {typeof part === 'object' && part.text ? <p>{part.text}</p> : typeof part === 'object' && <InfoNeeded what={part.need} folder="04-surgery-guides" />}
+            </div>
+          ))}
+        </article>
+      ))}
+    </section>
+  )}
 </PageLayout>
 
 <style>
+  .share {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: 1rem 0 0.5rem;
+  }
+
+  .share .btn {
+    padding: 0.6rem 1.25rem;
+    box-shadow: none;
+    border-color: var(--color-border);
+  }
+
   .block {
     margin-top: 2rem;
   }
@@ -79,4 +124,49 @@ import { carePage as page } from '../../data/care';
     margin: 1rem 0;
     font-weight: 600;
   }
+
+  .guide {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+
+  .guide h3 {
+    margin-bottom: 0.75rem;
+  }
+
+  .guide-part h4 {
+    font-size: 1rem;
+    margin: 0.75rem 0 0.25rem;
+  }
+
+  @media print {
+    :global(.site-header),
+    :global(.utility-strip),
+    :global(.site-footer),
+    :global(.action-bar),
+    :global(.skip-link),
+    .no-print {
+      display: none !important;
+    }
+
+    :global(body) {
+      padding: 0 !important;
+    }
+
+    .warning {
+      border: 2px solid #9b1c1c;
+    }
+  }
 </style>
+
+<script>
+  const share = document.querySelector<HTMLElement>('[data-share]');
+  if (share) {
+    share.hidden = false;
+    share.querySelector('[data-print]')?.addEventListener('click', () => window.print());
+    const link = share.querySelector<HTMLAnchorElement>('[data-whatsapp-share]');
+    if (link) link.href = `https://wa.me/?text=${encodeURIComponent(`${document.title} — ${location.href}`)}`;
+  }
+</script>

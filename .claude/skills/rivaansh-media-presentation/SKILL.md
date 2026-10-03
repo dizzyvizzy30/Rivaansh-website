@@ -15,6 +15,16 @@ Photography is the strongest asset this clinic has (real procedures, real theatr
   from there: convert HEIC/huge files with `sips` and copy the chosen file into `src/assets/images/...` with a
   descriptive name.
 
+## Photo slots (where real clinic photos belong)
+- Registry: `src/data/photo-slots.ts` — 12 named slots (id, brief, ratio, min size, required/conditional/optional,
+  where used, truthful stand-in if any). A photo saved as `src/assets/images/slots/<id>.jpg|jpeg|png|webp` fills the
+  slot automatically (import.meta.glob) — no code change.
+- `PhotoSlot.astro` renders one slot: real photo → shown; stand-in → shown (preview builds add a "Stand-in" badge);
+  empty → preview builds show a dashed amber "Photo needed: <id>" frame, the live site renders nothing.
+- `SlotGallery.astro` renders a set of slots as a lightbox grid (`minLive`, `realOnly`, `limit`, `columns`).
+- Preview-only shot list: `/pages/photos-needed.html` (also lists missing facts).
+- Never use a stand-in that implies something unconfirmed (e.g. theatre photos as "the clinic").
+
 ## Rendering images
 Always use `src/components/media/MediaImage.astro` (a thin wrapper over `astro:assets` `<Image>`), never a raw `<img>` for photos.
 
@@ -49,7 +59,9 @@ Only **one** `priority` image per page.
 
 ## Layouts
 - **Full-bleed band**: break out of the content width with the `.bleed` utility; keep text inside `--width-wide`.
-- **Justified-row gallery** (`MediaGallery.astro`): every row fills the width at one shared height and each photo keeps
+- **Slot grid** (`SlotGallery.astro`): uniform 4:3 crops, full photo in the lightbox — used for the Home clinic grid,
+  the Doctor & Clinic tour and #surgery.
+- **Justified-row gallery** (`MediaGallery.astro`, kept for larger photo collections such as events): every row fills the width at one shared height and each photo keeps
   its aspect ratio. A small script (in the component) chooses row breaks by minimising squared deviation from
   `--row-height` (320px; 260px ≤992px), so no photo is left alone on the last row; without JS a CSS flex fallback is
   used. Single column ≤576px. `showCaptions` prints captions under tiles; `priorityFirst` when the gallery is the top

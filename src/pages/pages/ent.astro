@@ -1,25 +1,54 @@
 ---
-// Treatments hub. Anchors: #ear #nose #throat #head-neck #children #urgent #procedures (targets of old-URL redirects).
+// Treatments hub. Anchors: #ear #nose #throat #head-neck #children #tests #urgent #procedures (redirect targets).
 import PageLayout from '../../layouts/PageLayout.astro';
 import ConditionGroups from '../../components/treatments/ConditionGroups.astro';
 import ContactActions from '../../components/ui/ContactActions.astro';
+import PhotoSlot from '../../components/media/PhotoSlot.astro';
+import InfoNeeded from '../../components/ui/InfoNeeded.astro';
 import { treatmentsPage as page, procedures, urgentProblems } from '../../data/treatments';
-import { conditionHref } from '../../config/navigation';
-import { getConditions } from '../../data/collections';
+import { procedureGuides } from '../../data/care';
+import { conditionHref, routes } from '../../config/navigation';
+import { getConditions, showDrafts } from '../../data/collections';
 
 const published = new Set((await getConditions()).map((c) => c.id));
+const visibleGuides = new Set(procedureGuides.filter((g) => showDrafts || !g.draft).map((g) => g.id));
+const showTests = page.testsAtClinic || showDrafts;
 ---
 
 <PageLayout title="Treatments" description="Ear, nose, throat, thyroid, head & neck and children’s ENT conditions treated at Rivaansh ENT, Gota, Ahmedabad.">
   <h1>{page.title}</h1>
   <p>{page.intro}</p>
+  <p class="not-listed">{page.notListed}</p>
 
   <nav class="jump" aria-label="Jump to">
-    <a href="#ear">Ear</a><a href="#nose">Nose</a><a href="#throat">Throat</a><a href="#head-neck">Head &amp; neck</a><a href="#children">Children</a><a href="#urgent">Urgent</a><a href="#procedures">Procedures</a>
+    <a href="#ear">Ear</a><a href="#nose">Nose</a><a href="#throat">Throat</a><a href="#head-neck">Head &amp; neck</a><a href="#children">Children</a>{showTests && <a href="#tests">Tests</a>}<a href="#urgent">Urgent</a><a href="#procedures">Procedures</a>
   </nav>
 
   <ConditionGroups variant="list" />
-  <p class="not-listed">{page.notListed}</p>
+
+  {showTests && (
+    <section class="tests" id="tests" aria-labelledby="tests-title">
+      <h2 id="tests-title">{page.testsHeading}</h2>
+      {page.testsAtClinic ? (
+        <ul class="tests-list">
+          {page.testsAtClinic.map((test) => (
+            <li>
+              {test.slot && <PhotoSlot id={test.slot} sizes="160px" />}
+              <span>{test.name}</span>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <>
+          <InfoNeeded what="tests done at the clinic (nasal endoscopy? hearing test?)" folder="03-conditions-review" />
+          <ul class="tests-list">
+            <li><PhotoSlot id="endoscope-unit" sizes="160px" /></li>
+            <li><PhotoSlot id="hearing-test-room" sizes="160px" /></li>
+          </ul>
+        </>
+      )}
+    </section>
+  )}
 
   <section class="urgent" id="urgent" aria-labelledby="urgent-title">
     <h2 id="urgent-title">{urgentProblems.title}</h2>
@@ -34,7 +63,8 @@ const published = new Set((await getConditions()).map((c) => c.id));
     <ul>
       {procedures.map((p) => (
         <li>
-          {p.slug && published.has(p.slug) ? <a href={`${conditionHref(p.slug)}#${p.anchor}`}>{p.name}</a> : p.name}
+          {p.slug && published.has(p.slug) ? <a href={`${conditionHref(p.slug)}#${p.anchor}`}>{p.name}</a> : <span>{p.name}</span>}
+          {p.careId && visibleGuides.has(p.careId) && <a class="care-link" href={`${routes.care}#${p.careId}`}>Before &amp; after</a>}
         </li>
       ))}
     </ul>
@@ -56,7 +86,6 @@ const published = new Set((await getConditions()).map((c) => c.id));
     font-size: 0.9375rem;
     font-weight: 600;
     color: var(--color-primary-ink);
-    text-decoration: none;
   }
 
   .jump a:hover {
@@ -64,7 +93,28 @@ const published = new Set((await getConditions()).map((c) => c.id));
   }
 
   .not-listed {
-    margin-top: 1.5rem;
+    font-weight: 600;
+  }
+
+  .tests {
+    margin-top: 3rem;
+  }
+
+  .tests h2 {
+    margin-bottom: 0.75rem;
+  }
+
+  .tests-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 0.75rem;
+  }
+
+  .tests-list li {
+    width: 220px;
+    display: grid;
+    gap: 0.5rem;
     font-weight: 600;
   }
 
@@ -104,6 +154,10 @@ const published = new Set((await getConditions()).map((c) => c.id));
   }
 
   .procedures li {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem;
     padding: 0.6rem 0;
     border-bottom: 1px solid var(--color-border);
   }
@@ -111,5 +165,9 @@ const published = new Set((await getConditions()).map((c) => c.id));
   .procedures li a {
     color: var(--color-primary-ink);
     font-weight: 600;
+  }
+
+  .care-link {
+    font-size: 0.9375rem;
   }
 </style>

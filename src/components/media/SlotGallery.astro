@@ -1,0 +1,120 @@
+---
+// A grid of named photo slots with the lightbox. Live site: only slots that have a photo (supplied or stand-in),
+// and nothing at all when fewer than `minLive` remain. Preview builds also show the empty "Photo needed" frames.
+import MediaImage from './MediaImage.astro';
+import LightboxItem from './LightboxItem.astro';
+import PhotoSlot from './PhotoSlot.astro';
+import { getSlot, slotImage } from '../../data/photo-slots';
+import { showDrafts } from '../../data/collections';
+
+interface Props {
+  slots: string[];
+  /** Lightbox / deep-link id (#<id>-<n>). */
+  id: string;
+  label: string;
+  /** Show at most this many tiles. */
+  limit?: number;
+  /** On the live site, hide the whole gallery unless at least this many slots have photos. */
+  minLive?: number;
+  /** Only count supplied photos (not stand-ins) on the live site. */
+  realOnly?: boolean;
+  columns?: 2 | 3;
+}
+
+const { slots, id, label, limit = slots.length, minLive = 1, realOnly = false, columns = 3 } = Astro.props;
+const entries = slots.map((slotId) => {
+  const image = slotImage(slotId);
+  const usable = image && (!realOnly || !image.isStandIn) ? image : null;
+  return { slot: getSlot(slotId), image: usable };
+});
+const live = entries.filter((e) => e.image).slice(0, limit);
+const shown = showDrafts ? entries.slice(0, limit) : live.length >= minLive ? live : [];
+const sizes = columns === 2 ? '(max-width: 640px) calc(50vw - 1.5rem), 280px' : '(max-width: 640px) calc(50vw - 1.5rem), (max-width: 960px) 30vw, 300px';
+---
+
+{shown.length > 0 && (
+  <ul class:list={['slot-gallery', `slot-gallery--${columns}`]} data-lightbox={id} aria-label={label}>
+    {shown.map(({ slot, image }, index) => (
+      <li id={`${id}-${index + 1}`}>
+        {image ? (
+          <figure>
+            <LightboxItem item={{ kind: 'image', src: image.src, alt: image.alt, caption: slot.title, focus: image.focus }}>
+              <MediaImage image={image} sizes={sizes} class="slot-gallery__img" />
+            </LightboxItem>
+            {showDrafts && image.isStandIn && <span class="slot-gallery__badge">Stand-in · replace with {slot.id}</span>}
+            <figcaption>{slot.title}</figcaption>
+          </figure>
+        ) : (
+          <PhotoSlot id={slot.id} sizes={sizes} aspect="4 / 3" />
+        )}
+      </li>
+    ))}
+  </ul>
+)}
+
+<style>
+  .slot-gallery {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .slot-gallery--2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .slot-gallery--3 {
+    grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr));
+  }
+
+  figure {
+    position: relative;
+  }
+
+  .slot-gallery :global(.lightbox-item) {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+  }
+
+  .slot-gallery :global(.slot-gallery__img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--duration-slow) var(--ease-out-expo);
+  }
+
+  .slot-gallery :global(.lightbox-item:hover .slot-gallery__img) {
+    transform: scale(1.04);
+  }
+
+  figcaption {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+  }
+
+  .slot-gallery__badge {
+    position: absolute;
+    left: 0.5rem;
+    top: 0.5rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 247, 230, 0.95);
+    border: 1px solid #f3c56b;
+    color: #6b4400;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  @media (max-width: 420px) {
+    .slot-gallery--3 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .slot-gallery :global(.slot-gallery__img) {
+      transition: none;
+    }
+  }
+</style>

@@ -26,7 +26,7 @@ export interface NavLink {
 export const mainNav: NavLink[] = [
   { label: 'Treatments', href: routes.treatments, description: 'Ear, nose, throat, thyroid, children' },
   { label: 'Doctor & Clinic', href: routes.doctorClinic, description: 'Dr. Tanay S Parikh, clinic photos' },
-  { label: 'Visit Us', href: routes.visit, description: 'Timings, map, first visit, FAQ' },
+  { label: 'Visit Us', href: routes.visit, description: 'Timings, directions, fees, FAQ' },
   { label: 'Health Tips', href: routes.tips, description: 'Ear, nose & throat care advice', requiresTips: true },
 ];
 

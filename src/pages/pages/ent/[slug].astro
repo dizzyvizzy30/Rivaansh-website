@@ -6,8 +6,9 @@ import PageLayout from '../../../layouts/PageLayout.astro';
 import ContactActions from '../../../components/ui/ContactActions.astro';
 import DoctorCard from '../../../components/doctor/DoctorCard.astro';
 import TodayHours from '../../../components/layout/TodayHours.astro';
+import PhotoSlot from '../../../components/media/PhotoSlot.astro';
 import { getConditions, getTips, reviewLine, type Condition } from '../../../data/collections';
-import { routes, tipHref } from '../../../config/navigation';
+import { routes, tipHref, conditionHref } from '../../../config/navigation';
 import { site } from '../../../config/site';
 
 export async function getStaticPaths() {
@@ -21,9 +22,16 @@ interface Props {
 
 const { condition } = Astro.props;
 const { data } = condition;
-const { Content } = await render(condition);
+const { Content, headings } = await render(condition);
+const onThisPage = headings.filter((h) => h.depth === 2);
 const tips = (await getTips()).filter((t) => data.relatedTips.includes(t.id) || t.data.relatedConditions.includes(condition.id));
+const related = (await getConditions()).filter((c) => c.id !== condition.id && c.data.area === data.area);
 const reviewed = reviewLine(data);
+const defaultVisitPhoto: Record<string, string> = {
+  'sinus-allergy-blocked-nose': 'endoscope-unit',
+  'hearing-loss-hearing-aids': 'hearing-test-room',
+};
+const visitPhoto = data.visitPhoto ?? defaultVisitPhoto[condition.id] ?? 'consultation-room-ent-unit';
 ---
 
 <PageLayout title={`${data.title} — ENT, Gota, Ahmedabad`} description={data.summary} noindex={data.draft}>
@@ -39,8 +47,15 @@ const reviewed = reviewLine(data);
   <aside class="in-short" aria-label="In short">
     <h2>In short</h2>
     <p>{data.summary}</p>
-    <ContactActions whatsappText={`Hello, I would like an appointment about ${data.title.toLowerCase()}.`} />
+    <p class="in-short-call">Questions? <a href={`tel:${site.contact.phone.tel}`}>Call {site.contact.phone.display}</a></p>
   </aside>
+
+  {onThisPage.length > 2 && (
+    <nav class="on-this-page" aria-label="On this page">
+      <h2>On this page</h2>
+      <ul>{onThisPage.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ul>
+    </nav>
+  )}
 
   <article class="condition-body">
     <Content />
@@ -48,10 +63,18 @@ const reviewed = reviewLine(data);
 
   <section class="condition-contact" aria-labelledby="contact-title">
     <h2 id="contact-title">See {site.doctor.shortName}</h2>
+    <PhotoSlot id={visitPhoto} sizes="(max-width: 960px) calc(100vw - 4rem), 896px" class="visit-photo" />
     <DoctorCard variant="mini" headingLevel={3} />
     <p class="contact-hours"><TodayHours /> · {site.contact.address.short}</p>
     <ContactActions showBook />
   </section>
+
+  {related.length > 0 && (
+    <section class="related" aria-labelledby="related-conditions-title">
+      <h2 id="related-conditions-title">Related conditions</h2>
+      <ul>{related.map((c) => <li><a href={conditionHref(c.id)}>{c.data.title}</a></li>)}</ul>
+    </section>
+  )}
 
   {tips.length > 0 && (
     <section class="related" aria-labelledby="related-title">
@@ -96,7 +119,51 @@ const reviewed = reviewLine(data);
   }
 
   .in-short p {
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .in-short-call a {
+    font-weight: 700;
+    color: var(--color-primary-ink);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .on-this-page {
+    margin: 0 0 2rem;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+
+  .on-this-page h2 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .on-this-page ul {
+    columns: 2;
+    column-gap: 2rem;
+  }
+
+  .on-this-page li {
+    padding: 0.25rem 0;
+    break-inside: avoid;
+  }
+
+  .on-this-page a {
+    color: var(--color-primary-ink);
+    font-weight: 600;
+  }
+
+  .condition-contact :global(.visit-photo) {
+    max-height: 360px;
+  }
+
+  @media (max-width: 560px) {
+    .on-this-page ul {
+      columns: 1;
+    }
   }
 
   .condition-body :global(h2) {

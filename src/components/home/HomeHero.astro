@@ -1,24 +1,47 @@
 ---
-// Homepage hero: one still photo under a calm, static overlay — who, what, where, and how to reach the clinic now.
+// Homepage hero. Wide screens: photo on the right half, text on solid slate. Phones: a 16:9 photo strip ABOVE the
+// text (never behind it) and a single Call button — Directions/WhatsApp become a text row because the bottom action
+// bar already offers them. No photo → solid slate on the live site.
 import MediaImage from '../media/MediaImage.astro';
+import PhotoSlot from '../media/PhotoSlot.astro';
 import ContactActions from '../ui/ContactActions.astro';
 import Icon from '../ui/Icon.astro';
 import TodayHours from '../layout/TodayHours.astro';
-import { site } from '../../config/site';
+import { site, whatsappHref } from '../../config/site';
 import { hero } from '../../data/home';
+import { slotImage } from '../../data/photo-slots';
+import { showDrafts } from '../../data/collections';
+
+const image = slotImage(hero.slot);
+const whatsapp = whatsappHref();
+const doctorLine = [site.doctor.name, site.doctor.credentials, site.doctor.registration && `Reg. no. ${site.doctor.registration}`]
+  .filter(Boolean)
+  .join(' · ');
 ---
 
-<section class="hero">
-  <MediaImage image={hero.image} sizes="100vw" priority class="hero-photo" />
+<section class:list={['hero', !image && 'hero--no-photo']}>
+  {image ? (
+    <div class="hero-media">
+      <MediaImage image={image} sizes="(max-width: 900px) 100vw, 52vw" priority class="hero-photo" />
+      {showDrafts && image.isStandIn && <span class="hero-badge">Stand-in · replace with {hero.slot}</span>}
+    </div>
+  ) : (
+    showDrafts && <div class="hero-media hero-media--empty"><PhotoSlot id={hero.slot} sizes="100vw" /></div>
+  )}
   <div class="hero-content">
-    <p class="hero-kicker">{hero.kicker} <span lang="gu">· {site.localTagline}</span></p>
+    <p class="hero-kicker">{site.shortName} <span lang="gu">· {site.localTagline}</span></p>
     <h1 class="hero-title">{hero.title}</h1>
-    <p class="hero-doctor">{hero.doctorLine}</p>
+    <p class="hero-subline">{hero.subline}</p>
+    <p class="hero-doctor">{doctorLine}</p>
     <ul class="hero-facts">
       <li><Icon name="clock" /><TodayHours /></li>
-      <li><Icon name="map-pin" />{site.contact.address.short}</li>
+      <li><Icon name="map-pin" />4th floor, Centre Point · opp. Vrundavan Heights</li>
     </ul>
     <ContactActions tone="on-dark" showBook />
+    <p class="hero-links">
+      <a href={site.contact.mapsUrl} target="_blank" rel="noopener">Directions</a>
+      {whatsapp && <> · <a href={whatsapp} target="_blank" rel="noopener">WhatsApp</a></>}
+    </p>
   </div>
   <div class="hero-wave" aria-hidden="true">
     <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
@@ -30,36 +53,61 @@ import { hero } from '../../data/home';
 <style>
   .hero {
     position: relative;
-    min-height: min(640px, 78vh);
+    min-height: min(600px, 74vh);
     display: flex;
     align-items: center;
     overflow: hidden;
-    padding: 4rem var(--gutter) 6rem;
+    padding: 3.5rem var(--gutter) 5.5rem;
     isolation: isolate;
-  }
-
-  .hero {
     background: var(--color-surface-dark);
   }
 
-  /* Wide screens: photo fills the right half, text sits on solid slate on the left. */
-  .hero :global(.hero-photo) {
+  .hero-media {
     position: absolute;
     top: 0;
     right: 0;
     width: 52%;
     height: 100%;
-    object-fit: cover;
     z-index: -2;
   }
 
-  /* Static overlay blends the photo into the slate panel and keeps text readable. */
+  .hero-media :global(.hero-photo) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-media--empty :global(.photo-slot) {
+    height: 100%;
+    aspect-ratio: auto;
+    border-radius: 0;
+  }
+
+  /* Blend the photo into the slate panel. */
   .hero::before {
     content: '';
     position: absolute;
     inset: 0;
     z-index: -1;
+    pointer-events: none;
     background: linear-gradient(90deg, var(--color-surface-dark) 0%, var(--color-surface-dark) 46%, rgba(30, 41, 59, 0.55) 62%, rgba(30, 41, 59, 0.1) 100%);
+  }
+
+  .hero--no-photo::before {
+    display: none;
+  }
+
+  .hero-badge {
+    position: absolute;
+    right: 0.75rem;
+    top: 0.75rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 247, 230, 0.95);
+    border: 1px solid #f3c56b;
+    color: #6b4400;
+    font-size: 0.75rem;
+    font-weight: 600;
   }
 
   .hero-content {
@@ -70,35 +118,41 @@ import { hero } from '../../data/home';
   }
 
   .hero-content > * {
-    max-width: 44rem;
+    max-width: 40rem;
   }
 
   .hero-kicker {
     font-weight: 600;
     letter-spacing: 0.04em;
     color: #d6ead6;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.6rem;
   }
 
   .hero-title {
     color: var(--color-text-on-dark);
     font-size: clamp(2rem, 4.5vw, 3.25rem);
-    line-height: 1.12;
+    line-height: 1.1;
     letter-spacing: -0.03em;
+    margin-bottom: 0.6rem;
+  }
+
+  .hero-subline {
+    font-size: 1.1875rem;
+    color: #e2e8f0;
     margin-bottom: 1rem;
   }
 
   .hero-doctor {
-    font-size: 1.125rem;
-    color: #e2e8f0;
-    margin-bottom: 1.25rem;
+    font-weight: 600;
+    color: #d6ead6;
+    margin-bottom: 1rem;
   }
 
   .hero-facts {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem 1.5rem;
-    margin-bottom: 1.75rem;
+    margin-bottom: 1.5rem;
     color: #e2e8f0;
   }
 
@@ -112,6 +166,11 @@ import { hero } from '../../data/home';
     width: 18px;
     height: 18px;
     color: #b7dbb7;
+    flex-shrink: 0;
+  }
+
+  .hero-links {
+    display: none;
   }
 
   .hero-wave {
@@ -125,40 +184,74 @@ import { hero } from '../../data/home';
   .hero-wave svg {
     display: block;
     width: 100%;
-    height: 64px;
+    height: 56px;
   }
 
   .hero-wave path {
     fill: var(--color-bg);
   }
 
+  /* Phones and tablets: photo strip above the text. */
   @media (max-width: 900px) {
-    .hero :global(.hero-photo) {
-      width: 100%;
+    .hero {
+      flex-direction: column;
+      align-items: stretch;
+      min-height: 0;
+      padding: 0 0 4rem;
     }
 
     .hero::before {
-      background: linear-gradient(180deg, rgba(15, 23, 42, 0.84) 0%, rgba(30, 41, 59, 0.8) 100%);
+      display: none;
+    }
+
+    .hero-media {
+      position: relative;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .hero-media :global(.hero-photo) {
+      position: absolute;
+      inset: 0;
+    }
+
+    .hero-content {
+      padding: 1.75rem var(--gutter) 0;
     }
   }
 
   @media (max-width: 768px) {
-    .hero {
-      min-height: 0;
-      padding: 2.5rem var(--gutter-mobile) 4.5rem;
+    .hero-content {
+      padding: 1.5rem var(--gutter-mobile) 0;
     }
 
-    /* Phones: the bottom action bar already offers Directions and Book — keep only Call here. */
+    .hero-subline {
+      font-size: 1.0625rem;
+    }
+
+    /* Phones: one Call button; Directions / WhatsApp as a text row (the bottom bar has the rest). */
     .hero :global(.contact-actions .btn--light) {
       display: none;
     }
 
-    .hero-doctor {
-      font-size: 1rem;
+    .hero-links {
+      display: block;
+      margin-top: 0.85rem;
+      color: #e2e8f0;
+    }
+
+    .hero-links a {
+      color: #ffffff;
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 3px;
     }
 
     .hero-wave svg {
-      height: 40px;
+      height: 36px;
     }
   }
 </style>

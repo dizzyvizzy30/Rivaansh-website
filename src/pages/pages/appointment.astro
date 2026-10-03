@@ -1,36 +1,34 @@
 ---
-// Book (old URL kept). Old online-consultation.html redirects here.
-// The request form returns in Phase 2 once it can deliver to WhatsApp / Google Sheet.
+// Book (old URL kept) — a task page: how to call, what to have ready. No timings table, no photos.
+// Old online-consultation.html redirects here. The request form returns in Phase 2.
 import PageLayout from '../../layouts/PageLayout.astro';
 import ContactActions from '../../components/ui/ContactActions.astro';
-import HoursTable from '../../components/visit/HoursTable.astro';
+import TodayHours from '../../components/layout/TodayHours.astro';
+import InfoNeeded from '../../components/ui/InfoNeeded.astro';
 import { bookPage as page } from '../../data/book';
-import { firstVisit } from '../../data/visit';
 import { site } from '../../config/site';
 import { routes } from '../../config/navigation';
 
 const { phone, landline } = site.contact;
 ---
 
-<PageLayout title="Book an Appointment" description="Call Rivaansh ENT, Gota, Ahmedabad to book or change an ENT appointment.">
+<PageLayout title="Book an Appointment" description="Call Rivaansh ENT, Gota, Ahmedabad to book, change or cancel an ENT appointment.">
   <h1>{page.title}</h1>
   <p>{page.intro}</p>
 
   <div class="book-card">
-    <ContactActions />
-    <p class="numbers">
-      {phone.label}: <a href={`tel:${phone.tel}`}>{phone.display}</a><br />
-      {landline.label}: <a href={`tel:${landline.tel}`}>{landline.display}</a>
-    </p>
-    <p>{page.rescheduling}</p>
+    <p class="call-when"><TodayHours prefix="Call today" separator=" — " /></p>
+    <ContactActions whatsappText="Hello, I would like to book an appointment at Rivaansh ENT. It is for: (me / my child / my parent). Age: . Problem: . Preferred day: ." />
+    <ul class="numbers">
+      <li>{phone.label}: <a href={`tel:${phone.tel}`}>{phone.display}</a></li>
+      <li>{landline.label}: <a href={`tel:${landline.tel}`}>{landline.display}</a></li>
+    </ul>
+    <p class="ready">{page.haveReady}</p>
+    {page.afterYouCall ? <p>{page.afterYouCall}</p> : <InfoNeeded what="what happens after you call (fixed time, token, walk-in?)" folder="06-faq" />}
   </div>
 
-  <h2>Timings</h2>
-  <HoursTable />
-
-  <h2>What to bring</h2>
-  <ul class="ticks">{firstVisit.bring.map((item) => <li>{item}</li>)}</ul>
-  <p><a href={`${routes.visit}#first-visit`}>What happens at your first visit</a></p>
+  <p><a href={`${routes.visit}#first-visit`}>What happens at your first visit, and what to bring</a></p>
+  <p><a href={`${routes.visit}#timings`}>Full weekly timings and address</a></p>
 </PageLayout>
 
 <style>
@@ -38,11 +36,19 @@ const { phone, landline } = site.contact;
     padding: 1.75rem;
     border-radius: var(--radius-lg);
     background: var(--color-primary-light);
-    margin: 1.5rem 0 2.5rem;
+    margin: 1.5rem 0 2rem;
+  }
+
+  .call-when {
+    font-weight: 600;
   }
 
   .numbers {
-    margin-top: 1.25rem;
+    margin: 1.25rem 0 1rem;
+  }
+
+  .numbers li {
+    margin-bottom: 0.4rem;
   }
 
   .numbers a {
@@ -50,20 +56,7 @@ const { phone, landline } = site.contact;
     color: var(--color-primary-ink);
   }
 
-  h2 {
-    margin: 2rem 0 0.75rem;
-  }
-
-  .ticks li {
-    padding: 0.35rem 0 0.35rem 1.5rem;
-    position: relative;
-  }
-
-  .ticks li::before {
-    content: '✓';
-    position: absolute;
-    left: 0;
-    color: var(--color-primary-dark);
-    font-weight: 700;
+  .ready {
+    font-weight: 600;
   }
 </style>

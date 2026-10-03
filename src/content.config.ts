@@ -29,6 +29,8 @@ const conditions = defineCollection({
     /** Procedures described on this page; each `anchor` must match a heading id in the body. */
     procedures: z.array(z.object({ name: z.string(), anchor: z.string() })).default([]),
     relatedTips: z.array(z.string()).default([]),
+    /** Photo slot shown in the "See the doctor" block (defaults by area). */
+    visitPhoto: z.string().optional(),
     order: z.number().default(100),
     ...review,
   }),

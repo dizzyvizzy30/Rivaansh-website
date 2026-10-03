@@ -59,8 +59,12 @@ The site's identity is a calm, clinical **sage-green + slate** palette, the **In
 - Alternate `--color-bg` and `--color-bg-alt` bands down long pages.
 - **Header** — utility strip (slate, ≥1024px: today's hours · floor/landmark), then a sticky white header with ONE fixed
   height (72px desktop / 64px mobile), solid background and soft shadow. No shrink-on-scroll, no backdrop blur.
-- **Hero** — one still photo (right half on wide screens, full-bleed on phones) under a static slate overlay, white wave
-  divider at the bottom. No slideshow, zoom or animated gradient.
+- **Hero** — one still photo: right half on wide screens (blended into slate), a 16:9 strip ABOVE the text on phones
+  (never behind it). White wave divider. No slideshow, zoom or animated gradient. Phones: one Call button only.
+- **Area tiles** — whole-card links (icon, title →, three example conditions), 3 / 2 / 1 columns.
+- **Link rows** — 56px full-width rows with "→" for onward navigation on summaries.
+- **Preview-only markers** — amber dashed "Photo needed" frames, "Stand-in" badges and "Info needed" chips
+  (`#fff7e6` / `#f3c56b` / `#6b4400`); never rendered on the live site.
 - **Action bar (phones)** — fixed bottom bar, three equal 44px pills: Call · WhatsApp (or Directions) · Book (filled).
 - **Urgent box** — pale red panel (`#fff5f5` / `#9b1c1c` text) only for emergency warning signs.
 - **Draft banner** — pale amber `.draft-banner`, only in preview builds.

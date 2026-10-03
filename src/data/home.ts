@@ -1,21 +1,19 @@
-// Homepage — /
+// Homepage — / (a ~4-screen summary; every block below is generated from inner-page data, not retyped)
 // Owner input: owner-content/00-clinic-facts/ and owner-content/01-photos/
-import doctorOfficePortrait from '../assets/images/clinic/doctor-office-portrait.jpeg';
-import { site } from '../config/site';
 
 export const hero = {
-  kicker: site.shortName,
-  title: 'Ear, Nose, Throat, Head & Neck Centre in Gota, Ahmedabad',
-  doctorLine: `${site.doctor.name} — ${site.doctor.credentials}`,
-  // PLACEHOLDER: one real wide photo from owner-content/01-photos (reception or consultation room) works best here.
-  image: { src: doctorOfficePortrait, alt: '', focus: 'center 38%' },
+  title: 'ENT clinic in Gota, Ahmedabad',
+  subline: 'Ear, nose, throat, head & neck — adults and children',
+  /** Photo slot for the top banner. */
+  slot: 'doctor-consultation-room',
 };
 
 export const homeSections = {
   treatTitle: 'What we treat',
-  doctorTitle: 'Meet the doctor',
-  clinicTitle: 'The clinic',
-  locationTitle: 'Location & timings',
-  answersTitle: 'Quick answers',
+  doctorClinicTitle: 'Your doctor and the clinic',
+  doctorOnlyTitle: 'Your doctor',
+  comingTitle: 'Coming to the clinic',
   tipsTitle: 'Health tips',
+  /** Clinic photos for the homepage grid, in order of preference (first 4 with real photos are shown). */
+  clinicSlots: ['reception-waiting-area', 'consultation-room-ent-unit', 'endoscope-unit', 'sterilisation-area', 'hearing-test-room'],
 };

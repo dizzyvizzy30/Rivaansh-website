@@ -1,20 +1,27 @@
 ---
-// Visit Us (old URL kept). Anchors: #timings #first-visit #faq. Old locations.html / faq.html redirect here.
+// Visit Us (old URL kept) — owns the full timings table, getting here, fees, first visit and FAQ.
+// Anchors: #timings #getting-here #fees #first-visit #faq. Old locations.html / faq.html redirect here.
 import PageLayout from '../../layouts/PageLayout.astro';
 import LocationCard from '../../components/visit/LocationCard.astro';
+import GettingHere from '../../components/visit/GettingHere.astro';
 import StepList from '../../components/ui/StepList.astro';
 import FaqAccordion from '../../components/ui/FaqAccordion.astro';
 import ContactActions from '../../components/ui/ContactActions.astro';
+import InfoNeeded from '../../components/ui/InfoNeeded.astro';
 import { visitPage as page, firstVisit, quickAnswers } from '../../data/visit';
+import { showDrafts } from '../../data/collections';
 import { site } from '../../config/site';
+
+const hasFees = Boolean(page.fees || page.payment || page.mediclaim);
+const showFees = hasFees || showDrafts;
 ---
 
-<PageLayout title="Visit Us" description="Timings, address, map and first-visit information for Rivaansh ENT, 4th floor, Centre Point, Gota, Ahmedabad." clinicSchema>
+<PageLayout title="Visit Us" description="Timings, directions, fees and first-visit information for Rivaansh ENT, 4th floor, Centre Point, Gota, Ahmedabad." clinicSchema>
   <h1>{page.title}</h1>
   <p>{page.intro}</p>
 
   <nav class="jump" aria-label="On this page">
-    <a href="#timings">Timings &amp; address</a><a href="#first-visit">First visit</a><a href="#faq">FAQ</a>
+    <a href="#timings">Timings</a><a href="#getting-here">Getting here</a>{showFees && <a href="#fees">Fees</a>}<a href="#first-visit">First visit</a><a href="#faq">FAQ</a>
   </nav>
 
   <section id="timings" aria-label="Timings and address">
@@ -22,17 +29,35 @@ import { site } from '../../config/site';
     <p class="email">Email: <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a></p>
   </section>
 
+  <section id="getting-here" class="block" aria-labelledby="getting-here-title">
+    <h2 id="getting-here-title">Getting here</h2>
+    <GettingHere />
+    <ul class="access">
+      {page.wheelchair ? <li><strong>Wheelchair access:</strong> {page.wheelchair}</li> : <li><InfoNeeded what="wheelchair access" folder="00-clinic-facts" /></li>}
+      {page.parking ? <li><strong>Parking:</strong> {page.parking}</li> : <li><InfoNeeded what="parking (two-wheeler and car)" folder="00-clinic-facts" /></li>}
+    </ul>
+  </section>
+
+  {showFees && (
+    <section id="fees" class="block" aria-labelledby="fees-title">
+      <h2 id="fees-title">Fees</h2>
+      {page.fees ? <p><strong>Consultation fee:</strong> {page.fees}</p> : <InfoNeeded what="consultation fee" folder="00-clinic-facts" />}
+      {page.payment ? <p><strong>Payment:</strong> {page.payment}</p> : <InfoNeeded what="payment methods (cash, UPI, card)" folder="00-clinic-facts" />}
+      {page.mediclaim ? <p><strong>Mediclaim / insurance:</strong> {page.mediclaim}</p> : <InfoNeeded what="mediclaim / insurance / TPA" folder="00-clinic-facts" />}
+    </section>
+  )}
+
   <section id="first-visit" class="block" aria-labelledby="first-visit-title">
     <h2 id="first-visit-title">{firstVisit.title}</h2>
     <StepList steps={firstVisit.steps} />
     <h3>What to bring</h3>
     <ul class="ticks">{firstVisit.bring.map((item) => <li>{item}</li>)}</ul>
-    {page.fees && <p><strong>Fees:</strong> {page.fees}</p>}
   </section>
 
   <section id="faq" class="block" aria-labelledby="faq-title">
     <h2 id="faq-title">Frequently asked questions</h2>
     <FaqAccordion items={quickAnswers} />
+    <InfoNeeded what="the receptionist's most common phone questions" folder="06-faq" />
   </section>
 
   <ContactActions showBook />
@@ -88,6 +113,14 @@ import { site } from '../../config/site';
     margin: 0 0 0.75rem;
   }
 
+  .access {
+    margin-top: 1.25rem;
+  }
+
+  .access li {
+    margin-bottom: 0.35rem;
+  }
+
   .ticks li {
     padding: 0.35rem 0 0.35rem 1.5rem;
     position: relative;
@@ -102,6 +135,10 @@ import { site } from '../../config/site';
   }
 
   #faq :global(.faq-container) {
-    margin: 0 0 2rem;
+    margin: 0 0 1rem;
+  }
+
+  #faq {
+    margin-bottom: 2rem;
   }
 </style>

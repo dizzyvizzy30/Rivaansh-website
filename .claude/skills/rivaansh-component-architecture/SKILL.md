@@ -28,25 +28,27 @@ src/
     conditions/*.md    one condition page each → /pages/ent/<slug>.html
     blog/*.md          one health tip each → /pages/blog/<slug>.html (blog2 keeps its legacy slug)
   data/                page data, each file names its owner-content folder
-    home.ts  treatments.ts (hub groups, procedures, urgent)  doctor-clinic.ts  visit.ts (first visit, FAQ)
-    book.ts  care.ts  collections.ts (getConditions/getTips/showDrafts/reviewLine)
+    home.ts  treatments.ts (hub groups, procedures, urgent, tests)  doctor-clinic.ts  visit.ts (getting here, fees,
+    first visit, FAQ)  book.ts  care.ts (general + per-procedure guides)  collections.ts (getConditions/getTips/
+    showDrafts/reviewLine)  photo-slots.ts (12 named photo slots)  facts-needed.ts (missing-facts list)
   assets/images/       optimizable photos (see rivaansh-media-presentation)
   layouts/
     BaseLayout.astro   head (meta, noindex, MedicalClinic JSON-LD), skip link, header, main, footer, ActionBar
     PageLayout.astro   BaseLayout + the 960px `.page-container` column
   components/
     layout/      SiteHeader (utility strip + fixed-height header + <dialog> drawer), SiteFooter, ActionBar, TodayHours
-    home/        HomeHero (still photo, static overlay)
+    home/        HomeHero (photo right on desktop / strip above text on phones), AreaTiles
     treatments/  ConditionGroups (chips | list — links only to published conditions)
-    doctor/      DoctorCard (feature | mini)
-    visit/       LocationCard, HoursTable
-    ui/          Button, ContactActions, Icon, FaqAccordion (<details name>), StepList
-    media/       MediaImage, MediaGallery (balanced justified rows), LightboxItem, VideoPlayer, photo-sizes.ts, types.ts
+    doctor/      DoctorCard (facts | mini | feature — one data source, more detail at each level)
+    visit/       LocationCard (address + the only full hours table), HoursTable, GettingHere
+    ui/          Button, ContactActions, Icon, FaqAccordion (<details name>), StepList, InfoNeeded (preview-only chip)
+    media/       MediaImage, PhotoSlot, SlotGallery, MediaGallery, LightboxItem, VideoPlayer, photo-sizes.ts, types.ts
     blog/        PostCard, PostCover
     forms/       FormField, AppointmentForm, ContactForm — not used until forms can deliver (Phase 2)
   scripts/  motion.ts, reveal.ts, lightbox.ts
   styles/   tokens.css + global.css (reset, type, buttons, .section/.section-title utilities, prose, draft banner)
-  pages/    index, 404, pages/{ent,about-us,contact,appointment,care,blog}.astro, pages/ent/[slug], pages/blog/[slug]
+  pages/    index, 404, pages/{ent,about-us,contact,appointment,care,blog}.astro, pages/ent/[slug], pages/blog/[slug],
+            pages/[checklist] (preview-only /pages/photos-needed.html)
 ```
 
 ## Drafts & review (medical content)
@@ -56,6 +58,16 @@ src/
   for deploy previews and branch deploys. Draft pages render a yellow "Draft" banner and `noindex`. Production never
   builds drafts.
 - Unpublished conditions appear on the hub and homepage as plain text, never as links.
+
+## Homepage & redundancy (round 2)
+The homepage is a ~4-screen summary generated from inner-page data; detail lives on one inner page only. Follow the
+eight redundancy rules in `docs/site-restructure-plan.md` (Round 2) — e.g. the full hours table only on Visit Us,
+no FAQ or first-visit steps on Home, at most one inline button per phone screen.
+
+## Unknown facts
+Facts the owner hasn't given are `null` in the data files: hidden on the live site, shown as `<InfoNeeded>` chips in
+preview builds, and listed on /pages/photos-needed.html (`src/data/facts-needed.ts`). Production builds fail if
+"PLACEHOLDER" or "___" appears in any output page (integration in `astro.config.mjs`).
 
 ## URLs and redirects
 - `build.format: 'file'` → `src/pages/pages/contact.astro` outputs `/pages/contact.html` (Netlify also serves `/pages/contact`).

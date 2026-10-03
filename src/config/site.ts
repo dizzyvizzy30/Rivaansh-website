@@ -32,8 +32,9 @@ export const site = {
     shortName: 'Dr. Parikh',
     // PLACEHOLDER: confirm exact qualifications (flyer: "MS ENT, Fellowship in Otology").
     credentials: 'MS (ENT), Fellowship in Otology',
-    // PLACEHOLDER: medical council registration number — shown in the footer and on Doctor & Clinic once provided.
+    // PLACEHOLDER: medical council registration number and council — shown once provided (owner-content/02-doctor-profile).
     registration: null as string | null,
+    council: null as string | null,
   },
 
   contact: {

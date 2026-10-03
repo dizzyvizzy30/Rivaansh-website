@@ -1,0 +1,111 @@
+---
+// Homepage "What we treat": one whole-card link per body area (+ Urgent), each showing the area's first three
+// conditions. Generated from src/data/treatments.ts — the Treatments page keeps the full lists.
+import Icon from '../ui/Icon.astro';
+import { treatmentGroups, urgentProblems } from '../../data/treatments';
+import { routes } from '../../config/navigation';
+---
+
+<ul class="area-tiles">
+  {treatmentGroups.map((group) => (
+    <li>
+      <a class="area-tile" href={`${routes.treatments}#${group.id}`}>
+        <Icon name={group.icon} />
+        <span class="area-title">{group.title}</span>
+        <span class="area-items">{group.items.slice(0, 3).map((i) => i.name).join(' · ')}</span>
+      </a>
+    </li>
+  ))}
+  <li>
+    <a class="area-tile area-tile--urgent" href={`${routes.treatments}#urgent`}>
+      <span class="area-urgent-mark" aria-hidden="true">!</span>
+      <span class="area-title">{urgentProblems.tileTitle}</span>
+      <span class="area-items">{urgentProblems.tileSummary}</span>
+    </a>
+  </li>
+</ul>
+
+<style>
+  .area-tiles {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .area-tile {
+    position: relative;
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    grid-template-rows: auto auto;
+    column-gap: 0.85rem;
+    align-items: center;
+    min-height: 96px;
+    height: 100%;
+    padding: 1.1rem 1.25rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-bg);
+    transition: border-color var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
+  }
+
+  .area-tile:hover {
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-brand);
+  }
+
+  .area-tile :global(svg),
+  .area-urgent-mark {
+    grid-row: span 2;
+    width: 40px;
+    height: 40px;
+    color: var(--color-primary);
+  }
+
+  .area-urgent-mark {
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius-full);
+    background: #fde8e8;
+    color: #9b1c1c;
+    font-weight: 800;
+    font-size: 1.25rem;
+  }
+
+  .area-title {
+    font-weight: 700;
+    font-size: 1.0625rem;
+    color: var(--color-primary-ink);
+  }
+
+  .area-title::after {
+    content: ' →';
+  }
+
+  .area-tile--urgent .area-title {
+    color: #9b1c1c;
+  }
+
+  .area-items {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    line-height: 1.45;
+  }
+
+  @media (max-width: 900px) {
+    .area-tiles {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 520px) {
+    .area-tiles {
+      grid-template-columns: 1fr;
+      gap: 0.6rem;
+    }
+
+    .area-tile {
+      min-height: 72px;
+      padding: 0.85rem 1rem;
+    }
+  }
+</style>

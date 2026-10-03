@@ -22,6 +22,9 @@ export const treatmentsPage = {
   intro:
     'Ear, nose, throat, head and neck problems in adults and children. Choose a condition to read what it is, when to see a doctor, and how it is treated here.',
   notListed: 'Don’t see your problem? Call us — routine ENT problems are seen too.',
+  testsHeading: 'Tests done at the clinic',
+  // PLACEHOLDER: doctor to confirm (03-conditions-review), e.g. [{ name: 'Nasal endoscopy', slot: 'endoscope-unit' }].
+  testsAtClinic: null as null | { name: string; slot?: string }[],
 };
 
 // PLACEHOLDER: list taken from the clinic flyer — doctor to confirm every item.
@@ -82,17 +85,19 @@ export const treatmentGroups: TreatmentGroup[] = [
 ];
 
 // PLACEHOLDER: procedures the old site listed (plus ear lobe repair from the flyer) — doctor to confirm.
-export const procedures: { name: string; slug?: string; anchor?: string }[] = [
-  { name: 'Tympanoplasty / myringoplasty (eardrum repair)', slug: 'perforated-eardrum', anchor: 'eardrum-repair-surgery' },
-  { name: 'Endoscopic sinus surgery', slug: 'sinus-allergy-blocked-nose', anchor: 'endoscopic-sinus-surgery' },
-  { name: 'Septoplasty (straightening the nasal septum)', slug: 'sinus-allergy-blocked-nose', anchor: 'septoplasty' },
-  { name: 'Tonsillectomy & adenoidectomy', slug: 'tonsils-adenoids', anchor: 'tonsil-and-adenoid-surgery' },
+export const procedures: { name: string; slug?: string; anchor?: string; careId?: string }[] = [
+  { name: 'Tympanoplasty / myringoplasty (eardrum repair)', slug: 'perforated-eardrum', anchor: 'eardrum-repair-surgery', careId: 'tympanoplasty' },
+  { name: 'Endoscopic sinus surgery', slug: 'sinus-allergy-blocked-nose', anchor: 'endoscopic-sinus-surgery', careId: 'endoscopic-sinus-surgery' },
+  { name: 'Septoplasty (straightening the nasal septum)', slug: 'sinus-allergy-blocked-nose', anchor: 'septoplasty', careId: 'septoplasty' },
+  { name: 'Tonsillectomy & adenoidectomy', slug: 'tonsils-adenoids', anchor: 'tonsil-and-adenoid-surgery', careId: 'tonsillectomy-adenoidectomy' },
   { name: 'Microlaryngeal surgery (voice box)' },
   { name: 'Ear lobe repair' },
 ];
 
 export const urgentProblems = {
   title: 'Urgent problems',
+  tileTitle: 'Urgent?',
+  tileSummary: 'Breathing difficulty · bleeding that won’t stop · sudden hearing loss',
   advice:
     'During clinic hours, call us straight away. Outside clinic hours — or if breathing is affected — go to the nearest hospital emergency department.',
   items: [

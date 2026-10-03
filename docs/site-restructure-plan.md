@@ -235,3 +235,47 @@ fewer than 4 of 6 tap first. Repeat 4 weeks after launch.
 4. A 4-week reception tally: "How did you find us?" — website / Google Maps / referral / flyer.
 
 Also watch redirect hits and 404s on old URLs.
+
+
+---
+
+# Round 2 — homepage length, redundancy, photo slots (2026-10-02)
+
+_Two critics (A: short "front door" homepage; B: one-scroll homepage as a trailer) and an arbitrator reviewed the
+built Phase 1 against screenshots. Implemented on `astro-migration`._
+
+## Decisions
+- **Homepage = ~4 phone screens** (was 11.5–13.9): Hero → What we treat (6 whole-card area tiles incl. "Urgent?") →
+  Your doctor and the clinic (doctor facts, no photo; 2×2 clinic grid only once ≥2 real clinic photos exist) →
+  Coming to the clinic (building photo, address, lift/fee when known, Maps, three link rows) → Health tips (titles only,
+  once published). Every block is generated from inner-page data; nothing is retyped.
+- **Cut from Home:** full doctor card, clinic gallery (incl. operating-theatre photos), first-visit steps, what to bring,
+  location card with the hours table, quick answers.
+- **Phone hero:** 16:9 photo strip *above* the text; one Call button; Directions / WhatsApp as a text row.
+- **Inner pages got the depth:** Doctor & Clinic (#doctor with qualification institute/year, registration, languages,
+  interests; #clinic tour in walking order + equipment + hygiene; #surgery preview-only until decision 7); Visit Us
+  (#timings with the only full hours table, #getting-here 3 photo steps, #fees, #first-visit, #faq); Book (call today,
+  what to have ready, no table, no photos); Before & After Surgery (4 per-procedure guides, preview-only until the
+  clinic's handouts are applied; Print + Share on WhatsApp); Treatments (#tests box; local names; links to care
+  guides); condition pages ("On this page", lighter "In short", clinic photo in the "See the doctor" block, related
+  conditions).
+- **Retired:** `endoscopy-procedure.jpeg` (taken in a theatre — implied an in-house theatre).
+
+## Redundancy rules
+1. Full weekly hours table only on Visit Us #timings; "Today" line elsewhere; never twice in one screen.
+2. On phones the bottom bar is the action layer; an inline button must add information; max one per screen.
+3. Doctor: one data source, more detail at each level (hero line → home facts → mini card → full profile).
+4. A photo appears at most once per page and on at most two pages; stand-ins only if truthful; theatre photos only in #surgery.
+5. First visit is owned by Visit Us; Home and Book link to it.
+6. General FAQ only on Visit Us; condition pages answer condition questions only; no FAQ on Home.
+7. Tips: titles on Home, text-only cards on Health Tips, two-way links with conditions.
+8. "In short" = summary + local names + one call link (no button block).
+
+## Photo slots
+12 named slots (`src/data/photo-slots.ts`; files in `src/assets/images/slots/<id>.*`; owner folders
+`owner-content/01-photos/<id>/`): building-street-view, entrance-lift-lobby, clinic-door-4th-floor,
+reception-waiting-area, consultation-room-ent-unit, endoscope-unit, hearing-test-room, sterilisation-area,
+doctor-consultation-room, doctor-portrait, operating-microscope, operation-theatre. Six are required for launch.
+Preview builds show dashed amber "Photo needed" frames, stand-in badges, "Info needed" chips and the
+`/pages/photos-needed.html` checklist; the live site hides every empty slot and unknown fact. Production builds log
+missing required photos and **fail** if "PLACEHOLDER" or "___" reaches the output.

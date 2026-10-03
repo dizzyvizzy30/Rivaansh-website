@@ -11,7 +11,7 @@ const { post } = Astro.props;
 ---
 
 <article class="blog-post">
-  <a href={tipHref(post.id)} class="blog-post-link">
+  <a href={tipHref(post.id)} class:list={["blog-post-link", post.data.cover && "has-cover"]}>
     <PostCover
       cover={post.data.cover}
       alt={post.data.coverAlt}
@@ -41,7 +41,7 @@ const { post } = Astro.props;
   }
 
   @media (min-width: 768px) {
-    .blog-post-link {
+    .blog-post-link.has-cover {
       grid-template-columns: 300px 1fr;
     }
   }

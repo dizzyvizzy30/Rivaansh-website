@@ -82,30 +82,62 @@ const watch = (page) => page.on('pageerror', (e) => errors.push(`${page.url()}: 
   await ctx.close();
 }
 
-// ---------- Lightbox on Doctor & Clinic ----------
+// ---------- Lightbox (first gallery with at least 2 photos; live site may have none until real photos exist) ----------
 {
   const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const page = await ctx.newPage();
   watch(page);
   await page.goto(base + '/pages/about-us.html', { waitUntil: 'networkidle' });
-  const total = (await page.$$('[data-lightbox="clinic"] [data-lightbox-item]')).length;
-  check('PhotoSwipe not loaded before first open', !(await page.evaluate(() => performance.getEntriesByType('resource').some((r) => r.name.includes('photoswipe')))));
-  await page.locator('[data-lightbox="clinic"] [data-lightbox-item]').nth(1).click();
-  await page.waitForSelector('.pswp--open', { timeout: 5000 });
-  check('clinic photo opens the lightbox', true);
-  check('hash set to #clinic-2', (await page.evaluate(() => location.hash)) === '#clinic-2');
-  await page.waitForTimeout(500);
-  check('caption shown in lightbox', ((await page.textContent('.pswp__caption')) ?? '').length > 0, (await page.textContent('.pswp__caption'))?.trim());
-  if (out) await page.screenshot({ path: `${out}/lightbox-open.png` });
-  await page.keyboard.press('ArrowRight');
-  await page.waitForTimeout(400);
-  check('ArrowRight moves to the next photo', (await page.textContent('.pswp__counter'))?.replace(/\s/g, '') === `3/${total}`);
-  await page.keyboard.press('Escape');
-  await page.waitForSelector('.pswp', { state: 'detached', timeout: 5000 });
-  check('Esc closes and clears the hash', (await page.evaluate(() => location.hash)) === '');
-  await page.goto(base + '/pages/about-us.html#clinic-4', { waitUntil: 'networkidle' });
-  await page.waitForSelector('.pswp--open', { timeout: 5000 });
-  check('deep link #clinic-4 opens the 4th photo', (await page.textContent('.pswp__counter'))?.replace(/\s/g, '') === `4/${total}`);
+  const galleryId = await page.evaluate(() =>
+    [...document.querySelectorAll('[data-lightbox]')].find((g) => g.querySelectorAll('[data-lightbox-item]').length >= 2)?.getAttribute('data-lightbox'),
+  );
+  if (!galleryId) {
+    check('lightbox (skipped — no gallery with photos on this build yet)', true);
+  } else {
+    const items = `[data-lightbox="${galleryId}"] [data-lightbox-item]`;
+    const total = (await page.$$(items)).length;
+    check('PhotoSwipe not loaded before first open', !(await page.evaluate(() => performance.getEntriesByType('resource').some((r) => r.name.includes('photoswipe')))));
+    await page.locator(items).nth(1).click();
+    await page.waitForSelector('.pswp--open', { timeout: 5000 });
+    check(`photo opens the lightbox (#${galleryId})`, true);
+    check(`hash set to #${galleryId}-2`, (await page.evaluate(() => location.hash)) === `#${galleryId}-2`);
+    await page.waitForTimeout(500);
+    check('caption shown in lightbox', ((await page.textContent('.pswp__caption')) ?? '').length > 0, (await page.textContent('.pswp__caption'))?.trim());
+    if (out) await page.screenshot({ path: `${out}/lightbox-open.png` });
+    await page.keyboard.press('ArrowLeft');
+    await page.waitForTimeout(400);
+    check('arrow keys move between photos', (await page.textContent('.pswp__counter'))?.replace(/\s/g, '') === `1/${total}`);
+    await page.keyboard.press('Escape');
+    await page.waitForSelector('.pswp', { state: 'detached', timeout: 5000 });
+    check('Esc closes and clears the hash', (await page.evaluate(() => location.hash)) === '');
+    await page.goto(`${base}/pages/about-us.html#${galleryId}-${total}`, { waitUntil: 'networkidle' });
+    await page.waitForSelector('.pswp--open', { timeout: 5000 });
+    check(`deep link #${galleryId}-${total} opens the last photo`, (await page.textContent('.pswp__counter'))?.replace(/\s/g, '') === `${total}/${total}`);
+  }
+  await ctx.close();
+}
+
+// ---------- Homepage summary (round 2: ~4 phone screens, photo above the heading on phones) ----------
+{
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  const page = await ctx.newPage();
+  watch(page);
+  await page.goto(base + '/', { waitUntil: 'networkidle' });
+  const { screens, photoAboveTitle, heroButtons } = await page.evaluate(() => {
+    const footer = document.querySelector('.site-footer').getBoundingClientRect().top + scrollY;
+    const photo = document.querySelector('.hero-media');
+    const title = document.querySelector('.hero-title');
+    const visibleButtons = [...document.querySelectorAll('.hero .btn')].filter((b) => getComputedStyle(b).display !== 'none').length;
+    return {
+      screens: footer / innerHeight,
+      photoAboveTitle: !photo || photo.getBoundingClientRect().bottom <= title.getBoundingClientRect().top + 1,
+      heroButtons: visibleButtons,
+    };
+  });
+  check('homepage is a short summary on phones (≤ 5 screens before the footer)', screens <= 5, `${screens.toFixed(1)} screens`);
+  check('phone hero photo sits above the heading (not behind it)', photoAboveTitle);
+  check('phone hero shows a single button', heroButtons === 1, `${heroButtons} visible`);
+  check('no duplicated FAQ or first-visit blocks on the homepage', (await page.$$('main .faq-container, main .steps')).length === 0);
   await ctx.close();
 }
 
@@ -120,6 +152,7 @@ const watch = (page) => page.on('pageerror', (e) => errors.push(`${page.url()}: 
   await q.nth(1).click();
   const open = await page.$$eval('#faq details', (ds) => ds.map((d) => d.open));
   check('FAQ opens one answer at a time', open.filter(Boolean).length === 1 && open[1], JSON.stringify(open));
+  check('full timings table appears once, on Visit Us', (await page.$$('.hours-table')).length === 1);
   check('today’s row highlighted in hours table', (await page.$$('.hours-table tr.is-today')).length === 1);
   await ctx.close();
 }

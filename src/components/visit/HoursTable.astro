@@ -1,6 +1,6 @@
 ---
 // Weekly opening hours; today's row is highlighted with JS (India time).
-import { site, formatSessions } from '../../config/site';
+import { site, formatTime } from '../../config/site';
 ---
 
 <table class="hours-table" data-hours-table>
@@ -9,7 +9,7 @@ import { site, formatSessions } from '../../config/site';
     {site.hours.map((h) => (
       <tr data-days={h.days.join(',')}>
         <th scope="row">{h.label}</th>
-        <td>{formatSessions(h.sessions)}</td>
+        <td>{h.sessions.map((session) => <span class="session">{formatTime(session.open)}–{formatTime(session.close)}</span>)}</td>
       </tr>
     ))}
   </tbody>
@@ -32,6 +32,10 @@ import { site, formatSessions } from '../../config/site';
 
   .hours-table th {
     font-weight: 600;
+  }
+
+  .session {
+    display: block;
     white-space: nowrap;
   }
 

@@ -1,35 +1,52 @@
 ---
-// The doctor's photo, qualifications and short bio. `feature` on Home / Doctor & Clinic, `mini` on condition pages.
-import MediaImage from '../media/MediaImage.astro';
+// One doctor data source shown at three levels of detail (round-2 redundancy rule 3):
+// `facts` (Home, no photo — the hero carries the face) → `mini` (condition pages) → `feature` (Doctor & Clinic).
+import PhotoSlot from '../media/PhotoSlot.astro';
+import InfoNeeded from '../ui/InfoNeeded.astro';
 import { doctor } from '../../data/doctor-clinic';
 import { site } from '../../config/site';
 import { routes } from '../../config/navigation';
 
 interface Props {
-  variant?: 'feature' | 'mini';
+  variant?: 'feature' | 'mini' | 'facts';
   headingLevel?: 2 | 3;
   showLink?: boolean;
+  linkText?: string;
 }
 
-const { variant = 'feature', headingLevel = 3, showLink = true } = Astro.props;
+const { variant = 'feature', headingLevel = 3, showLink = true, linkText = 'About the doctor and the clinic' } = Astro.props;
+const { registration, council } = site.doctor;
+const qualificationLabel = (q: (typeof doctor.qualifications)[number]) =>
+  [q.degree, [q.institute, q.year].filter(Boolean).join(', ')].filter(Boolean).join(' — ');
 ---
 
 <div class:list={['doctor-card', `doctor-card--${variant}`]}>
-  <MediaImage
-    image={doctor.portrait}
-    sizes={variant === 'mini' ? '96px' : '(max-width: 768px) 60vw, 320px'}
-    class="doctor-photo"
-  />
+  {variant !== 'facts' && (
+    <PhotoSlot id={doctor.portraitSlot} sizes={variant === 'mini' ? '96px' : '(max-width: 768px) 70vw, 320px'} class="doctor-photo" aspect={variant === 'mini' ? '1 / 1' : undefined} />
+  )}
   <div class="doctor-body">
     {headingLevel === 2 ? <h2 class="doctor-name">{doctor.name}</h2> : <h3 class="doctor-name">{doctor.name}</h3>}
     <p class="doctor-role">{doctor.role}</p>
     <ul class="doctor-qualifications">
-      {doctor.qualifications.map((q) => <li>{q}</li>)}
-      {site.doctor.registration && <li>Registration no. {site.doctor.registration}</li>}
+      {(variant === 'feature' ? doctor.qualifications.map(qualificationLabel) : doctor.qualifications.map((q) => q.degree)).map((q) => <li>{q}</li>)}
+      {registration && <li>Reg. no. {registration}{council && variant === 'feature' ? `, ${council}` : ''}</li>}
     </ul>
-    {variant === 'feature' && doctor.bio.map((paragraph) => <p class="doctor-bio">{paragraph}</p>)}
-    {variant === 'feature' && doctor.languages && <p class="doctor-bio">Languages: {doctor.languages}</p>}
-    {showLink && <a class="doctor-link" href={`${routes.doctorClinic}#doctor`}>About the doctor and the clinic</a>}
+    {variant === 'feature' && (
+      <>
+        {!registration && <InfoNeeded what="registration number and council" folder="02-doctor-profile" />}
+        {doctor.qualifications.some((q) => !q.institute) && <InfoNeeded what="institute and year for each qualification" folder="02-doctor-profile" />}
+        {doctor.bio.map((paragraph) => <p class="doctor-bio">{paragraph}</p>)}
+        {doctor.interests ? <p class="doctor-bio"><strong>Areas of interest:</strong> {doctor.interests}</p> : <InfoNeeded what="areas of special interest" folder="02-doctor-profile" />}
+        {doctor.languages ? <p class="doctor-bio"><strong>Languages:</strong> {doctor.languages}</p> : <InfoNeeded what="languages spoken" folder="02-doctor-profile" />}
+      </>
+    )}
+    {variant === 'facts' && (
+      <>
+        {doctor.languages && <p class="doctor-bio">Languages: {doctor.languages}</p>}
+        <p class="doctor-bio">{doctor.bio[0]}</p>
+      </>
+    )}
+    {showLink && <a class="doctor-link" href={`${routes.doctorClinic}#doctor`}>{linkText}</a>}
   </div>
 </div>
 
@@ -54,19 +71,19 @@ const { variant = 'feature', headingLevel = 3, showLink = true } = Astro.props;
     padding: 1.25rem;
   }
 
-  .doctor-card :global(.doctor-photo) {
-    width: 100%;
-    object-fit: cover;
-    border-radius: var(--radius-lg);
-  }
-
-  .doctor-card--feature :global(.doctor-photo) {
-    aspect-ratio: 4 / 5;
+  .doctor-card--facts {
+    grid-template-columns: 1fr;
+    padding: 1.5rem;
+    align-items: start;
   }
 
   .doctor-card--mini :global(.doctor-photo) {
-    aspect-ratio: 1;
     border-radius: var(--radius-full);
+  }
+
+  .doctor-card--mini :global(.photo-slot--empty) {
+    padding: 0.25rem;
+    font-size: 0.5rem;
   }
 
   .doctor-name {
@@ -93,7 +110,7 @@ const { variant = 'feature', headingLevel = 3, showLink = true } = Astro.props;
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
   }
 
   .doctor-qualifications li {
@@ -105,17 +122,19 @@ const { variant = 'feature', headingLevel = 3, showLink = true } = Astro.props;
     font-weight: 600;
   }
 
-  .doctor-card--mini .doctor-qualifications {
-    margin-bottom: 0.5rem;
-  }
-
   .doctor-bio {
     color: var(--color-text-muted);
     line-height: 1.7;
-    margin-bottom: 0.75rem;
+    margin: 0.5rem 0;
+  }
+
+  .doctor-bio strong {
+    color: var(--color-text);
   }
 
   .doctor-link {
+    display: inline-block;
+    margin-top: 0.5rem;
     font-weight: 600;
     color: var(--color-primary-ink);
     text-decoration: underline;
