@@ -8,7 +8,7 @@ import { routes } from '../../config/navigation';
 const whatsapp = whatsappHref();
 ---
 
-<nav class="action-bar" aria-label="Contact the clinic" data-action-bar>
+<nav class="action-bar" aria-label="Contact the centre" data-action-bar>
   <a href={`tel:${site.contact.phone.tel}`}>
     <Icon name="phone" />
     <span>Call</span>
@@ -24,7 +24,7 @@ const whatsapp = whatsappHref();
       <span>Directions</span>
     </a>
   )}
-  <a href={routes.book} class="action-bar__primary">
+  <a href={routes.book} class="action-bar__primary" aria-label="Book an appointment by phone">
     <Icon name="calendar-check" />
     <span>Book</span>
   </a>

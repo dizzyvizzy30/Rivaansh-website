@@ -13,8 +13,8 @@ draft: true
 
 There are two main types of hearing loss, and some people have both:
 
-- **Conductive hearing loss** — sound is blocked before it reaches the inner ear, for example by wax, fluid behind the eardrum, an ear infection, a hole in the eardrum, or stiffening of the small hearing bones.
-- **Sensorineural hearing loss** — the inner ear or hearing nerve is affected, most often by age or loud noise, and sometimes by infections, certain medicines or family history.
+- **Conductive hearing loss** - sound is blocked before it reaches the inner ear, for example by wax, fluid behind the eardrum, an ear infection, a hole in the eardrum, or stiffening of the small hearing bones.
+- **Sensorineural hearing loss** - the inner ear or hearing nerve is affected, most often by age or loud noise, and sometimes by infections, certain medicines or family history.
 
 ## Common symptoms
 
@@ -29,7 +29,7 @@ See an ENT doctor if you or your family notice hearing getting worse, if one ear
 
 ### When it's urgent
 
-**Sudden hearing loss in one ear** — over a few hours or days, with no obvious cause such as a cold — should be seen within 24 hours. Treatment works best when it is started early.
+**Sudden hearing loss in one ear** - over a few hours or days, with no obvious cause such as a cold - should be seen within 24 hours. Treatment works best when it is started early.
 
 ## What happens at your visit
 

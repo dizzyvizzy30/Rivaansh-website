@@ -1,4 +1,4 @@
-// Visit Us — /pages/contact.html (owns the full timings table, getting here, fees, first visit and FAQ)
+// Visit Us - /pages/contact.html (owns the full timings table, getting here, fees, first visit and FAQ)
 // Owner input: owner-content/00-clinic-facts/, owner-content/06-faq/, photos in owner-content/01-photos/
 // Missing facts stay null: hidden on the live site, shown as "Info needed" chips in preview builds.
 
@@ -36,7 +36,7 @@ export const firstVisit = {
 // Questions already answered elsewhere on Visit Us (opening hours, what to bring) are deliberately left out.
 export const quickAnswers = [
   { question: 'Do I need a referral?', answer: 'No. You can book directly by calling the clinic.' },
-  { question: 'Do you see children?', answer: 'Yes — children are seen for ear, nose and throat problems such as ear infections, tonsils and snoring.' },
+  { question: 'Do you see children?', answer: 'Yes - children are seen for ear, nose and throat problems such as ear infections, tonsils and snoring.' },
   {
     question: 'What if it’s urgent outside clinic hours?',
     answer: 'If there is difficulty breathing, heavy bleeding that will not stop, or a serious injury, go to the nearest hospital emergency department.',

@@ -1,6 +1,6 @@
 ---
 title: 'Loud Sound and Your Hearing: Navratri, Weddings, DJs and Earphones'
-description: Loud music can permanently damage hearing. A few simple habits protect your ears — and your children's.
+description: Loud music can permanently damage hearing. A few simple habits protect your ears - and your children's.
 order: 4
 slug: blog2
 relatedConditions: [hearing-loss-hearing-aids]
@@ -22,7 +22,7 @@ These often fade within a day, but repeated exposure can cause lasting hearing l
 
 - Stay well away from the speakers.
 - Take breaks in a quieter place.
-- Use foam earplugs — they reduce loudness but still let you hear music and conversation.
+- Use foam earplugs - they reduce loudness but still let you hear music and conversation.
 - Keep young children and babies away from loud speakers.
 
 ## With earphones

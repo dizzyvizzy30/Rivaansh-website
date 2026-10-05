@@ -1,5 +1,5 @@
 ---
-// Book (old URL kept) — a task page: how to call, what to have ready. No timings table, no photos.
+// Book (old URL kept) - a task page: how to call, what to have ready. No timings table, no photos.
 // Old online-consultation.html redirects here. The request form returns in Phase 2.
 import PageLayout from '../../layouts/PageLayout.astro';
 import ContactActions from '../../components/ui/ContactActions.astro';
@@ -12,12 +12,12 @@ import { routes } from '../../config/navigation';
 const { phone, landline } = site.contact;
 ---
 
-<PageLayout title="Book an Appointment" description="Call Rivaansh ENT, Gota, Ahmedabad to book, change or cancel an ENT appointment.">
+<PageLayout title="Book an appointment" description="Call Rivaansh ENT, Gota, Ahmedabad to book, change or cancel an ENT appointment.">
   <h1>{page.title}</h1>
   <p>{page.intro}</p>
 
   <div class="book-card">
-    <p class="call-when"><TodayHours prefix="Call today" separator=" — " /></p>
+    <p class="call-when"><TodayHours prefix="Call today" separator=" - " /></p>
     <ContactActions whatsappText="Hello, I would like to book an appointment at Rivaansh ENT. It is for: (me / my child / my parent). Age: . Problem: . Preferred day: ." />
     <ul class="numbers">
       <li>{phone.label}: <a href={`tel:${phone.tel}`}>{phone.display}</a></li>

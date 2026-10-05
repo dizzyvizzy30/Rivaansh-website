@@ -1,5 +1,5 @@
 ---
-// Call · WhatsApp (or Directions) · optional Book — the same actions everywhere a visitor might decide to get in touch.
+// Call · WhatsApp (or Directions) · optional Book - the same actions everywhere a visitor might decide to get in touch.
 import Icon from './Icon.astro';
 import { site, whatsappHref } from '../../config/site';
 import { routes } from '../../config/navigation';
@@ -17,9 +17,9 @@ const whatsapp = whatsappHref(whatsappText);
 ---
 
 <div class:list={['contact-actions', `contact-actions--${tone}`, className]}>
-  <a class="btn btn--primary" href={`tel:${site.contact.phone.tel}`}>
+  <a class="btn btn--primary" href={`tel:${site.contact.phone.tel}`} aria-label={`Call Rivaansh ENT at ${site.contact.phone.display}`}>
     <Icon name="phone" />
-    Call {site.contact.phone.display}
+    Call us
   </a>
   {whatsapp ? (
     <a class="btn btn--light" href={whatsapp} target="_blank" rel="noopener">

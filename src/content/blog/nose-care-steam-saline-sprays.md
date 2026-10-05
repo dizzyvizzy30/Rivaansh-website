@@ -11,7 +11,7 @@ draft: true
 
 Saline rinses wash out mucus, dust and allergens, and are safe to use regularly.
 
-- Use **sterile, distilled, or boiled-and-cooled water** — not tap water straight from the tap.
+- Use **sterile, distilled, or boiled-and-cooled water** - not tap water straight from the tap.
 - Use a ready-made sachet or the mix your doctor recommends.
 - Lean over a sink, breathe through your mouth and let the solution flow through the nose.
 - Wash and dry the bottle after each use.
@@ -25,7 +25,7 @@ These sprays open a blocked nose quickly, but using them for more than a few day
 Steroid sprays reduce swelling inside the nose and work best when used **every day**, often for a few weeks before you notice the full effect.
 
 - Shake the bottle, look slightly down and point the nozzle towards the outer side of the nostril, away from the middle wall.
-- Sniff gently — don't snort hard.
+- Sniff gently - don't snort hard.
 
 ## Steam
 

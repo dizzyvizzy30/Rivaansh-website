@@ -1,4 +1,4 @@
-// Before & After Surgery — /pages/care.html
+// Before & After Surgery - /pages/care.html
 // Owner input: owner-content/04-surgery-guides/ (per-procedure sections are added in Phase 2)
 // PLACEHOLDER: doctor to confirm all advice on this page.
 
@@ -21,7 +21,7 @@ export interface ProcedureGuide {
 
 const part = (need: string): GuidePart => ({ text: null, need });
 
-// PLACEHOLDER: per-procedure guides from the handouts in owner-content/04-surgery-guides — preview only until reviewed.
+// PLACEHOLDER: per-procedure guides from the handouts in owner-content/04-surgery-guides - preview only until reviewed.
 export const procedureGuides: ProcedureGuide[] = [
   {
     id: 'tonsillectomy-adenoidectomy',
@@ -60,7 +60,7 @@ export const procedureGuides: ProcedureGuide[] = [
 export const carePage = {
   title: 'Before & After Surgery',
   intro:
-    'If you are having a procedure, you will be given instructions for your specific operation. This page covers the general points — always follow the instructions you were given.',
+    'If you are having a procedure, you will be given instructions for your specific operation. This page covers the general points - always follow the instructions you were given.',
   before: {
     heading: 'Before your procedure',
     items: [

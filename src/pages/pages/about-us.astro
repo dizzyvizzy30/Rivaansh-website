@@ -1,13 +1,10 @@
 ---
-// Doctor & Clinic (old URL kept). Anchors: #doctor #clinic #surgery. Old /pages/gallery.html redirects to #clinic.
+// Doctor & Centre (old URL kept). Anchors: #doctor #centre #surgery. Old /pages/gallery.html redirects to #centre.
 // Live site shows only real/stand-in photos and confirmed facts; preview builds show every empty slot and missing fact.
 import PageLayout from '../../layouts/PageLayout.astro';
 import DoctorCard from '../../components/doctor/DoctorCard.astro';
 import SlotGallery from '../../components/media/SlotGallery.astro';
-import ContactActions from '../../components/ui/ContactActions.astro';
 import InfoNeeded from '../../components/ui/InfoNeeded.astro';
-import MetricsBand from '../../components/proof/MetricsBand.astro';
-import Testimonials from '../../components/proof/Testimonials.astro';
 import { doctorClinicPage as page } from '../../data/doctor-clinic';
 import { slotImage } from '../../data/photo-slots';
 import { showDrafts } from '../../data/collections';
@@ -17,7 +14,7 @@ const tourHasPhotos = page.tourSlots.some((id) => slotImage(id));
 const showSurgery = showDrafts || page.surgery;
 ---
 
-<PageLayout title="Doctor & Clinic" description="Dr. Tanay S Parikh, MS (ENT), Fellowship in Otology, and the Rivaansh ENT clinic at Centre Point, Gota, Ahmedabad.">
+<PageLayout title="Doctor & Centre" description="Dr. Tanay S Parikh, MS (ENT), Fellowship in Otology, and the Rivaansh ENT centre at Centre Point, Gota, Ahmedabad." variant="wide">
   <h1>{page.title}</h1>
   <p>{page.intro}</p>
 
@@ -25,23 +22,17 @@ const showSurgery = showDrafts || page.surgery;
     <DoctorCard headingLevel={2} showLink={false} />
   </section>
 
-  <MetricsBand variant="detail" />
-
-  <section id="reviews" class="block" aria-labelledby="reviews-title">
-    <Testimonials />
-  </section>
-
-  <section id="clinic" class="block" aria-labelledby="clinic-title">
-    <h2 id="clinic-title">{page.clinicHeading}</h2>
+  <section id="centre" class="block" aria-labelledby="centre-title">
+    <h2 id="centre-title">{page.clinicHeading}</h2>
     <p>
-      The clinic is office 406 on the 4th floor of Centre Point, Gota.
+      The centre is office 406 on the 4th floor of Centre Point, Gota.
       <a href={`${routes.visit}#getting-here`}>How to get here</a>.
     </p>
     {(tourHasPhotos || showDrafts) && <p class="muted">{page.clinicIntro}</p>}
-    <SlotGallery slots={page.tourSlots} id="clinic" label="Clinic tour" />
+    <SlotGallery slots={page.tourSlots} id="centre" label="Centre tour" />
 
     <h3>{page.equipmentHeading}</h3>
-    {page.equipment ? <ul class="ticks">{page.equipment.map((e) => <li>{e}</li>)}</ul> : <InfoNeeded what="equipment at the clinic, in plain words" folder="00-clinic-facts" />}
+    {page.equipment ? <ul class="ticks">{page.equipment.map((e) => <li>{e}</li>)}</ul> : <InfoNeeded what="equipment at the centre, in plain words" folder="00-clinic-facts" />}
 
     <h3>{page.hygieneHeading}</h3>
     {page.hygiene ? <ul class="ticks">{page.hygiene.map((h) => <li>{h}</li>)}</ul> : <InfoNeeded what="sterilisation method, single-use items" folder="00-clinic-facts" />}
@@ -57,17 +48,13 @@ const showSurgery = showDrafts || page.surgery;
         </>
       ) : (
         <>
-          <p class="draft-banner">Preview only — this section goes live once the clinic confirms where operations are done.</p>
+          <p class="draft-banner">Preview only - this section goes live once the centre confirms where operations are done.</p>
           <InfoNeeded what="where operations are done and who gives anaesthesia" folder="00-clinic-facts" />
         </>
       )}
       <SlotGallery slots={page.surgerySlots} id="surgery" label="Surgery photos" columns={2} />
     </section>
   )}
-
-  <section class="cta" aria-label="Book a visit">
-    <ContactActions showBook />
-  </section>
 </PageLayout>
 
 <style>
@@ -102,9 +89,5 @@ const showSurgery = showDrafts || page.surgery;
     left: 0;
     color: var(--color-primary-dark);
     font-weight: 700;
-  }
-
-  .cta {
-    margin-top: 2.5rem;
   }
 </style>

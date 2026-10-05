@@ -1,6 +1,6 @@
 ---
 title: 'Cotton Buds, Ear Oil and Roadside Ear Cleaning: What Is Safe?'
-description: Ears clean themselves. Pushing things into them causes more problems than wax does — here is what to do instead.
+description: Ears clean themselves. Pushing things into them causes more problems than wax does - here is what to do instead.
 order: 2
 relatedConditions: [ear-pain-ear-infections, perforated-eardrum, hearing-loss-hearing-aids]
 draft: true

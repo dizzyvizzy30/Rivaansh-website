@@ -17,7 +17,7 @@ draft: true
 The eardrum is a thin membrane that vibrates with sound. A hole in it can be caused by:
 
 - A middle-ear infection, when pus builds up behind the eardrum
-- An injury — a slap on the ear, a cotton bud, hairpin or other object pushed into the ear
+- An injury - a slap on the ear, a cotton bud, hairpin or other object pushed into the ear
 - A sudden change in pressure, such as a loud blast, diving or flying
 - Long-standing ear infections
 
@@ -46,7 +46,7 @@ Seek urgent care if an ear injury is followed by **severe dizziness or vomiting,
 
 ## Treatment options
 
-- **Waiting and keeping the ear dry** — many small holes caused by injury heal within six to eight weeks.
+- **Waiting and keeping the ear dry** - many small holes caused by injury heal within six to eight weeks.
 - **Ear drops or antibiotics** to treat infection.
 
 ### Eardrum repair surgery
@@ -63,7 +63,7 @@ See [Before & After Surgery](/pages/care.html) for general guidance. You will be
 Hearing usually improves when the hole heals or is repaired. The hearing test helps show how much improvement to expect.
 
 ### Can I bathe and wash my hair?
-Yes — keep water out of the ear as described above.
+Yes - keep water out of the ear as described above.
 
 ### Can I fly?
 Ask the doctor before flying, especially after surgery.

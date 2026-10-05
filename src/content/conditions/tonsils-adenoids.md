@@ -31,7 +31,7 @@ See an ENT doctor for sore throats that keep coming back, a sore throat that doe
 
 ### When it's urgent
 
-Seek urgent care for **difficulty breathing, drooling or being unable to swallow saliva, difficulty opening the mouth, or one-sided throat swelling with a muffled voice** — and for **any bleeding after tonsil surgery**.
+Seek urgent care for **difficulty breathing, drooling or being unable to swallow saliva, difficulty opening the mouth, or one-sided throat swelling with a muffled voice** - and for **any bleeding after tonsil surgery**.
 
 ## What happens at your visit
 
@@ -62,4 +62,4 @@ The body has many other parts that fight infection, and removing the tonsils doe
 There is no fixed age. The decision depends on how often problems occur and how much they affect breathing, sleep and school.
 
 ### What can my child eat after the operation?
-Soft, cool foods and plenty of fluids at first. Eating normally as soon as possible helps healing — follow the instructions you are given.
+Soft, cool foods and plenty of fluids at first. Eating normally as soon as possible helps healing - follow the instructions you are given.

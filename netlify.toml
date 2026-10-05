@@ -54,15 +54,15 @@
   to = "/pages/ent.html#procedures"
   status = 301
 
-# Gallery moved to Doctor & Clinic
+# Gallery moved to Doctor & Centre
 [[redirects]]
   from = "/pages/gallery.html"
-  to = "/pages/about-us.html#clinic"
+  to = "/pages/about-us.html#centre"
   status = 301
 
 [[redirects]]
   from = "/pages/gallery"
-  to = "/pages/about-us.html#clinic"
+  to = "/pages/about-us.html#centre"
   status = 301
 
 # Locations merged into Visit Us

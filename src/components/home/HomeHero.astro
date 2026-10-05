@@ -1,6 +1,6 @@
 ---
 // Homepage hero. Wide screens: photo on the right half, text on solid slate. Phones: a 16:9 photo strip ABOVE the
-// text (never behind it) and a single Call button — Directions/WhatsApp become a text row because the bottom action
+// text (never behind it) and a single Call button - Directions/WhatsApp become a text row because the bottom action
 // bar already offers them. No photo → solid slate on the live site.
 import MediaImage from '../media/MediaImage.astro';
 import PhotoSlot from '../media/PhotoSlot.astro';
@@ -14,9 +14,6 @@ import { showDrafts } from '../../data/collections';
 
 const image = slotImage(hero.slot);
 const whatsapp = whatsappHref();
-const doctorLine = [site.doctor.name, site.doctor.credentials, site.doctor.registration && `Reg. no. ${site.doctor.registration}`]
-  .filter(Boolean)
-  .join(' · ');
 ---
 
 <section class:list={['hero', !image && 'hero--no-photo']}>
@@ -29,19 +26,23 @@ const doctorLine = [site.doctor.name, site.doctor.credentials, site.doctor.regis
     showDrafts && <div class="hero-media hero-media--empty"><PhotoSlot id={hero.slot} sizes="100vw" /></div>
   )}
   <div class="hero-content">
-    <p class="hero-kicker">{site.shortName} <span lang="gu">· {site.localTagline}</span></p>
-    <h1 class="hero-title">{hero.title}</h1>
-    <p class="hero-subline">{hero.subline}</p>
-    <p class="hero-doctor">{doctorLine}</p>
-    <ul class="hero-facts">
-      <li><Icon name="clock" /><TodayHours /></li>
-      <li><Icon name="map-pin" />4th floor, Centre Point · opp. Vrundavan Heights</li>
-    </ul>
-    <ContactActions tone="on-dark" showBook />
-    <p class="hero-links">
-      <a href={site.contact.mapsUrl} target="_blank" rel="noopener">Directions</a>
-      {whatsapp && <> · <a href={whatsapp} target="_blank" rel="noopener">WhatsApp</a></>}
-    </p>
+    <div class="hero-copy">
+      <p class="hero-kicker">{site.shortName} <span lang="gu">· {site.localTagline}</span></p>
+      <h1 class="hero-title">{hero.title}</h1>
+      <p class="hero-subline">{hero.subline}</p>
+    </div>
+    <aside class="hero-visit" aria-label="Plan your visit">
+      <p class="hero-visit-label">Plan your visit</p>
+      <ul class="hero-facts">
+        <li><Icon name="clock" /><TodayHours /></li>
+        <li><Icon name="map-pin" />4th floor, Centre Point · opp. Vrundavan Heights</li>
+      </ul>
+      <ContactActions tone="on-dark" showBook />
+      <p class="hero-links">
+        <a href={site.contact.mapsUrl} target="_blank" rel="noopener">Directions</a>
+        {whatsapp && <> · <a href={whatsapp} target="_blank" rel="noopener">WhatsApp</a></>}
+      </p>
+    </aside>
   </div>
   <div class="hero-wave" aria-hidden="true">
     <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
@@ -53,7 +54,7 @@ const doctorLine = [site.doctor.name, site.doctor.credentials, site.doctor.regis
 <style>
   .hero {
     position: relative;
-    min-height: min(600px, 74vh);
+    min-height: min(620px, 72vh);
     display: flex;
     align-items: center;
     overflow: hidden;
@@ -94,7 +95,13 @@ const doctorLine = [site.doctor.name, site.doctor.credentials, site.doctor.regis
   }
 
   .hero--no-photo::before {
-    display: none;
+    background:
+      radial-gradient(circle at 88% 14%, rgba(18, 139, 139, 0.28), transparent 30rem),
+      linear-gradient(120deg, var(--color-surface-dark) 0%, #1d405b 100%);
+  }
+
+  .hero--no-photo {
+    min-height: 500px;
   }
 
   .hero-badge {
@@ -114,46 +121,64 @@ const doctorLine = [site.doctor.name, site.doctor.credentials, site.doctor.regis
     width: 100%;
     max-width: var(--width-wide);
     margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(19rem, 0.75fr);
+    gap: clamp(2rem, 6vw, 7rem);
+    align-items: center;
     color: var(--color-text-on-dark);
   }
 
-  .hero-content > * {
-    max-width: 40rem;
+  .hero-copy {
+    max-width: 58rem;
   }
 
   .hero-kicker {
+    padding-left: 0.75rem;
+    border-left: 3px solid var(--color-accent);
     font-weight: 600;
     letter-spacing: 0.04em;
-    color: #d6ead6;
+    color: #7ee0d8;
     margin-bottom: 0.6rem;
   }
 
   .hero-title {
     color: var(--color-text-on-dark);
-    font-size: clamp(2rem, 4.5vw, 3.25rem);
-    line-height: 1.1;
+    font-size: clamp(2.5rem, 5vw, 5rem);
+    line-height: 1.02;
     letter-spacing: -0.03em;
     margin-bottom: 0.6rem;
   }
 
   .hero-subline {
-    font-size: 1.1875rem;
-    color: #e2e8f0;
-    margin-bottom: 1rem;
+    max-width: 50rem;
+    font-size: clamp(1.0625rem, 1.5vw, 1.375rem);
+    color: var(--color-text-on-dark-soft);
+    margin-bottom: 0;
   }
 
-  .hero-doctor {
-    font-weight: 600;
-    color: #d6ead6;
+  .hero-visit {
+    padding: clamp(1.25rem, 2.5vw, 2rem);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: var(--radius-xl);
+    background: rgba(10, 35, 52, 0.72);
+    box-shadow: 0 24px 60px rgba(5, 20, 31, 0.22);
+    backdrop-filter: blur(12px);
+  }
+
+  .hero-visit-label {
     margin-bottom: 1rem;
+    color: #ffffff;
+    font-size: 0.875rem;
+    font-weight: 750;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 
   .hero-facts {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 1.5rem;
+    display: grid;
+    gap: 0.8rem;
     margin-bottom: 1.5rem;
-    color: #e2e8f0;
+    color: var(--color-text-on-dark-soft);
   }
 
   .hero-facts li {
@@ -165,7 +190,7 @@ const doctorLine = [site.doctor.name, site.doctor.credentials, site.doctor.regis
   .hero-facts :global(svg) {
     width: 18px;
     height: 18px;
-    color: #b7dbb7;
+    color: #7ee0d8;
     flex-shrink: 0;
   }
 
@@ -219,7 +244,18 @@ const doctorLine = [site.doctor.name, site.doctor.credentials, site.doctor.regis
     }
 
     .hero-content {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
       padding: 1.75rem var(--gutter) 0;
+    }
+
+    .hero-copy {
+      max-width: none;
+    }
+
+    .hero-visit {
+      background: var(--color-surface-dark-2);
+      backdrop-filter: none;
     }
   }
 
@@ -230,6 +266,10 @@ const doctorLine = [site.doctor.name, site.doctor.credentials, site.doctor.regis
 
     .hero-subline {
       font-size: 1.0625rem;
+    }
+
+    .hero-title {
+      font-size: clamp(2.15rem, 10vw, 3.25rem);
     }
 
     /* Phones: one Call button; Directions / WhatsApp as a text row (the bottom bar has the rest). */

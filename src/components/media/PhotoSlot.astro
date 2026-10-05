@@ -1,7 +1,7 @@
 ---
 // A named place for a photo (registry: src/data/photo-slots.ts).
 // - Real photo supplied  → shows it.
-// - Stand-in only        → shows the stand-in; preview builds add a "Stand-in — replace with <id>" badge.
+// - Stand-in only        → preview builds show it with a badge; live builds hide it unless explicitly verified.
 // - Nothing yet          → preview builds show a dashed amber "Photo needed: <id>" frame (the owner's shot list);
 //                          the live site renders nothing, so the surrounding layout closes up.
 import MediaImage from './MediaImage.astro';
@@ -27,7 +27,7 @@ const ratio = aspect ?? slotRatio(slot);
 {image ? (
   <div class:list={['photo-slot', className]} style={`--slot-ratio: ${ratio}`}>
     <MediaImage image={image} sizes={sizes} priority={priority} class="photo-slot__img" />
-    {showDrafts && image.isStandIn && <span class="photo-slot__badge">Stand-in — replace with <code>{slot.id}</code></span>}
+    {showDrafts && image.isStandIn && <span class="photo-slot__badge">Stand-in - replace with <code>{slot.id}</code></span>}
   </div>
 ) : (
   showDrafts && (

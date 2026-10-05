@@ -1,4 +1,4 @@
-// Doctor & Clinic — /pages/about-us.html (also feeds the doctor facts on Home and the doctor card on condition pages)
+// Doctor & Clinic - /pages/about-us.html (also feeds the doctor facts on Home and the doctor card on condition pages)
 // Owner input: owner-content/02-doctor-profile/, owner-content/00-clinic-facts/, photos in owner-content/01-photos/
 // Missing facts stay null: hidden on the live site, shown as "Info needed" chips in preview builds.
 import { site } from '../config/site';
@@ -21,7 +21,7 @@ export const doctor = {
   ] as Qualification[],
   // PLACEHOLDER: doctor to confirm the bio wording.
   bio: [
-    'Dr. Tanay S Parikh is an ENT surgeon with a Master of Surgery (MS) in ENT and a fellowship in otology — the diagnosis and surgical treatment of ear, hearing and balance problems.',
+    'Dr. Tanay S Parikh is an ENT surgeon with a Master of Surgery (MS) in ENT and a fellowship in otology - the diagnosis and surgical treatment of ear, hearing and balance problems.',
     'At Rivaansh ENT, Dr. Parikh sees adults and children for ear, nose, throat, thyroid, head and neck problems, from routine ear and sinus complaints to conditions that need surgery.',
   ],
   languages: null as string | null,
@@ -42,7 +42,7 @@ export const doctorClinicPage = {
   // PLACEHOLDER: sterilisation method, single-use items.
   hygiene: null as string[] | null,
   surgeryHeading: 'Where surgery is done',
-  // PLACEHOLDER: owner decision 7 — where operations take place and who gives the anaesthesia. Section is live only once set.
+  // PLACEHOLDER: owner decision 7 - where operations take place and who gives the anaesthesia. Section is live only once set.
   surgery: null as null | { where: string; anaesthesia: string },
   surgerySlots: ['operating-microscope', 'operation-theatre'],
 };

@@ -1,12 +1,11 @@
 ---
 // Condition page template (one markdown file per condition in src/content/conditions/).
-// Structure: docs/site-restructure-plan.md §6 — In short → body headings → doctor card + actions → related tips → review line.
+// Structure: docs/site-restructure-plan.md §6 - In short → body headings → doctor card + actions → related tips → review line.
 import { render } from 'astro:content';
 import PageLayout from '../../../layouts/PageLayout.astro';
 import ContactActions from '../../../components/ui/ContactActions.astro';
 import DoctorCard from '../../../components/doctor/DoctorCard.astro';
 import TodayHours from '../../../components/layout/TodayHours.astro';
-import PhotoSlot from '../../../components/media/PhotoSlot.astro';
 import { getConditions, getTips, reviewLine, type Condition } from '../../../data/collections';
 import { routes, tipHref, conditionHref } from '../../../config/navigation';
 import { site } from '../../../config/site';
@@ -27,22 +26,17 @@ const onThisPage = headings.filter((h) => h.depth === 2);
 const tips = (await getTips()).filter((t) => data.relatedTips.includes(t.id) || t.data.relatedConditions.includes(condition.id));
 const related = (await getConditions()).filter((c) => c.id !== condition.id && c.data.area === data.area);
 const reviewed = reviewLine(data);
-const defaultVisitPhoto: Record<string, string> = {
-  'sinus-allergy-blocked-nose': 'endoscope-unit',
-  'hearing-loss-hearing-aids': 'hearing-test-room',
-};
-const visitPhoto = data.visitPhoto ?? defaultVisitPhoto[condition.id] ?? 'consultation-room-ent-unit';
 ---
 
-<PageLayout title={`${data.title} — ENT, Gota, Ahmedabad`} description={data.summary} noindex={data.draft}>
+<PageLayout title={`${data.title} - ENT, Gota, Ahmedabad`} description={data.summary} noindex={data.draft}>
   <nav class="breadcrumb" aria-label="Breadcrumb">
     <a href={routes.treatments}>Treatments</a> <span aria-hidden="true">›</span> <span aria-current="page">{data.title}</span>
   </nav>
 
-  {data.draft && <p class="draft-banner">Draft — awaiting review by {site.doctor.name}. Not published on the live site.</p>}
+  {data.draft && <p class="draft-banner">Draft - awaiting review by {site.doctor.name}. Not published on the live site.</p>}
 
   <h1>{data.title}</h1>
-  {data.localNames && <p class="local-names" lang="gu">{data.localNames}</p>}
+  {data.localNames && <p class="local-names" lang="mul">{data.localNames}</p>}
 
   <aside class="in-short" aria-label="In short">
     <h2>In short</h2>
@@ -63,7 +57,6 @@ const visitPhoto = data.visitPhoto ?? defaultVisitPhoto[condition.id] ?? 'consul
 
   <section class="condition-contact" aria-labelledby="contact-title">
     <h2 id="contact-title">See {site.doctor.shortName}</h2>
-    <PhotoSlot id={visitPhoto} sizes="(max-width: 960px) calc(100vw - 4rem), 896px" class="visit-photo" />
     <DoctorCard variant="mini" headingLevel={3} />
     <p class="contact-hours"><TodayHours /> · {site.contact.address.short}</p>
     <ContactActions showBook />
@@ -154,10 +147,6 @@ const visitPhoto = data.visitPhoto ?? defaultVisitPhoto[condition.id] ?? 'consul
   .on-this-page a {
     color: var(--color-primary-ink);
     font-weight: 600;
-  }
-
-  .condition-contact :global(.visit-photo) {
-    max-height: 360px;
   }
 
   @media (max-width: 560px) {

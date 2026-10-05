@@ -1,6 +1,6 @@
 // Published-content helpers for condition pages and Health Tips.
 // Drafts (unreviewed medical content) are included only in `npm run dev` and when SHOW_DRAFTS=true
-// (set for Netlify deploy previews in netlify.toml) — never in a production build.
+// (set for Netlify deploy previews in netlify.toml) - never in a production build.
 import { getCollection, type CollectionEntry } from 'astro:content';
 
 export type Condition = CollectionEntry<'conditions'>;

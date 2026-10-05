@@ -13,8 +13,8 @@ draft: true
 
 Common causes of a neck swelling include:
 
-- **Swollen lymph glands** with a throat, ear or tooth infection — usually settle in two to three weeks.
-- **Thyroid swelling** — the whole gland (goitre) or a lump (nodule) in it. Most thyroid nodules are not cancer.
+- **Swollen lymph glands** with a throat, ear or tooth infection - usually settle in two to three weeks.
+- **Thyroid swelling** - the whole gland (goitre) or a lump (nodule) in it. Most thyroid nodules are not cancer.
 - **Salivary gland swellings** under the jaw or in front of the ear.
 - **Cysts present from birth**, which may become noticeable later.
 - Less often, **cancer** of the head and neck or the thyroid.
@@ -27,7 +27,7 @@ Common causes of a neck swelling include:
 
 ## When to see a doctor
 
-See an ENT doctor for any neck lump that **lasts more than three weeks**, keeps growing, or feels hard or fixed — especially if you smoke or chew tobacco or gutkha. Also see a doctor for hoarseness lasting more than three weeks, difficulty swallowing, or unexplained weight loss, fever or night sweats.
+See an ENT doctor for any neck lump that **lasts more than three weeks**, keeps growing, or feels hard or fixed - especially if you smoke or chew tobacco or gutkha. Also see a doctor for hoarseness lasting more than three weeks, difficulty swallowing, or unexplained weight loss, fever or night sweats.
 
 ### When it's urgent
 
@@ -37,7 +37,7 @@ Seek urgent care for **difficulty breathing or swallowing**, a **lump that grows
 
 - Examination of the neck, mouth and throat, including a thin camera to look at the throat and voice box
 - An **ultrasound** scan of the neck
-- **FNAC (fine-needle aspiration)** — a few cells taken from the lump with a thin needle for testing
+- **FNAC (fine-needle aspiration)** - a few cells taken from the lump with a thin needle for testing
 - Thyroid blood tests, and sometimes a CT or MRI scan
 
 ## Treatment options

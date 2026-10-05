@@ -1,11 +1,10 @@
-// Facts the owner still has to provide — listed on the preview-only /pages/photos-needed.html checklist.
+// Facts the owner still has to provide - listed on the preview-only /pages/photos-needed.html checklist.
 // Each entry reads a field that stays null (hidden on the live site) until the owner answers.
 import { site } from '../config/site';
 import { doctor, doctorClinicPage } from './doctor-clinic';
 import { visitPage } from './visit';
 import { bookPage } from './book';
 import { treatmentsPage } from './treatments';
-import { metrics, googleReviews, liveTestimonials } from './proof';
 
 export const factsNeeded = (): { what: string; folder: string }[] =>
   [
@@ -27,13 +26,6 @@ export const factsNeeded = (): { what: string; folder: string }[] =>
     { what: 'Holidays when the clinic is closed', folder: '00-clinic-facts', missing: !visitPage.holidays },
     { what: 'What happens after you call', folder: '06-faq', missing: !bookPage.afterYouCall },
     { what: 'WhatsApp number and who answers it', folder: '00-clinic-facts', missing: !site.contact.whatsapp },
-    ...metrics.map((m) => ({
-      what: `Confirm "${m.value} ${m.label.toLowerCase()}" and how it was counted`,
-      folder: '07-numbers-and-reviews',
-      missing: !(m.confirmed && m.source),
-    })),
-    { what: 'Google reviews link, rating and count', folder: '07-numbers-and-reviews', missing: !googleReviews },
-    { what: 'Patient quotes with written consent', folder: '07-numbers-and-reviews', missing: liveTestimonials().length === 0 },
   ]
     .filter((f) => f.missing)
     .map(({ what, folder }) => ({ what, folder }));

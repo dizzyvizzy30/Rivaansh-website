@@ -145,6 +145,34 @@ const watch = (page) => page.on('pageerror', (e) => errors.push(`${page.url()}: 
 }
 
 // ---------- FAQ (Visit Us) ----------
+
+// ---------- Symptom rail and local problem finder ----------
+{
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  const page = await ctx.newPage();
+  watch(page);
+  await page.goto(base + '/', { waitUntil: 'networkidle' });
+  const rail = await page.$eval('[data-rail-list]', (el) => ({ cards: el.querySelectorAll('.symptom-card').length, scrollable: el.scrollWidth > el.clientWidth }));
+  check('symptom rail has visual problem cards', rail.cards >= 6, `${rail.cards} cards`);
+  check('symptom rail is horizontally swipeable on phones', rail.scrollable);
+
+  await page.fill('#home-problem-query', 'dizzy');
+  await Promise.all([
+    page.waitForURL((url) => url.pathname.endsWith('/pages/problem-finder.html') && url.searchParams.get('q') === 'dizzy'),
+    page.click('.home-search button'),
+  ]);
+  check('homepage search hands the query to the problem finder', (await page.inputValue('[data-problem-query]')) === 'dizzy');
+  const filtered = await page.locator('[data-problem-item]:visible').count();
+  check('problem finder filters locally by everyday wording', filtered === 1, `${filtered} result`);
+  check('problem finder explains that it does not diagnose', /does not diagnose/i.test(await page.textContent('main')));
+  await page.click('[data-problem-filter="Children"]');
+  check('problem finder category filter works', (await page.locator('[data-problem-item]:visible').count()) === 0);
+  await page.click('[data-problem-clear]');
+  check('problem finder clear restores all topics', (await page.locator('[data-problem-item]:visible').count()) >= 10);
+  await ctx.close();
+}
+
+// ---------- FAQ (Visit Us) ----------
 {
   const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const page = await ctx.newPage();

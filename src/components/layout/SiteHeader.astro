@@ -1,9 +1,9 @@
 ---
-// Utility strip (≥1024px) + sticky header with four plain destinations, phone and Book — no dropdowns.
+// Utility strip (≥1024px) + sticky header with four plain destinations, phone and Book - no dropdowns.
 // The header has one fixed height (no shrinking on scroll) and a solid background (no blur).
 // Phones get a "Menu" drawer (native <dialog>: focus trap, Esc, backdrop) plus the bottom ActionBar.
 import { Image } from 'astro:assets';
-import logo from '../../assets/images/brand/logo.jpeg';
+import logoMark from '../../assets/images/brand/logo-mark-tripod.png';
 import Icon from '../ui/Icon.astro';
 import TodayHours from './TodayHours.astro';
 import { site, whatsappHref } from '../../config/site';
@@ -26,11 +26,16 @@ const { phone, landline, address, mapsUrl } = site.contact;
 </div>
 
 <header class="site-header">
-  <a href={routes.home} class="brand" aria-label={`${site.name} — home`}>
-    <Image src={logo} alt="" class="brand-logo" width={52} height={52} densities={[1, 2]} loading="eager" />
-    <span class="brand-text">
-      <span class="brand-name">{site.shortName}</span>
-      <span class="brand-sub">{site.subName}</span>
+  <a href={routes.home} class="brand" aria-label={`${site.name} - home`}>
+    <Image src={logoMark} alt="" class="brand-logo" width={52} height={52} densities={[1, 2]} loading="eager" />
+    <span class="brand-text" aria-hidden="true">
+      <span class="brand-name">Rivaansh</span>
+      <span class="brand-sub">
+        <span class="brand-sub-ent">ENT,</span>
+        <span class="brand-sub-head">HEAD</span>
+        <span class="brand-sub-and">&amp;</span>
+        <span class="brand-sub-neck">NECK CENTRE</span>
+      </span>
     </span>
   </a>
 
@@ -47,7 +52,7 @@ const { phone, landline, address, mapsUrl } = site.contact;
       <Icon name="phone" />
       <span class="header-call-number">{phone.display}</span>
     </a>
-    <a class="btn btn--primary header-book" href={routes.book}>Book Appointment</a>
+    <a class="btn btn--primary header-book" href={routes.book}>Book appointment</a>
     <a class="menu-button" href="#site-footer" aria-haspopup="dialog" aria-controls="site-drawer" data-menu-open>
       <Icon name="menu" />
       <span>Menu</span>
@@ -146,31 +151,58 @@ const { phone, landline, address, mapsUrl } = site.contact;
   .brand {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.7rem;
     flex-shrink: 0;
   }
 
   .brand-logo {
+    display: block;
     width: 52px;
     height: 52px;
+    object-fit: contain;
   }
 
   .brand-text {
     display: flex;
     flex-direction: column;
-    line-height: 1.2;
+    line-height: 1.15;
+    white-space: nowrap;
   }
 
   .brand-name {
-    font-size: 1.25rem;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 1.24rem;
     font-weight: 700;
-    color: var(--color-primary-dark);
-    letter-spacing: -0.02em;
+    color: var(--color-text);
+    letter-spacing: -0.035em;
   }
 
   .brand-sub {
-    font-size: 0.8125rem;
-    color: var(--color-text-muted);
+    margin-top: 0.14rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.22rem;
+    font-family: 'Arial Narrow', 'Aptos Narrow', 'Roboto Condensed', var(--font-sans);
+    font-size: 0.68rem;
+    font-weight: 750;
+    line-height: 1;
+    letter-spacing: 0.045em;
+  }
+
+  .brand-sub-ent {
+    color: var(--color-accent);
+  }
+
+  .brand-sub-head {
+    color: var(--color-primary);
+  }
+
+  .brand-sub-and {
+    color: var(--color-text);
+  }
+
+  .brand-sub-neck {
+    color: var(--color-secondary);
   }
 
   .desktop-nav {
@@ -241,7 +273,7 @@ const { phone, landline, address, mapsUrl } = site.contact;
     display: none;
   }
 
-  /* 769–1023px: shorter wordmark, phone becomes an icon button */
+  /* 769–1023px: phone becomes an icon button */
   @media (max-width: 1023px) {
     .brand-sub {
       display: none;
@@ -264,7 +296,7 @@ const { phone, landline, address, mapsUrl } = site.contact;
     }
   }
 
-  /* ≤768px: logo + name, Call icon, "Menu" button; booking lives in the bottom action bar */
+  /* ≤768px: logo mark, Call icon, "Menu" button; booking lives in the bottom action bar */
   @media (max-width: 768px) {
     .site-header {
       height: var(--header-height-compact);
@@ -273,12 +305,26 @@ const { phone, landline, address, mapsUrl } = site.contact;
     }
 
     .brand-logo {
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
+    }
+
+    .brand {
+      gap: 0.5rem;
     }
 
     .brand-name {
-      font-size: 1.125rem;
+      font-size: 1rem;
+    }
+
+    .brand-sub {
+      display: block;
+      margin-top: 0.1rem;
+      font-size: 0.625rem;
+    }
+
+    .brand-sub > span + span {
+      margin-left: 0.14rem;
     }
 
     .desktop-nav,

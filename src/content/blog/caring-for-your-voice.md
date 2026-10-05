@@ -1,6 +1,6 @@
 ---
 title: 'Caring for Your Voice: Teachers, Shopkeepers and Singers'
-description: People who talk or sing for a living put a lot of strain on their voice. Simple habits help — and hoarseness that lasts three weeks should be checked.
+description: People who talk or sing for a living put a lot of strain on their voice. Simple habits help - and hoarseness that lasts three weeks should be checked.
 order: 7
 relatedConditions: [thyroid-neck-swellings]
 draft: true
@@ -13,10 +13,10 @@ Teachers, shopkeepers, salespeople, call-centre staff and singers use their voic
 
 - **Drink water** through the day.
 - **Avoid shouting**, and use a microphone or speaker in classrooms and shops when you can.
-- **Don't whisper** to rest your voice — whispering strains it too. Speak softly or rest.
+- **Don't whisper** to rest your voice - whispering strains it too. Speak softly or rest.
 - **Rest your voice** when it is hoarse.
 - **Avoid smoking** and chewing tobacco.
-- **Reduce acid reflux** — avoid large late-night meals and lying down soon after eating.
+- **Reduce acid reflux** - avoid large late-night meals and lying down soon after eating.
 - Try a sip of water or a swallow instead of repeatedly clearing your throat.
 
 ## When to see an ENT doctor

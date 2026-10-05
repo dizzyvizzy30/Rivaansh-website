@@ -13,10 +13,10 @@ draft: true
 
 Vertigo is a spinning sensation, even when you are still. Dizziness is a wider term that also covers feeling light-headed or unsteady. Most vertigo comes from the **inner ear**, which senses the position and movement of your head. Common causes include:
 
-- **BPPV (benign paroxysmal positional vertigo)** — short bursts of spinning when you turn over in bed, lie down or look up.
-- **Inner-ear inflammation (vestibular neuritis or labyrinthitis)** — sudden, severe vertigo lasting days, often after a cold or viral illness.
-- **Ménière's disease** — attacks of vertigo with ringing, fullness and changing hearing in one ear.
-- **Vestibular migraine** — vertigo linked with migraine, with or without headache.
+- **BPPV (benign paroxysmal positional vertigo)** - short bursts of spinning when you turn over in bed, lie down or look up.
+- **Inner-ear inflammation (vestibular neuritis or labyrinthitis)** - sudden, severe vertigo lasting days, often after a cold or viral illness.
+- **Ménière's disease** - attacks of vertigo with ringing, fullness and changing hearing in one ear.
+- **Vestibular migraine** - vertigo linked with migraine, with or without headache.
 
 ## Common symptoms
 
@@ -31,7 +31,7 @@ See an ENT doctor if vertigo keeps coming back, lasts more than a day, or comes 
 
 ### When it's urgent
 
-Go to the nearest hospital emergency department straight away if dizziness comes with **weakness or numbness of the face, arm or leg, slurred speech, double vision, trouble walking, or a sudden severe headache** — these can be signs of a stroke. Sudden hearing loss in one ear also needs to be seen within a day.
+Go to the nearest hospital emergency department straight away if dizziness comes with **weakness or numbness of the face, arm or leg, slurred speech, double vision, trouble walking, or a sudden severe headache** - these can be signs of a stroke. Sudden hearing loss in one ear also needs to be seen within a day.
 
 ## What happens at your visit
 
@@ -44,7 +44,7 @@ The doctor asks what the dizziness feels like, how long it lasts and what brings
 
 ## Treatment options
 
-- **Repositioning manoeuvres** (such as the Epley manoeuvre) for BPPV — a series of head movements done at the visit that moves loose crystals in the inner ear back into place.
+- **Repositioning manoeuvres** (such as the Epley manoeuvre) for BPPV - a series of head movements done at the visit that moves loose crystals in the inner ear back into place.
 - **Medicines** for a few days to ease spinning and nausea during a severe attack. They are not meant for long-term use.
 - **Balance exercises (vestibular rehabilitation)** that help the brain adapt and reduce ongoing unsteadiness.
 - **Treatment of the cause**, for example lifestyle changes and medicines for Ménière's disease or migraine.

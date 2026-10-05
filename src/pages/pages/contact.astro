@@ -1,5 +1,5 @@
 ---
-// Visit Us (old URL kept) — owns the full timings table, getting here, fees, first visit and FAQ.
+// Visit Us (old URL kept) - owns the full timings table, getting here, fees, first visit and FAQ.
 // Anchors: #timings #getting-here #fees #first-visit #faq. Old locations.html / faq.html redirect here.
 import PageLayout from '../../layouts/PageLayout.astro';
 import LocationCard from '../../components/visit/LocationCard.astro';
@@ -16,7 +16,7 @@ const hasFees = Boolean(page.fees || page.payment || page.mediclaim);
 const showFees = hasFees || showDrafts;
 ---
 
-<PageLayout title="Visit Us" description="Timings, directions, fees and first-visit information for Rivaansh ENT, 4th floor, Centre Point, Gota, Ahmedabad." clinicSchema>
+<PageLayout title="Visit Us" description="Timings, directions, fees and first-visit information for Rivaansh ENT, 4th floor, Centre Point, Gota, Ahmedabad." clinicSchema variant="wide">
   <h1>{page.title}</h1>
   <p>{page.intro}</p>
 

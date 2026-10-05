@@ -15,7 +15,7 @@ No Railway is needed. Expected yearly cost: the domain only (~$10.46/year for `.
 ## Steps
 
 1. **Buy the domain in Cloudflare** — Domain Registration → Register Domains. Turn on auto-renew and keep the card on file current.
-2. **Add the custom domain in Netlify first** — Site → Domain management → Add a domain → enter the domain. Netlify then shows the exact DNS records it needs (typically an `A` record for the root `@` and a `CNAME` for `www` pointing to `rivaanshentclinic.netlify.app`). Always copy the values Netlify shows rather than values from this note.
+2. **Add the custom domain in Netlify first** — Site → Domain management → Add a domain → enter the domain. Netlify then shows the exact DNS records it needs (typically an `A` record for the root `@` and a `CNAME` for `www` pointing to the project's `.netlify.app` address). Always copy the values Netlify shows rather than values from this note.
 3. **Copy those records into Cloudflare** — Cloudflare → your domain → DNS → Records → Add record.
 4. **Set every Netlify record to "DNS only" (gray cloud), not "Proxied" (orange cloud).** Netlify already provides the CDN and HTTPS; running Cloudflare's proxy in front as well can break Netlify's domain verification and certificate issuance.
 5. **Wait for HTTPS** — Netlify issues the certificate automatically once DNS resolves (minutes to a few hours). Check Domain management → HTTPS.

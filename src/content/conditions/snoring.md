@@ -15,7 +15,7 @@ draft: true
 Snoring happens when the airway narrows during sleep. Common contributors are:
 
 - A blocked nose (allergy, a bent septum, polyps)
-- Large tonsils or adenoids — the most common cause in children
+- Large tonsils or adenoids - the most common cause in children
 - Extra weight, alcohol or sleeping tablets in the evening, smoking, and sleeping on your back
 
 **Obstructive sleep apnoea (OSA)** is when the airway repeatedly closes during sleep, causing pauses in breathing.
@@ -43,10 +43,10 @@ If you **fall asleep while driving** or at work, stop driving and see a doctor p
 
 ## Treatment options
 
-- **Lifestyle changes** — weight loss, avoiding alcohol in the evening, sleeping on your side, stopping smoking.
+- **Lifestyle changes** - weight loss, avoiding alcohol in the evening, sleeping on your side, stopping smoking.
 - **Treating a blocked nose** with sprays or surgery.
 - **CPAP**, a machine that keeps the airway open during sleep, for moderate or severe sleep apnoea.
-- **Surgery in selected cases** — for example removing large tonsils and adenoids in children, or operations on the nose or throat in adults.
+- **Surgery in selected cases** - for example removing large tonsils and adenoids in children, or operations on the nose or throat in adults.
 
 ## Questions patients ask
 

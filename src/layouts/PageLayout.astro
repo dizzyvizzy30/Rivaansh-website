@@ -1,5 +1,5 @@
 ---
-// Simple inner page: shared chrome + the 960px `.page-container` column.
+// Inner page shell. Wide hub pages can use the full site canvas while article-style pages keep a reading measure.
 import BaseLayout from './BaseLayout.astro';
 
 interface Props {
@@ -7,13 +7,14 @@ interface Props {
   description?: string;
   noindex?: boolean;
   clinicSchema?: boolean;
+  variant?: 'wide' | 'reading';
 }
 
-const props = Astro.props;
+const { variant = 'reading', ...props } = Astro.props;
 ---
 
 <BaseLayout {...props}>
-  <div class="page-container">
+  <div class:list={['page-container', `page-container--${variant}`]}>
     <slot />
   </div>
 </BaseLayout>

@@ -236,6 +236,23 @@ fewer than 4 of 6 tap first. Repeat 4 weeks after launch.
 
 Also watch redirect hits and 404s on old URLs.
 
+---
+
+# Round 4 — visual symptom finder and wider hubs (2026-10-03)
+
+Two reviewers (patient-journey/UI and technical/medical-safety) agreed on the following implementation:
+
+- Home replaces the body-area tile grid with one large, non-autoplay, horizontally swipeable rail of six common
+  concerns. Each visual card uses English plus one restrained Gujarati line; a doctor/native speaker must review the
+  Gujarati before launch.
+- `problem-finder.html` provides local search and category filters over clinic-owned wording. It is a navigation aid,
+  not a diagnostic checker; inputs stay in the browser and current results link only to the reviewed Treatments hub.
+- Urgent guidance remains separate from the routine symptom cards.
+- Hub pages use the 1680px wide canvas; article-style pages retain the reading-width canvas and capped prose measure.
+- Claude/API integration is deferred. If real search failures later justify it, the model may only match wording to an
+  allowlist of doctor-approved topic IDs through a server-side endpoint. It must not diagnose, triage, infer services,
+  or receive names, phone numbers, reports or other identifying data.
+
 
 ---
 
@@ -297,3 +314,47 @@ The owner asked for clinic numbers and testimonials. They are back, with safegua
 - Preview builds show amber markers for every unconfirmed number and missing quote; the live site hides them.
 - Risk accepted by the owner: NMC rules restrict doctors' advertising, especially testimonials. The doctor must agree
   before quotes go live (question 7 in folder 07).
+
+
+---
+
+# Round 3 — symptom-led conversion and ethics review (2026-10-03)
+
+_Two independent critics reviewed the built site and challenged each other: one focused on an Indian ENT patient's
+search and decision journey; the other focused on healthcare conversion, accessibility and medical ethics._
+
+## Resolution
+
+- Keep the four-link navigation and the locality-led homepage H1. They already answer the high-intent questions
+  “what is this?” and “is it near me?” without a dropdown.
+- Use everyday symptom phrases on Home, grouped by body area for scanning. Medical condition and procedure names stay
+  on Treatments and condition pages. Once a condition page is reviewed and published, its matching homepage symptom
+  links directly to it.
+- Home now follows: symptom recognition → what a visit can safely promise → compact clinician proof → visit logistics.
+  It does not promise a diagnosis or result. The full doctor biography, clinic tour, first-visit details, procedure
+  information and health articles remain on their owning pages.
+- Keep a compact doctor-identity block on Home; do not remove accountability proof entirely. Suppress unverified
+  doctor stand-in photos from live builds.
+- “Book” is not presented as online booking while the only staffed path is by phone. The appointment explainer remains,
+  labelled “Book by Phone”; WhatsApp returns only after its staffing and response expectations are confirmed.
+- Split urgent guidance into emergency-now symptoms and same-day ENT concerns. Breathing difficulty and uncontrolled
+  bleeding must not wait for a clinic callback.
+- Remove patient/surgery counters, testimonials and rating widgets from Home, Doctor & Clinic, preview checklists and
+  source UI. Consent addresses privacy, not the separate NMC concern about solicitation/self-aggrandising publicity.
+  This supersedes the “Numbers and patient reviews” addendum above.
+- Remove the homepage Health Tips feed. Reviewed tips stay in navigation and link contextually from condition pages.
+- Keep condition and tip draft gating. The highest-value next content task is doctor review of the first symptom-led
+  condition pages; production intentionally has no condition-detail routes until that review happens.
+
+## Safe visit language
+
+Use: “The doctor examines the affected ear, nose or throat and explains whether any test may be useful” and “The
+likely cause and available options are discussed before treatment starts.” Avoid “You will know what the problem is,”
+guaranteed outcomes, and unsupported claims that most cases do not need surgery.
+
+## Still needed before launch
+
+Confirm the clinic's official name, one public phone number, hours and holiday exceptions, exact qualifications,
+registration number/council, doctor-photo identity and consent, languages, consultation fee, payment methods,
+appointment/token process, WhatsApp staffing, and every listed test/procedure. Match name, address, phone and hours to
+the clinic's Google Business Profile.

@@ -41,7 +41,7 @@ const guides = procedureGuides.filter((g) => showDrafts || !g.draft);
       <h2 id="guides-title">{page.guidesHeading}</h2>
       {guides.map((guide) => (
         <article class="guide" id={guide.id}>
-          {guide.draft && <p class="draft-banner">Draft — waiting for the clinic's own instructions. Not published on the live site.</p>}
+          {guide.draft && <p class="draft-banner">Draft - waiting for the clinic's own instructions. Not published on the live site.</p>}
           <h3>{guide.title}</h3>
           {[
             ['Before the operation', guide.before],
@@ -167,6 +167,6 @@ const guides = procedureGuides.filter((g) => showDrafts || !g.draft);
     share.hidden = false;
     share.querySelector('[data-print]')?.addEventListener('click', () => window.print());
     const link = share.querySelector<HTMLAnchorElement>('[data-whatsapp-share]');
-    if (link) link.href = `https://wa.me/?text=${encodeURIComponent(`${document.title} — ${location.href}`)}`;
+    if (link) link.href = `https://wa.me/?text=${encodeURIComponent(`${document.title} - ${location.href}`)}`;
   }
 </script>

@@ -16,10 +16,10 @@ draft: true
 
 ## What it is
 
-- **Allergic rhinitis** — sneezing, an itchy, runny or blocked nose and watery eyes, often triggered by dust, pollen, pets or weather changes.
-- **Sinusitis** — inflammation of the air spaces around the nose. Short-term sinusitis often follows a cold; long-term (chronic) sinusitis lasts more than 12 weeks.
+- **Allergic rhinitis** - sneezing, an itchy, runny or blocked nose and watery eyes, often triggered by dust, pollen, pets or weather changes.
+- **Sinusitis** - inflammation of the air spaces around the nose. Short-term sinusitis often follows a cold; long-term (chronic) sinusitis lasts more than 12 weeks.
 - **A bent septum** (the wall between the nostrils) or **swollen turbinates** (the bony ridges inside the nose) that narrow the airway.
-- **Nasal polyps** — soft swellings that grow from the lining of the nose and sinuses.
+- **Nasal polyps** - soft swellings that grow from the lining of the nose and sinuses.
 - **Overuse of decongestant nasal sprays**, which can cause a rebound blocked nose.
 
 ## Common symptoms

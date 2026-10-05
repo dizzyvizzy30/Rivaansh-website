@@ -9,9 +9,10 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "npm run check:copy && astro build",
     "preview": "astro preview",
-    "check": "astro check",
+    "check": "npm run check:copy && astro check",
+    "check:copy": "node scripts/check-no-em-dash.mjs",
     "test:snapshot": "node scripts/visual-snapshot.mjs http://localhost:4321 .snapshots/latest",
     "test:interactions": "node scripts/interaction-check.mjs http://localhost:4321"
   },

@@ -28,7 +28,7 @@ const reviewed = reviewLine(data);
   <nav class="breadcrumb" aria-label="Breadcrumb">
     <a href={routes.tips}>Health Tips</a> <span aria-hidden="true">›</span> <span aria-current="page">{data.title}</span>
   </nav>
-  {data.draft && <p class="draft-banner">Draft — awaiting review by {site.doctor.name}. Not published on the live site.</p>}
+  {data.draft && <p class="draft-banner">Draft - awaiting review by {site.doctor.name}. Not published on the live site.</p>}
   <article class="tip">
     {data.cover && <PostCover cover={data.cover} alt={data.coverAlt} sizes="(max-width: 960px) calc(100vw - 4rem), 896px" priority class="tip-cover" />}
     <h1>{data.title}</h1>
@@ -42,8 +42,8 @@ const reviewed = reviewLine(data);
     </section>
   )}
 
-  <section class="tip-contact" aria-label="Contact the clinic">
-    <p>Worried about a symptom? Call {site.doctor.shortName}’s clinic.</p>
+  <section class="tip-contact" aria-label="Contact the centre">
+    <p>Worried about a symptom? Call {site.doctor.shortName}’s centre.</p>
     <ContactActions showBook />
   </section>
 

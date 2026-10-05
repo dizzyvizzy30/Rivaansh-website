@@ -24,13 +24,13 @@ The doctor first examines the ears to check for wax or infection, which are easy
 ## If a hearing aid is advised
 
 - Hearing aids are fitted and adjusted using the hearing test results.
-- It usually takes a few weeks of daily use to get used to them — at first, ordinary sounds may seem loud.
+- It usually takes a few weeks of daily use to get used to them - at first, ordinary sounds may seem loud.
 - Follow-up visits help fine-tune them.
 
 ## How to help at home
 
 - Face the person when you speak, so they can see your lips.
-- Speak clearly and a little slower — shouting does not help.
+- Speak clearly and a little slower - shouting does not help.
 - Turn off the TV or move away from noise when you talk.
 
 Treating hearing loss early helps people stay part of family conversations and social life.

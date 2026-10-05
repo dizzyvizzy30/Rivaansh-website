@@ -11,15 +11,15 @@ Young children catch many colds, and ear and throat problems often follow. Most 
 
 ## Common problems
 
-- **Ear infections** — often after a cold, with ear pain, fever, crying and tugging at the ear.
-- **Glue ear** — fluid behind the eardrum that reduces hearing. Children may not respond when called, turn up the TV, or have delayed speech.
-- **Tonsillitis** — a sore throat, fever and pain on swallowing.
-- **Large adenoids or tonsils** — snoring, mouth breathing and restless sleep.
-- **Something stuck in the ear or nose** — beads, seeds and small toy parts are common.
+- **Ear infections** - often after a cold, with ear pain, fever, crying and tugging at the ear.
+- **Glue ear** - fluid behind the eardrum that reduces hearing. Children may not respond when called, turn up the TV, or have delayed speech.
+- **Tonsillitis** - a sore throat, fever and pain on swallowing.
+- **Large adenoids or tonsils** - snoring, mouth breathing and restless sleep.
+- **Something stuck in the ear or nose** - beads, seeds and small toy parts are common.
 
 ## Something stuck in the ear or nose
 
-Don't try to remove it with tweezers or cotton buds — this can push it deeper. Bring the child to a doctor. **A button battery or magnet is an emergency** — go to the nearest emergency department straight away.
+Don't try to remove it with tweezers or cotton buds - this can push it deeper. Bring the child to a doctor. **A button battery or magnet is an emergency** - go to the nearest emergency department straight away.
 
 ## Seek urgent care if your child has
 

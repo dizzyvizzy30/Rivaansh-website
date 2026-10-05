@@ -15,7 +15,7 @@ it. **We write the medical pages; the doctor only reviews them.** Total owner ti
 | `04-surgery-guides` | Before & after surgery guides | about 15 minutes |
 | `05-health-tips-review` | Health tips — review our drafts | about 1 hour in total |
 | `06-faq` | Frequently asked questions | about 20 minutes (the receptionist can answer this) |
-| `07-numbers-and-reviews` | Numbers and patient reviews | about 30 minutes + consent forms |
+| `07-numbers-and-reviews` | Hold — not used on the website under the current conservative ethics approach | no action |
 
 ## How it works
 1. Open a folder, read its `README.md`, and answer the questions in `text.md`.
@@ -40,7 +40,7 @@ it. **We write the medical pages; the doctor only reviews them.** Total owner ti
 12. Staff consent for photos showing faces.
 
 ## What changed on the website (and why)
-Removed until confirmed, to follow Indian medical-advertising rules: patient testimonials with made-up names, the
+Removed, to follow the current conservative reading of Indian medical-advertising rules: patient testimonials, the
 "15+ years / 10,000+ patients / 98% satisfaction" numbers, the template doctors (Dr. Emily Carter, Dr. Ben Hanson),
 the stock "doctor" photo, unconfirmed services (cochlear implants, speech therapy, sleep apnoea clinic, smell & taste),
 the second "About" page that named a different doctor, the Unjha sample address, the online-consultation page, and the

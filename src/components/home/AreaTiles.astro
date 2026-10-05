@@ -1,19 +1,31 @@
 ---
-// Homepage "What we treat": one whole-card link per body area (+ Urgent), each showing the area's first three
-// conditions. Generated from src/data/treatments.ts — the Treatments page keeps the full lists.
+// Homepage problem finder: one whole-card link per body area (+ Urgent), using the words patients commonly use.
+// The Treatments page keeps the medical condition and procedure names.
 import Icon from '../ui/Icon.astro';
-import { treatmentGroups, urgentProblems } from '../../data/treatments';
-import { routes } from '../../config/navigation';
+import { homeProblemGroups } from '../../data/home';
+import { urgentProblems } from '../../data/treatments';
+import { conditionHref, routes } from '../../config/navigation';
+import { getConditions } from '../../data/collections';
+
+const published = new Set((await getConditions()).map((condition) => condition.id));
 ---
 
 <ul class="area-tiles">
-  {treatmentGroups.map((group) => (
-    <li>
-      <a class="area-tile" href={`${routes.treatments}#${group.id}`}>
-        <Icon name={group.icon} />
-        <span class="area-title">{group.title}</span>
-        <span class="area-items">{group.items.slice(0, 3).map((i) => i.name).join(' · ')}</span>
-      </a>
+  {homeProblemGroups.map((group) => (
+    <li class="area-tile">
+      <Icon name={group.icon} />
+      <div>
+        <a class="area-title" href={`${routes.treatments}#${group.id}`}>{group.title}</a>
+        <ul class="area-items">
+          {group.symptoms.map((symptom) => (
+            <li>
+              {symptom.slug && published.has(symptom.slug)
+                ? <a href={conditionHref(symptom.slug)}>{symptom.label}</a>
+                : <span>{symptom.label}</span>}
+            </li>
+          ))}
+        </ul>
+      </div>
     </li>
   ))}
   <li>
@@ -36,7 +48,7 @@ import { routes } from '../../config/navigation';
     position: relative;
     display: grid;
     grid-template-columns: 40px 1fr;
-    grid-template-rows: auto auto;
+    grid-template-rows: auto;
     column-gap: 0.85rem;
     align-items: center;
     min-height: 96px;
@@ -55,7 +67,6 @@ import { routes } from '../../config/navigation';
 
   .area-tile :global(svg),
   .area-urgent-mark {
-    grid-row: span 2;
     width: 40px;
     height: 40px;
     color: var(--color-primary);
@@ -72,23 +83,48 @@ import { routes } from '../../config/navigation';
   }
 
   .area-title {
+    display: inline-block;
     font-weight: 700;
     font-size: 1.0625rem;
     color: var(--color-primary-ink);
   }
 
-  .area-title::after {
-    content: ' →';
+  .area-title:hover,
+  .area-items a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   .area-tile--urgent .area-title {
     color: #9b1c1c;
   }
 
+  .area-tile--urgent .area-urgent-mark {
+    grid-row: 1 / span 2;
+  }
+
+  .area-tile--urgent .area-items {
+    grid-column: 2;
+    display: block;
+  }
+
   .area-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 0.35rem;
+    margin-top: 0.1rem;
     font-size: 0.875rem;
     color: var(--color-text-muted);
     line-height: 1.45;
+  }
+
+  .area-items li:not(:last-child)::after {
+    content: ' ·';
+  }
+
+  .area-items a {
+    color: var(--color-primary-ink);
+    font-weight: 600;
   }
 
   @media (max-width: 900px) {

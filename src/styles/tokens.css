@@ -1,30 +1,32 @@
 /* ============================================
-   RIVAANSH ENT — DESIGN TOKENS
+   RIVAANSH ENT - DESIGN TOKENS
    Single source of truth for color, type, shape, depth, layout and motion.
    Rules and contrast guidance: .claude/skills/rivaansh-design-system/SKILL.md
    ============================================ */
 
 :root {
   /* Brand */
-  --color-primary: #8fbc8f;            /* sage: icons, accents, large text, decorative fills */
-  --color-primary-dark: #6b9e6b;       /* large headings, stat numbers, site title */
-  --color-primary-ink: #467346;        /* small green text + solid buttons behind white text (AA) */
-  --color-primary-ink-hover: #3f6b3f;
-  --color-primary-light: #e8f5e9;
-  --color-primary-tint: #c8e6c9;
+  --color-primary: #128b8b;            /* logo teal: icons and medium-size accents */
+  --color-primary-dark: #17324a;       /* deep navy: headings and structural emphasis */
+  --color-primary-ink: #086a6d;        /* accessible teal for links and solid buttons */
+  --color-primary-ink-hover: #075b5e;
+  --color-primary-light: #eaf7f6;
+  --color-primary-tint: #bfe6e3;
+  --color-secondary: #12679b;          /* logo blue: supporting informational accents */
+  --color-accent: #f26732;             /* logo orange: small highlights only */
 
   /* Neutrals */
-  --color-text: #1e293b;
-  --color-text-muted: #64748b;
+  --color-text: #17212b;
+  --color-text-muted: #526477;
   --color-text-on-dark: #ffffff;
-  --color-text-on-dark-muted: #94a3b8;
-  --color-text-on-dark-soft: #cbd5e1;
+  --color-text-on-dark-muted: #a9bdcb;
+  --color-text-on-dark-soft: #d5e2ea;
   --color-bg: #ffffff;
-  --color-bg-alt: #f8fafc;
-  --color-border: #e2e8f0;
-  --color-surface-dark: #1e293b;
-  --color-surface-dark-2: #334155;
-  --color-field-border: #cccccc;
+  --color-bg-alt: #f5f7f9;
+  --color-border: #d9e3e8;
+  --color-surface-dark: #17324a;
+  --color-surface-dark-2: #244762;
+  --color-field-border: #b9c8d0;
 
   /* Typography */
   --font-sans: 'Inter Variable', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -45,14 +47,14 @@
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
   --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
   --shadow-card: 0 2px 12px rgba(96, 125, 139, 0.08);
-  --shadow-brand: 0 20px 40px rgba(143, 188, 143, 0.2);
+  --shadow-brand: 0 20px 44px rgba(18, 139, 139, 0.18);
 
   /* Layout */
-  --width-bleed: 1440px;
-  --width-wide: 1200px;
-  --width-page: 960px;
-  --width-narrow: 800px;
-  --gutter: 2rem;
+  --width-bleed: 1800px;
+  --width-wide: 1680px;
+  --width-page: 1280px;
+  --width-narrow: 900px;
+  --gutter: clamp(1.25rem, 2.5vw, 3rem);
   --gutter-mobile: 1rem;
   --header-height: 72px;
   --header-height-compact: 64px;

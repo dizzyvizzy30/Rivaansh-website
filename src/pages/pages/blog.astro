@@ -8,9 +8,9 @@ import { routes } from '../../config/navigation';
 const tips = await getTips();
 ---
 
-<PageLayout title="Health Tips" description="Everyday ear, nose and throat care advice from Rivaansh ENT, Gota, Ahmedabad." noindex={tips.length === 0}>
+<PageLayout title="Health Tips" description="Everyday ear, nose and throat care advice from Rivaansh ENT, Gota, Ahmedabad." noindex={tips.length === 0} variant="wide">
   <h1>Health Tips</h1>
-  <p>Everyday ear, nose and throat care — and when to see a doctor.</p>
+  <p>Everyday ear, nose and throat care - and when to see a doctor.</p>
   {tips.length > 0 ? (
     <div class="tips">{tips.map((post) => <PostCard post={post} />)}</div>
   ) : (

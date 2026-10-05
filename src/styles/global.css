@@ -1,5 +1,5 @@
 /* ============================================
-   RIVAANSH ENT — GLOBAL STYLES
+   RIVAANSH ENT - GLOBAL STYLES
    Reset, base typography, buttons, reveal animations, page prose, utilities.
    Component-specific styles live in each component's scoped <style>.
    ============================================ */
@@ -14,6 +14,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-height) + 1rem);
   overflow-x: clip;
   /* The sticky header changes height while scrolling; scroll anchoring would "correct" scrollY for it,
      which reads as a backward jerk. Images reserve their space, so anchoring isn't needed elsewhere. */
@@ -70,6 +71,12 @@ button {
   }
 }
 
+@media (max-width: 768px) {
+  html {
+    scroll-padding-bottom: calc(72px + env(safe-area-inset-bottom));
+  }
+}
+
 /* ---------- Accessibility utilities ---------- */
 .sr-only {
   position: absolute;
@@ -104,7 +111,15 @@ button {
 .page-container {
   max-width: var(--width-page);
   margin: 0 auto;
-  padding: 2em;
+  padding: clamp(2rem, 4vw, 4.5rem) var(--gutter);
+}
+
+.page-container--wide {
+  max-width: var(--width-wide);
+}
+
+.page-container--reading {
+  max-width: var(--width-page);
 }
 
 /* Breaks a block out of a centered container to the full viewport width. */
@@ -115,9 +130,14 @@ button {
 
 /* ---------- Page prose (simple inner pages) ---------- */
 .page-container h1 {
-  font-size: 2.5em;
+  max-width: 58rem;
+  font-size: clamp(2.25rem, 4vw, 3.75rem);
   color: var(--color-primary-dark);
-  margin-bottom: 1em;
+  margin-bottom: 0.75em;
+}
+
+.page-container > p {
+  max-width: 58rem;
 }
 
 .page-container p {
@@ -138,31 +158,32 @@ button {
 .btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
-  padding: 1rem 2rem;
+  min-height: 48px;
+  padding: 0.7rem 1.3rem;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   border-radius: var(--radius-full);
-  transition: all var(--duration-base) var(--ease-standard);
+  transition: background-color var(--duration-fast) ease, border-color var(--duration-fast) ease, box-shadow var(--duration-fast) ease, transform var(--duration-fast) ease;
   cursor: pointer;
-  border: 2px solid transparent;
+  border: 1px solid transparent;
   position: relative;
-  overflow: hidden;
-  line-height: 1.6;
+  line-height: 1.35;
 }
 
 .btn--light {
   background: var(--color-bg);
   color: var(--color-text);
-  border-color: var(--color-bg);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  border-color: var(--color-border);
+  box-shadow: 0 2px 8px rgba(23, 50, 74, 0.08);
 }
 
 .btn--primary {
   background: var(--color-primary-ink);
   color: var(--color-text-on-dark);
   border-color: var(--color-primary-ink);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(23, 50, 74, 0.14);
 }
 
 @media (max-width: 768px) {
@@ -187,38 +208,10 @@ button {
   font-size: 1.1em;
 }
 
-/* Ripple that grows from the center on hover */
-.btn--light::before,
-.btn--primary::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  transition: width var(--duration-slow) ease, height var(--duration-slow) ease;
-}
-
-.btn--light::before {
-  background: rgba(143, 188, 143, 0.2);
-}
-
-.btn--primary::before {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.btn--light:hover::before,
-.btn--primary:hover::before {
-  width: 300px;
-  height: 300px;
-}
-
 .btn--light:hover,
 .btn--primary:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(23, 50, 74, 0.16);
 }
 
 .btn--primary:hover {
@@ -239,7 +232,6 @@ button {
 
 @media (prefers-reduced-motion: reduce) {
   .btn,
-  .btn::before,
   .btn__arrow {
     transition: none;
   }
@@ -296,7 +288,7 @@ button {
 
 /* ---------- Page sections (homepage and long pages) ---------- */
 .section {
-  padding: 4rem var(--gutter);
+  padding: clamp(3.5rem, 6vw, 6rem) var(--gutter);
   scroll-margin-top: calc(var(--header-height) + 1rem);
 }
 
@@ -336,6 +328,10 @@ button {
 }
 
 @media (max-width: 768px) {
+  .page-container {
+    padding: 2rem var(--gutter-mobile) 3.5rem;
+  }
+
   .section {
     padding: 3rem var(--gutter-mobile);
   }

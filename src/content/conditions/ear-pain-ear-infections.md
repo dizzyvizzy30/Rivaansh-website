@@ -14,11 +14,11 @@ draft: true
 
 Common causes of ear pain include:
 
-- **Outer-ear infection (otitis externa)** — infection of the ear canal, often after water gets trapped or the ear is scratched with cotton buds or other objects.
-- **Fungal ear infection** — itching, a blocked feeling and discharge; more common in humid weather.
-- **Middle-ear infection (otitis media)** — common in children after a cold; causes pain, fever and sometimes discharge.
+- **Outer-ear infection (otitis externa)** - infection of the ear canal, often after water gets trapped or the ear is scratched with cotton buds or other objects.
+- **Fungal ear infection** - itching, a blocked feeling and discharge; more common in humid weather.
+- **Middle-ear infection (otitis media)** - common in children after a cold; causes pain, fever and sometimes discharge.
 - **Wax** pressing on the ear canal.
-- **Pain from nearby areas** — the throat, teeth or jaw joint can cause pain felt in the ear.
+- **Pain from nearby areas** - the throat, teeth or jaw joint can cause pain felt in the ear.
 
 ## Common symptoms
 
@@ -31,7 +31,7 @@ Common causes of ear pain include:
 
 See a doctor if ear pain lasts more than two or three days, the ear discharges, hearing is reduced, or infections keep coming back.
 
-**Please don't** put oil, garlic or onion juice, or other home remedies into a painful or discharging ear — they can make an infection worse if the eardrum has a hole.
+**Please don't** put oil, garlic or onion juice, or other home remedies into a painful or discharging ear - they can make an infection worse if the eardrum has a hole.
 
 ### When it's urgent
 
@@ -46,7 +46,7 @@ Seek urgent care for **red, painful swelling behind the ear, high fever with dro
 ## Treatment options
 
 - **Cleaning the ear and ear drops** for outer-ear and fungal infections.
-- **Pain relief**, and antibiotics when they are needed — many middle-ear infections settle on their own within a few days.
+- **Pain relief**, and antibiotics when they are needed - many middle-ear infections settle on their own within a few days.
 - **For children with repeated infections or fluid behind the eardrum (glue ear)**: a period of watching and waiting, and sometimes small ventilation tubes (grommets) to let air into the middle ear.
 
 ## Questions patients ask

@@ -1,6 +1,6 @@
 ---
 // Preview-only shot list + facts list for the owner: /pages/photos-needed.html
-// Generated only in drafts builds (npm run dev, Netlify deploy previews) — never on the live site.
+// Generated only in drafts builds (npm run dev, Netlify deploy previews) - never on the live site.
 import PageLayout from '../../layouts/PageLayout.astro';
 import PhotoSlot from '../../components/media/PhotoSlot.astro';
 import { photoSlots, slotStatus, type SlotStatus } from '../../data/photo-slots';
@@ -16,7 +16,7 @@ const groups: { status: SlotStatus; title: string }[] = [
   { status: 'stand-in', title: 'Using a stand-in photo (please replace)' },
   { status: 'real', title: 'Done' },
 ];
-const levelLabel = { required: 'Required', conditional: 'Only if this exists at the clinic', optional: 'Optional' };
+const levelLabel = { required: 'Required', conditional: 'Only if this exists at the centre', optional: 'Optional' };
 const missingCount = photoSlots.filter((s) => slotStatus(s.id) !== 'real').length;
 const facts = factsNeeded();
 ---
@@ -24,7 +24,7 @@ const facts = factsNeeded();
 <PageLayout title="Photos needed" noindex>
   <h1>Photos needed</h1>
   <p>
-    {missingCount} of {photoSlots.length} photo spots still need a real photo. They are listed in walking order — from the street to
+    {missingCount} of {photoSlots.length} photo spots still need a real photo. They are listed in walking order - from the street to
     the consultation room. Name each photo after its spot (for example <code>reception-waiting-area.jpg</code>) and put it in
     <code>owner-content/01-photos/&lt;spot&gt;/</code>. This page is only visible on preview links.
   </p>
@@ -45,7 +45,7 @@ const facts = factsNeeded();
               <div class="slot-body">
                 <h3><code>{slot.id}</code></h3>
                 <p><strong>{slot.title}.</strong> {slot.brief}</p>
-                <p class="meta">{slot.orientation === 'landscape' ? 'Landscape — hold the phone sideways' : 'Portrait — hold the phone upright'} · at least {slot.minSize} · {levelLabel[slot.level]}</p>
+                <p class="meta">{slot.orientation === 'landscape' ? 'Landscape - hold the phone sideways' : 'Portrait - hold the phone upright'} · at least {slot.minSize} · {levelLabel[slot.level]}</p>
                 <p class="meta">Used on: {slot.usedOn.map((u, i) => <>{i > 0 && ' · '}<a href={u.href}>{u.label}</a></>)}</p>
               </div>
             </li>
