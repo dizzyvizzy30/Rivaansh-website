@@ -1,15 +1,93 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import DoctorHero from '../../components/about/DoctorHero.astro';
-import FacilityShowcase from '../../components/about/FacilityShowcase.astro';
-import VisionMission from '../../components/about/VisionMission.astro';
-import StatsBand from '../../components/sections/StatsBand.astro';
-import { doctor, facility, visionMission, stats } from '../../data/about-us';
+// Doctor & Centre (old URL kept). Anchors: #doctor #centre #surgery. Old /pages/gallery.html redirects to #centre.
+// Live site shows only real/stand-in photos and confirmed facts; preview builds show every empty slot and missing fact.
+import PageLayout from '../../layouts/PageLayout.astro';
+import DoctorCard from '../../components/doctor/DoctorCard.astro';
+import SlotGallery from '../../components/media/SlotGallery.astro';
+import InfoNeeded from '../../components/ui/InfoNeeded.astro';
+import { doctorClinicPage as page } from '../../data/doctor-clinic';
+import { slotImage } from '../../data/photo-slots';
+import { showDrafts } from '../../data/collections';
+import { routes } from '../../config/navigation';
+
+const tourHasPhotos = page.tourSlots.some((id) => slotImage(id));
+const showSurgery = showDrafts || page.surgery;
 ---
 
-<BaseLayout title="About Us" showScrollProgress>
-  <DoctorHero doctor={doctor} />
-  <FacilityShowcase facility={facility} />
-  <VisionMission cards={visionMission} />
-  <StatsBand stats={stats} variant="dark" />
-</BaseLayout>
+<PageLayout title="Doctor & Centre" description="Dr. Tanay S Parikh, MS (ENT), Fellowship in Otology, and the Rivaansh ENT centre at Centre Point, Gota, Ahmedabad." variant="wide">
+  <h1>{page.title}</h1>
+  <p>{page.intro}</p>
+
+  <section id="doctor" aria-label="The doctor">
+    <DoctorCard headingLevel={2} showLink={false} />
+  </section>
+
+  <section id="centre" class="block" aria-labelledby="centre-title">
+    <h2 id="centre-title">{page.clinicHeading}</h2>
+    <p>
+      The centre is office 406 on the 4th floor of Centre Point, Gota.
+      <a href={`${routes.visit}#getting-here`}>How to get here</a>.
+    </p>
+    {(tourHasPhotos || showDrafts) && <p class="muted">{page.clinicIntro}</p>}
+    <SlotGallery slots={page.tourSlots} id="centre" label="Centre tour" />
+
+    <h3>{page.equipmentHeading}</h3>
+    {page.equipment ? <ul class="ticks">{page.equipment.map((e) => <li>{e}</li>)}</ul> : <InfoNeeded what="equipment at the centre, in plain words" folder="00-clinic-facts" />}
+
+    <h3>{page.hygieneHeading}</h3>
+    {page.hygiene ? <ul class="ticks">{page.hygiene.map((h) => <li>{h}</li>)}</ul> : <InfoNeeded what="sterilisation method, single-use items" folder="00-clinic-facts" />}
+  </section>
+
+  {showSurgery && (
+    <section id="surgery" class="block" aria-labelledby="surgery-title">
+      <h2 id="surgery-title">{page.surgeryHeading}</h2>
+      {page.surgery ? (
+        <>
+          <p>{page.surgery.where}</p>
+          <p>{page.surgery.anaesthesia}</p>
+        </>
+      ) : (
+        <>
+          <p class="draft-banner">Preview only - this section goes live once the centre confirms where operations are done.</p>
+          <InfoNeeded what="where operations are done and who gives anaesthesia" folder="00-clinic-facts" />
+        </>
+      )}
+      <SlotGallery slots={page.surgerySlots} id="surgery" label="Surgery photos" columns={2} />
+    </section>
+  )}
+</PageLayout>
+
+<style>
+  .block {
+    margin-top: 3rem;
+  }
+
+  .block h2 {
+    margin-bottom: 0.5rem;
+  }
+
+  .block h3 {
+    margin: 1.75rem 0 0.5rem;
+  }
+
+  .block :global(.slot-gallery) {
+    margin-top: 1rem;
+  }
+
+  .muted {
+    color: var(--color-text-muted);
+  }
+
+  .ticks li {
+    padding: 0.35rem 0 0.35rem 1.5rem;
+    position: relative;
+  }
+
+  .ticks li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--color-primary-dark);
+    font-weight: 700;
+  }
+</style>

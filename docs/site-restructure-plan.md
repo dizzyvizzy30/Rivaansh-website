@@ -2,7 +2,12 @@
 
 _Decided 2026-10-02 through a structured debate: an Advocate (3–4 intent sections with dropdowns), a Challenger
 (flat, task-first, fewer pages) and an Arbitrator (healthcare product/UX lead judging against the clinic's real
-visitors). This is the Arbitrator's final plan. Nothing in it is built yet._
+visitors). This is the Arbitrator's final plan._
+
+> **Status:** Phase 1 implemented on branch `astro-migration` (2026-10-02), plus three simplifications: solid header,
+> one fixed header height, still hero photo. Phases 2–3 wait for owner content. Deviations from this plan: the
+> homepage hero keeps a photo of the doctor's office until a wide clinic photo arrives; sitemap waits for the live
+> domain; the Gujarati tagline uses neutral "કાન · નાક · ગળું" until the "hospital" wording is confirmed.
 
 ## 1. Verdict
 **B's structure wins**: four plain destinations, no dropdowns, fewer and richer pages (doctor + clinic on one page;
@@ -230,3 +235,126 @@ fewer than 4 of 6 tap first. Repeat 4 weeks after launch.
 4. A 4-week reception tally: "How did you find us?" — website / Google Maps / referral / flyer.
 
 Also watch redirect hits and 404s on old URLs.
+
+---
+
+# Round 4 — visual symptom finder and wider hubs (2026-10-03)
+
+Two reviewers (patient-journey/UI and technical/medical-safety) agreed on the following implementation:
+
+- Home replaces the body-area tile grid with one large, non-autoplay, horizontally swipeable rail of six common
+  concerns. Each visual card uses English plus one restrained Gujarati line; a doctor/native speaker must review the
+  Gujarati before launch.
+- `problem-finder.html` provides local search and category filters over clinic-owned wording. It is a navigation aid,
+  not a diagnostic checker; inputs stay in the browser and current results link only to the reviewed Treatments hub.
+- Urgent guidance remains separate from the routine symptom cards.
+- Hub pages use the 1680px wide canvas; article-style pages retain the reading-width canvas and capped prose measure.
+- Claude/API integration is deferred. If real search failures later justify it, the model may only match wording to an
+  allowlist of doctor-approved topic IDs through a server-side endpoint. It must not diagnose, triage, infer services,
+  or receive names, phone numbers, reports or other identifying data.
+
+
+---
+
+# Round 2 — homepage length, redundancy, photo slots (2026-10-02)
+
+_Two critics (A: short "front door" homepage; B: one-scroll homepage as a trailer) and an arbitrator reviewed the
+built Phase 1 against screenshots. Implemented on `astro-migration`._
+
+## Decisions
+- **Homepage = ~4 phone screens** (was 11.5–13.9): Hero → What we treat (6 whole-card area tiles incl. "Urgent?") →
+  Your doctor and the clinic (doctor facts, no photo; 2×2 clinic grid only once ≥2 real clinic photos exist) →
+  Coming to the clinic (building photo, address, lift/fee when known, Maps, three link rows) → Health tips (titles only,
+  once published). Every block is generated from inner-page data; nothing is retyped.
+- **Cut from Home:** full doctor card, clinic gallery (incl. operating-theatre photos), first-visit steps, what to bring,
+  location card with the hours table, quick answers.
+- **Phone hero:** 16:9 photo strip *above* the text; one Call button; Directions / WhatsApp as a text row.
+- **Inner pages got the depth:** Doctor & Clinic (#doctor with qualification institute/year, registration, languages,
+  interests; #clinic tour in walking order + equipment + hygiene; #surgery preview-only until decision 7); Visit Us
+  (#timings with the only full hours table, #getting-here 3 photo steps, #fees, #first-visit, #faq); Book (call today,
+  what to have ready, no table, no photos); Before & After Surgery (4 per-procedure guides, preview-only until the
+  clinic's handouts are applied; Print + Share on WhatsApp); Treatments (#tests box; local names; links to care
+  guides); condition pages ("On this page", lighter "In short", clinic photo in the "See the doctor" block, related
+  conditions).
+- **Retired:** `endoscopy-procedure.jpeg` (taken in a theatre — implied an in-house theatre).
+
+## Redundancy rules
+1. Full weekly hours table only on Visit Us #timings; "Today" line elsewhere; never twice in one screen.
+2. On phones the bottom bar is the action layer; an inline button must add information; max one per screen.
+3. Doctor: one data source, more detail at each level (hero line → home facts → mini card → full profile).
+4. A photo appears at most once per page and on at most two pages; stand-ins only if truthful; theatre photos only in #surgery.
+5. First visit is owned by Visit Us; Home and Book link to it.
+6. General FAQ only on Visit Us; condition pages answer condition questions only; no FAQ on Home.
+7. Tips: titles on Home, text-only cards on Health Tips, two-way links with conditions.
+8. "In short" = summary + local names + one call link (no button block).
+
+## Photo slots
+12 named slots (`src/data/photo-slots.ts`; files in `src/assets/images/slots/<id>.*`; owner folders
+`owner-content/01-photos/<id>/`): building-street-view, entrance-lift-lobby, clinic-door-4th-floor,
+reception-waiting-area, consultation-room-ent-unit, endoscope-unit, hearing-test-room, sterilisation-area,
+doctor-consultation-room, doctor-portrait, operating-microscope, operation-theatre. Six are required for launch.
+Preview builds show dashed amber "Photo needed" frames, stand-in badges, "Info needed" chips and the
+`/pages/photos-needed.html` checklist; the live site hides every empty slot and unknown fact. Production builds log
+missing required photos and **fail** if "PLACEHOLDER" or "___" reaches the output.
+
+
+---
+
+# Numbers and patient reviews (owner request, 2026-10-02)
+
+The owner asked for clinic numbers and testimonials. They are back, with safeguards that replace the earlier blanket
+"no stats / no testimonials" rule:
+
+- **Numbers** (`src/data/proof.ts` → `metrics`): shown on the live site only when `confirmed` and with a `source`
+  (how it was counted). Home: a band under the hero. Doctor & Clinic: `#numbers` with sources. The old site's 15+ /
+  10,000+ / 5,000+ are pre-filled as unconfirmed; "98% satisfaction" is dropped unless a documented survey exists.
+- **Reviews** (`testimonials`, `googleReviews`): only patients' own words with written consent (template:
+  `owner-content/07-numbers-and-reviews/consent-form.md`), shown with name as agreed, source and a disclaimer; plus a
+  link to the clinic's Google reviews. Home shows up to 3; Doctor & Clinic `#reviews` shows all.
+- Preview builds show amber markers for every unconfirmed number and missing quote; the live site hides them.
+- Risk accepted by the owner: NMC rules restrict doctors' advertising, especially testimonials. The doctor must agree
+  before quotes go live (question 7 in folder 07).
+
+
+---
+
+# Round 3 — symptom-led conversion and ethics review (2026-10-03)
+
+_Two independent critics reviewed the built site and challenged each other: one focused on an Indian ENT patient's
+search and decision journey; the other focused on healthcare conversion, accessibility and medical ethics._
+
+## Resolution
+
+- Keep the four-link navigation and the locality-led homepage H1. They already answer the high-intent questions
+  “what is this?” and “is it near me?” without a dropdown.
+- Use everyday symptom phrases on Home, grouped by body area for scanning. Medical condition and procedure names stay
+  on Treatments and condition pages. Once a condition page is reviewed and published, its matching homepage symptom
+  links directly to it.
+- Home now follows: symptom recognition → what a visit can safely promise → compact clinician proof → visit logistics.
+  It does not promise a diagnosis or result. The full doctor biography, clinic tour, first-visit details, procedure
+  information and health articles remain on their owning pages.
+- Keep a compact doctor-identity block on Home; do not remove accountability proof entirely. Suppress unverified
+  doctor stand-in photos from live builds.
+- “Book” is not presented as online booking while the only staffed path is by phone. The appointment explainer remains,
+  labelled “Book by Phone”; WhatsApp returns only after its staffing and response expectations are confirmed.
+- Split urgent guidance into emergency-now symptoms and same-day ENT concerns. Breathing difficulty and uncontrolled
+  bleeding must not wait for a clinic callback.
+- Remove patient/surgery counters, testimonials and rating widgets from Home, Doctor & Clinic, preview checklists and
+  source UI. Consent addresses privacy, not the separate NMC concern about solicitation/self-aggrandising publicity.
+  This supersedes the “Numbers and patient reviews” addendum above.
+- Remove the homepage Health Tips feed. Reviewed tips stay in navigation and link contextually from condition pages.
+- Keep condition and tip draft gating. The highest-value next content task is doctor review of the first symptom-led
+  condition pages; production intentionally has no condition-detail routes until that review happens.
+
+## Safe visit language
+
+Use: “The doctor examines the affected ear, nose or throat and explains whether any test may be useful” and “The
+likely cause and available options are discussed before treatment starts.” Avoid “You will know what the problem is,”
+guaranteed outcomes, and unsupported claims that most cases do not need surgery.
+
+## Still needed before launch
+
+Confirm the clinic's official name, one public phone number, hours and holiday exceptions, exact qualifications,
+registration number/council, doctor-photo identity and consent, languages, consultation fee, payment methods,
+appointment/token process, WhatsApp staffing, and every listed test/procedure. Match name, address, phone and hours to
+the clinic's Google Business Profile.

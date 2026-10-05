@@ -1,0 +1,147 @@
+---
+// Homepage problem finder: one whole-card link per body area (+ Urgent), using the words patients commonly use.
+// The Treatments page keeps the medical condition and procedure names.
+import Icon from '../ui/Icon.astro';
+import { homeProblemGroups } from '../../data/home';
+import { urgentProblems } from '../../data/treatments';
+import { conditionHref, routes } from '../../config/navigation';
+import { getConditions } from '../../data/collections';
+
+const published = new Set((await getConditions()).map((condition) => condition.id));
+---
+
+<ul class="area-tiles">
+  {homeProblemGroups.map((group) => (
+    <li class="area-tile">
+      <Icon name={group.icon} />
+      <div>
+        <a class="area-title" href={`${routes.treatments}#${group.id}`}>{group.title}</a>
+        <ul class="area-items">
+          {group.symptoms.map((symptom) => (
+            <li>
+              {symptom.slug && published.has(symptom.slug)
+                ? <a href={conditionHref(symptom.slug)}>{symptom.label}</a>
+                : <span>{symptom.label}</span>}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </li>
+  ))}
+  <li>
+    <a class="area-tile area-tile--urgent" href={`${routes.treatments}#urgent`}>
+      <span class="area-urgent-mark" aria-hidden="true">!</span>
+      <span class="area-title">{urgentProblems.tileTitle}</span>
+      <span class="area-items">{urgentProblems.tileSummary}</span>
+    </a>
+  </li>
+</ul>
+
+<style>
+  .area-tiles {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .area-tile {
+    position: relative;
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    grid-template-rows: auto;
+    column-gap: 0.85rem;
+    align-items: center;
+    min-height: 96px;
+    height: 100%;
+    padding: 1.1rem 1.25rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-bg);
+    transition: border-color var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
+  }
+
+  .area-tile:hover {
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-brand);
+  }
+
+  .area-tile :global(svg),
+  .area-urgent-mark {
+    width: 40px;
+    height: 40px;
+    color: var(--color-primary);
+  }
+
+  .area-urgent-mark {
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius-full);
+    background: #fde8e8;
+    color: #9b1c1c;
+    font-weight: 800;
+    font-size: 1.25rem;
+  }
+
+  .area-title {
+    display: inline-block;
+    font-weight: 700;
+    font-size: 1.0625rem;
+    color: var(--color-primary-ink);
+  }
+
+  .area-title:hover,
+  .area-items a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .area-tile--urgent .area-title {
+    color: #9b1c1c;
+  }
+
+  .area-tile--urgent .area-urgent-mark {
+    grid-row: 1 / span 2;
+  }
+
+  .area-tile--urgent .area-items {
+    grid-column: 2;
+    display: block;
+  }
+
+  .area-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 0.35rem;
+    margin-top: 0.1rem;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    line-height: 1.45;
+  }
+
+  .area-items li:not(:last-child)::after {
+    content: ' ·';
+  }
+
+  .area-items a {
+    color: var(--color-primary-ink);
+    font-weight: 600;
+  }
+
+  @media (max-width: 900px) {
+    .area-tiles {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 520px) {
+    .area-tiles {
+      grid-template-columns: 1fr;
+      gap: 0.6rem;
+    }
+
+    .area-tile {
+      min-height: 72px;
+      padding: 0.85rem 1rem;
+    }
+  }
+</style>

@@ -1,22 +1,448 @@
 ---
+// Patient-first Treatments hub. Procedures stay available, but out of the primary scan path.
 import PageLayout from '../../layouts/PageLayout.astro';
-import { servicesEnt as page } from '../../data/services-ent';
-import { routes } from '../../config/navigation';
+import ConditionGroups from '../../components/treatments/ConditionGroups.astro';
+import PhotoSlot from '../../components/media/PhotoSlot.astro';
+import InfoNeeded from '../../components/ui/InfoNeeded.astro';
+import { treatmentsPage as page, procedures, urgentProblems } from '../../data/treatments';
+import { procedureGuides } from '../../data/care';
+import { conditionHref, routes } from '../../config/navigation';
+import { site } from '../../config/site';
+import { getConditions, showDrafts } from '../../data/collections';
+
+const published = new Set((await getConditions()).map((condition) => condition.id));
+const visibleGuides = new Set(procedureGuides.filter((guide) => showDrafts || !guide.draft).map((guide) => guide.id));
+const showTests = page.testsAtClinic || showDrafts;
 ---
 
-<PageLayout title="ENT">
-  <h1>{page.title}</h1>
-  <p>{page.intro}</p>
-  <h2>{page.conditionsHeading}</h2>
-  <ul>
-    {page.conditions.map((condition) => <li>{condition}</li>)}
-  </ul>
-  <h2>{page.proceduresHeading}</h2>
-  <ul>
-    {page.procedures.map((procedure) => <li>{procedure}</li>)}
-  </ul>
-  <p>
-    For more detailed information on specific conditions or treatments, please explore our
-    <a href={routes.specialities}>Specialities</a> and <a href={routes.surgeries}>Surgeries</a> pages.
-  </p>
+<PageLayout title="Treatments" description="Care for common ear, nose, throat, balance, thyroid and children’s ENT concerns at Rivaansh ENT, Gota, Ahmedabad." variant="wide">
+  <section class="care-browser" id="conditions" aria-labelledby="care-title">
+    <div class="care-intro">
+      <div>
+        <p class="eyebrow">Treatments <span lang="gu">· સારવાર</span></p>
+        <h1 id="care-title">Care by area</h1>
+        <p>Choose the closest match. You do not need to know the treatment name.</p>
+      </div>
+      <a class="finder-link" href={routes.problemFinder}>
+        <small>Not sure where to start?</small>
+        <strong>Search by symptom</strong>
+      </a>
+    </div>
+    <ConditionGroups variant="accordion" />
+    <p class="not-listed">{page.notListed}</p>
+  </section>
+
+  <section class="quick-book" aria-label="Appointment help">
+    <div>
+      <strong>Still not sure?</strong>
+      <span>Tell us what you are feeling. The doctor will decide what examination or treatment is appropriate.</span>
+    </div>
+    <div class="quick-book__actions">
+      <a class="btn btn--primary" href={`tel:${site.contact.phone.tel}`}>Call us</a>
+      <a class="btn btn--light" href={routes.book}>Book appointment</a>
+    </div>
+  </section>
+
+  {showTests && (
+    <section class="tests" id="tests" aria-labelledby="tests-title">
+      <h2 id="tests-title">{page.testsHeading}</h2>
+      {page.testsAtClinic ? (
+        <ul class="tests-list">
+          {page.testsAtClinic.map((test) => (
+            <li>
+              {test.slot && <PhotoSlot id={test.slot} sizes="160px" />}
+              <span>{test.name}</span>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <>
+          <InfoNeeded what="tests done at the centre (nasal endoscopy? hearing test?)" folder="03-conditions-review" />
+          <ul class="tests-list">
+            <li><PhotoSlot id="endoscope-unit" sizes="160px" /></li>
+            <li><PhotoSlot id="hearing-test-room" sizes="160px" /></li>
+          </ul>
+        </>
+      )}
+    </section>
+  )}
+
+  <section class="urgent" id="urgent" aria-labelledby="urgent-title">
+    <div class="urgent__lead">
+      <span aria-hidden="true">!</span>
+      <div>
+        <h2 id="urgent-title">Breathing trouble or bleeding that will not stop?</h2>
+        <p>Go to the nearest emergency department now.</p>
+      </div>
+    </div>
+    <details>
+      <summary>See other urgent warning signs</summary>
+      <ul>{urgentProblems.sameDayItems.map((item) => <li>{item}</li>)}</ul>
+      <p>{urgentProblems.sameDayAdvice}</p>
+    </details>
+  </section>
+
+  <details class="procedures" id="procedures">
+    <summary>
+      <span>
+        <strong>Already advised an operation?</strong>
+        <small>View procedure and before-and-after care information</small>
+      </span>
+      <span class="disclosure-toggle" aria-hidden="true"></span>
+    </summary>
+    <p>Operations are discussed after assessment, when they may help more than non-surgical options.</p>
+    <ul>
+      {procedures.map((procedure) => (
+        <li>
+          {procedure.slug && published.has(procedure.slug) ? (
+            <a href={`${conditionHref(procedure.slug)}#${procedure.anchor}`}>{procedure.name}</a>
+          ) : (
+            <span>{procedure.name}</span>
+          )}
+          {procedure.careId && visibleGuides.has(procedure.careId) && (
+            <a class="care-link" href={`${routes.care}#${procedure.careId}`}>Before &amp; after</a>
+          )}
+        </li>
+      ))}
+    </ul>
+  </details>
 </PageLayout>
+
+<style>
+  .eyebrow {
+    margin-bottom: 0.55rem;
+    color: var(--color-primary);
+    font-size: 0.8125rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .care-browser {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .care-intro {
+    margin-bottom: 1.5rem;
+    padding: clamp(1.5rem, 4vw, 2.75rem);
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1.5rem 3rem;
+    border-radius: var(--radius-xl);
+    background:
+      radial-gradient(circle at 92% 0%, rgba(18, 139, 139, 0.24), transparent 19rem),
+      var(--color-surface-dark);
+  }
+
+  .care-intro .eyebrow {
+    color: #7ee0d8;
+  }
+
+  .care-intro h1 {
+    margin-bottom: 0.35rem;
+    color: var(--color-text-on-dark);
+    font-size: clamp(2.4rem, 5vw, 4.5rem);
+    line-height: 1;
+  }
+
+  .care-intro p:last-child {
+    max-width: 36rem;
+    margin: 0;
+    color: var(--color-text-on-dark-soft);
+    font-size: 1.05rem;
+  }
+
+  .finder-link {
+    min-width: 230px;
+    min-height: 72px;
+    padding: 0.9rem 1rem;
+    display: grid;
+    align-content: center;
+    gap: 0.12rem;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: var(--radius-lg);
+    color: var(--color-text-on-dark);
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .finder-link small {
+    color: var(--color-text-on-dark-soft);
+    font-size: 0.82rem;
+  }
+
+  .finder-link strong {
+    font-size: 1rem;
+  }
+
+  .finder-link:hover {
+    background: rgba(255, 255, 255, 0.14);
+  }
+
+  .not-listed {
+    margin: 1rem 0 0;
+    color: var(--color-text-muted);
+    text-align: center;
+  }
+
+  .quick-book {
+    max-width: 1200px;
+    margin: 1.5rem auto 0;
+    padding: 1.25rem 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+    border-radius: var(--radius-lg);
+    background: var(--color-primary-light);
+  }
+
+  .quick-book > div:first-child {
+    display: grid;
+    gap: 0.2rem;
+  }
+
+  .quick-book strong {
+    color: var(--color-primary-dark);
+    font-size: 1.12rem;
+  }
+
+  .quick-book span {
+    color: var(--color-text-muted);
+  }
+
+  .quick-book__actions {
+    display: flex;
+    flex: 0 0 auto;
+    gap: 0.65rem;
+  }
+
+  .quick-book .btn {
+    min-height: 46px;
+    padding: 0.65rem 1rem;
+  }
+
+  .urgent {
+    max-width: 1200px;
+    margin: 1.5rem auto 0;
+    padding: 1.15rem 1.3rem;
+    border: 1px solid #efc1c1;
+    border-radius: var(--radius-lg);
+    background: #fff7f7;
+  }
+
+  .urgent__lead {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+
+  .urgent__lead > span {
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    border-radius: var(--radius-full);
+    background: #9b1c1c;
+    color: white;
+    font-size: 1.3rem;
+    font-weight: 850;
+  }
+
+  .urgent h2 {
+    margin: 0 0 0.1rem;
+    color: #821b1b;
+    font-size: 1.1rem;
+  }
+
+  .urgent p {
+    margin: 0;
+    color: #682727;
+  }
+
+  .urgent details {
+    margin: 0.85rem 0 0 3.55rem;
+  }
+
+  .urgent summary {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    color: #821b1b;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .urgent ul {
+    margin: 0.35rem 0 0.75rem;
+    padding-left: 1.25rem;
+    list-style: disc;
+  }
+
+  .urgent li {
+    margin: 0.35rem 0;
+  }
+
+  .procedures {
+    max-width: 1200px;
+    margin: 1.5rem auto 0;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    background: var(--color-bg-alt);
+  }
+
+  .procedures > summary {
+    min-height: 92px;
+    padding: 1.25rem 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .procedures > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .procedures > summary > span:first-child {
+    display: grid;
+    gap: 0.2rem;
+  }
+
+  .procedures summary strong {
+    color: var(--color-primary-dark);
+    font-size: 1.15rem;
+  }
+
+  .procedures summary small {
+    color: var(--color-text-muted);
+    font-size: 0.94rem;
+  }
+
+  .disclosure-toggle {
+    width: 30px;
+    height: 30px;
+    position: relative;
+    flex: 0 0 auto;
+    border-radius: var(--radius-full);
+    background: var(--color-primary-light);
+  }
+
+  .disclosure-toggle::before,
+  .disclosure-toggle::after {
+    content: '';
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    top: 14px;
+    height: 2px;
+    background: var(--color-primary-dark);
+  }
+
+  .disclosure-toggle::after {
+    transform: rotate(90deg);
+  }
+
+  .procedures[open] .disclosure-toggle::after {
+    transform: rotate(0deg);
+  }
+
+  .procedures > p {
+    padding: 0 1.4rem;
+    color: var(--color-text-muted);
+  }
+
+  .procedures ul {
+    padding: 1rem 1.4rem 1.4rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
+  }
+
+  .procedures li {
+    min-height: 50px;
+    padding: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    border-radius: var(--radius-md);
+    background: var(--color-bg);
+  }
+
+  .procedures li a {
+    color: var(--color-primary-ink);
+    font-weight: 650;
+  }
+
+  .care-link {
+    font-size: 0.9rem;
+  }
+
+  .tests {
+    max-width: 1200px;
+    margin: 2rem auto 0;
+  }
+
+  .tests-list {
+    margin-top: 0.75rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  @media (max-width: 900px) {
+    .quick-book {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .care-intro {
+      margin-inline: calc(-1 * var(--gutter-mobile));
+      padding: 2rem var(--gutter-mobile);
+      display: grid;
+      align-items: start;
+      border-radius: 0;
+    }
+
+    .care-intro h1 {
+      font-size: clamp(2.65rem, 13vw, 4rem);
+    }
+
+    .finder-link {
+      width: 100%;
+      min-width: 0;
+      min-height: 64px;
+    }
+
+    .quick-book {
+      padding: 1.1rem;
+    }
+
+    .quick-book__actions,
+    .quick-book__actions .btn {
+      width: 100%;
+    }
+
+    .quick-book__actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .urgent details {
+      margin-left: 0;
+    }
+
+    .procedures ul {
+      grid-template-columns: 1fr;
+      padding-inline: 1rem;
+    }
+  }
+</style>

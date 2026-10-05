@@ -5,6 +5,10 @@ description: Step-by-step workflow and gates for migrating/refactoring the Rivaa
 
 # Rivaansh ENT — Migration Workflow
 
+> Status (2026-10-02): Caddy → Astro migration done; `www/` and `Caddyfile` removed; `netlify.toml` builds Astro.
+> Phase 1 of `docs/site-restructure-plan.md` (new IA, redirects, drafts workflow) is implemented — URL rules now live in
+> the `rivaansh-component-architecture` skill. Use this workflow again for any large structural change.
+
 ## Gates (never skip)
 1. **No hosting or DNS change without explicit approval** — that includes `netlify.toml`, Netlify UI settings, Cloudflare records, and deleting `www/` (Netlify still publishes it until `netlify.toml` changes).
 2. **Caddy (`Caddyfile`) is removed only after** desktop + mobile parity is verified for every page.

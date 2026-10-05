@@ -1,0 +1,297 @@
+---
+// Homepage hero. Wide screens: photo on the right half, text on solid slate. Phones: a 16:9 photo strip ABOVE the
+// text (never behind it) and a single Call button - Directions/WhatsApp become a text row because the bottom action
+// bar already offers them. No photo → solid slate on the live site.
+import MediaImage from '../media/MediaImage.astro';
+import PhotoSlot from '../media/PhotoSlot.astro';
+import ContactActions from '../ui/ContactActions.astro';
+import Icon from '../ui/Icon.astro';
+import TodayHours from '../layout/TodayHours.astro';
+import { site, whatsappHref } from '../../config/site';
+import { hero } from '../../data/home';
+import { slotImage } from '../../data/photo-slots';
+import { showDrafts } from '../../data/collections';
+
+const image = slotImage(hero.slot);
+const whatsapp = whatsappHref();
+---
+
+<section class:list={['hero', !image && 'hero--no-photo']}>
+  {image ? (
+    <div class="hero-media">
+      <MediaImage image={image} sizes="(max-width: 900px) 100vw, 52vw" priority class="hero-photo" />
+      {showDrafts && image.isStandIn && <span class="hero-badge">Stand-in · replace with {hero.slot}</span>}
+    </div>
+  ) : (
+    showDrafts && <div class="hero-media hero-media--empty"><PhotoSlot id={hero.slot} sizes="100vw" /></div>
+  )}
+  <div class="hero-content">
+    <div class="hero-copy">
+      <p class="hero-kicker">{site.shortName} <span lang="gu">· {site.localTagline}</span></p>
+      <h1 class="hero-title">{hero.title}</h1>
+      <p class="hero-subline">{hero.subline}</p>
+    </div>
+    <aside class="hero-visit" aria-label="Plan your visit">
+      <p class="hero-visit-label">Plan your visit</p>
+      <ul class="hero-facts">
+        <li><Icon name="clock" /><TodayHours /></li>
+        <li><Icon name="map-pin" />4th floor, Centre Point · opp. Vrundavan Heights</li>
+      </ul>
+      <ContactActions tone="on-dark" showBook />
+      <p class="hero-links">
+        <a href={site.contact.mapsUrl} target="_blank" rel="noopener">Directions</a>
+        {whatsapp && <> · <a href={whatsapp} target="_blank" rel="noopener">WhatsApp</a></>}
+      </p>
+    </aside>
+  </div>
+  <div class="hero-wave" aria-hidden="true">
+    <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+      <path d="M0,64 C288,120 720,0 1440,64 L1440,120 L0,120 Z"></path>
+    </svg>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: min(620px, 72vh);
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    padding: 3.5rem var(--gutter) 5.5rem;
+    isolation: isolate;
+    background: var(--color-surface-dark);
+  }
+
+  .hero-media {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 52%;
+    height: 100%;
+    z-index: -2;
+  }
+
+  .hero-media :global(.hero-photo) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-media--empty :global(.photo-slot) {
+    height: 100%;
+    aspect-ratio: auto;
+    border-radius: 0;
+  }
+
+  /* Blend the photo into the slate panel. */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: linear-gradient(90deg, var(--color-surface-dark) 0%, var(--color-surface-dark) 46%, rgba(30, 41, 59, 0.55) 62%, rgba(30, 41, 59, 0.1) 100%);
+  }
+
+  .hero--no-photo::before {
+    background:
+      radial-gradient(circle at 88% 14%, rgba(18, 139, 139, 0.28), transparent 30rem),
+      linear-gradient(120deg, var(--color-surface-dark) 0%, #1d405b 100%);
+  }
+
+  .hero--no-photo {
+    min-height: 500px;
+  }
+
+  .hero-badge {
+    position: absolute;
+    right: 0.75rem;
+    top: 0.75rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 247, 230, 0.95);
+    border: 1px solid #f3c56b;
+    color: #6b4400;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .hero-content {
+    width: 100%;
+    max-width: var(--width-wide);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(19rem, 0.75fr);
+    gap: clamp(2rem, 6vw, 7rem);
+    align-items: center;
+    color: var(--color-text-on-dark);
+  }
+
+  .hero-copy {
+    max-width: 58rem;
+  }
+
+  .hero-kicker {
+    padding-left: 0.75rem;
+    border-left: 3px solid var(--color-accent);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: #7ee0d8;
+    margin-bottom: 0.6rem;
+  }
+
+  .hero-title {
+    color: var(--color-text-on-dark);
+    font-size: clamp(2.5rem, 5vw, 5rem);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.6rem;
+  }
+
+  .hero-subline {
+    max-width: 50rem;
+    font-size: clamp(1.0625rem, 1.5vw, 1.375rem);
+    color: var(--color-text-on-dark-soft);
+    margin-bottom: 0;
+  }
+
+  .hero-visit {
+    padding: clamp(1.25rem, 2.5vw, 2rem);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: var(--radius-xl);
+    background: rgba(10, 35, 52, 0.72);
+    box-shadow: 0 24px 60px rgba(5, 20, 31, 0.22);
+    backdrop-filter: blur(12px);
+  }
+
+  .hero-visit-label {
+    margin-bottom: 1rem;
+    color: #ffffff;
+    font-size: 0.875rem;
+    font-weight: 750;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .hero-facts {
+    display: grid;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+    color: var(--color-text-on-dark-soft);
+  }
+
+  .hero-facts li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .hero-facts :global(svg) {
+    width: 18px;
+    height: 18px;
+    color: #7ee0d8;
+    flex-shrink: 0;
+  }
+
+  .hero-links {
+    display: none;
+  }
+
+  .hero-wave {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    line-height: 0;
+  }
+
+  .hero-wave svg {
+    display: block;
+    width: 100%;
+    height: 56px;
+  }
+
+  .hero-wave path {
+    fill: var(--color-bg);
+  }
+
+  /* Phones and tablets: photo strip above the text. */
+  @media (max-width: 900px) {
+    .hero {
+      flex-direction: column;
+      align-items: stretch;
+      min-height: 0;
+      padding: 0 0 4rem;
+    }
+
+    .hero::before {
+      display: none;
+    }
+
+    .hero-media {
+      position: relative;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .hero-media :global(.hero-photo) {
+      position: absolute;
+      inset: 0;
+    }
+
+    .hero-content {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      padding: 1.75rem var(--gutter) 0;
+    }
+
+    .hero-copy {
+      max-width: none;
+    }
+
+    .hero-visit {
+      background: var(--color-surface-dark-2);
+      backdrop-filter: none;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero-content {
+      padding: 1.5rem var(--gutter-mobile) 0;
+    }
+
+    .hero-subline {
+      font-size: 1.0625rem;
+    }
+
+    .hero-title {
+      font-size: clamp(2.15rem, 10vw, 3.25rem);
+    }
+
+    /* Phones: one Call button; Directions / WhatsApp as a text row (the bottom bar has the rest). */
+    .hero :global(.contact-actions .btn--light) {
+      display: none;
+    }
+
+    .hero-links {
+      display: block;
+      margin-top: 0.85rem;
+      color: #e2e8f0;
+    }
+
+    .hero-links a {
+      color: #ffffff;
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .hero-wave svg {
+      height: 36px;
+    }
+  }
+</style>

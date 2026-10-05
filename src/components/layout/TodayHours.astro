@@ -1,0 +1,32 @@
+---
+// Shows the full weekly schedule without JS; with JS, replaces it with today's sessions (India time).
+// Says "Today", never "Open now", so it is not wrong on public holidays.
+import { site, formatSessions } from '../../config/site';
+
+interface Props {
+  prefix?: string;
+  /** Text between the prefix and today's sessions. */
+  separator?: string;
+  class?: string;
+}
+
+const { prefix = 'Today', separator = ': ', class: className } = Astro.props;
+const weekly = site.hours.map((h) => `${h.label}: ${formatSessions(h.sessions)}`).join(' · ');
+const byDay = [0, 1, 2, 3, 4, 5, 6].map((day) => {
+  const entry = site.hours.find((h) => (h.days as readonly number[]).includes(day));
+  return entry ? formatSessions(entry.sessions) : '';
+});
+---
+
+<span class={className} data-today-hours data-prefix={prefix} data-separator={separator} data-by-day={JSON.stringify(byDay)}>{weekly}</span>
+
+<script>
+  const weekday = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Kolkata', weekday: 'short' }).format(new Date());
+  const index = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(weekday);
+
+  document.querySelectorAll<HTMLElement>('[data-today-hours]').forEach((el) => {
+    const byDay = JSON.parse(el.dataset.byDay ?? '[]') as string[];
+    if (index < 0 || !byDay.length) return;
+    el.textContent = `${el.dataset.prefix}${el.dataset.separator ?? ': '}${byDay[index] || 'Closed'}`;
+  });
+</script>

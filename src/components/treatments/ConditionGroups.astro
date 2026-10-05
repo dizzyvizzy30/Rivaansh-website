@@ -1,0 +1,410 @@
+---
+// Conditions grouped by body area. Items whose condition page is published become links; the rest stay plain
+// text (never a dead link). `chips` on Home, `list` on the Treatments hub.
+import Icon from '../ui/Icon.astro';
+import { treatmentGroups } from '../../data/treatments';
+import { conditionHref } from '../../config/navigation';
+import { getConditions } from '../../data/collections';
+
+interface Props {
+  variant?: 'chips' | 'list' | 'accordion';
+}
+
+const { variant = 'list' } = Astro.props;
+const conditions = await getConditions();
+const published = new Set(conditions.map((c) => c.id));
+const localNames = new Map(conditions.map((c) => [c.id, c.data.localNames]));
+---
+
+<div class:list={['condition-groups', `condition-groups--${variant}`]}>
+  {treatmentGroups.map((group) => (
+    variant === 'accordion' ? (
+      <details class="condition-group condition-group--accordion" id={group.id} open={group.id === 'ear'}>
+        <summary>
+          <span class="group-icon"><Icon name={group.icon} /></span>
+          <span class="summary-copy">
+            <strong>{group.title}</strong>
+            {group.gujarati && <small lang="gu">{group.gujarati}</small>}
+            {group.cue && <span>{group.cue}</span>}
+          </span>
+          <span class="summary-toggle" aria-hidden="true"></span>
+        </summary>
+        <ul>
+          {group.items.map((item) => (
+            <li>
+              {item.slug && published.has(item.slug) ? (
+                <a href={conditionHref(item.slug)}>
+                  {item.name}
+                  {localNames.get(item.slug) && <small lang="mul"> {localNames.get(item.slug)}</small>}
+                </a>
+              ) : (
+                <span>{item.name}</span>
+              )}
+            </li>
+          ))}
+        </ul>
+      </details>
+    ) : (
+      <section class="condition-group" id={variant === 'list' ? group.id : undefined} aria-labelledby={`group-${variant}-${group.id}`}>
+        <h3 id={`group-${variant}-${group.id}`} class="group-title">
+          <span class="group-icon"><Icon name={group.icon} /></span>
+          <span>
+            {group.title}
+            {variant === 'list' && group.gujarati && <small lang="gu">{group.gujarati}</small>}
+          </span>
+        </h3>
+        <ul>
+          {group.items.map((item) => (
+            <li>
+              {item.slug && published.has(item.slug) ? (
+                <a href={conditionHref(item.slug)}>
+                  {item.name}
+                  {variant === 'list' && localNames.get(item.slug) && <small lang="mul"> {localNames.get(item.slug)}</small>}
+                </a>
+              ) : (
+                <span>{item.name}</span>
+              )}
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  ))}
+</div>
+
+<style>
+  .condition-groups {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .condition-groups--chips {
+    grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+    gap: 1rem;
+  }
+
+  .condition-groups--chips .condition-group {
+    padding: 1.25rem;
+  }
+
+  .condition-groups--list {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    align-items: start;
+  }
+
+  .condition-groups--list .condition-group {
+    grid-column: span 4;
+  }
+
+  .condition-groups--list .condition-group:nth-child(4),
+  .condition-groups--list .condition-group:nth-child(5) {
+    grid-column: span 6;
+  }
+
+  .condition-group {
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Compact patient-facing browser on Treatments. */
+  .condition-groups--accordion {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+
+  .condition-group--accordion {
+    padding: 0;
+  }
+
+  .condition-group--accordion::before {
+    display: none;
+  }
+
+  .condition-group--accordion summary {
+    min-height: 132px;
+    padding: 1.25rem;
+    display: grid;
+    grid-template-columns: 58px minmax(0, 1fr) 28px;
+    align-items: center;
+    gap: 0.9rem;
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .condition-group--accordion summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .condition-group--accordion summary:focus-visible {
+    outline: 3px solid var(--color-secondary);
+    outline-offset: -3px;
+    border-radius: var(--radius-lg);
+  }
+
+  .condition-group--accordion .group-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: var(--radius-lg);
+  }
+
+  .condition-group--accordion:nth-child(2) .group-icon { background: #e8f2fa; color: var(--color-secondary); }
+  .condition-group--accordion:nth-child(3) .group-icon { background: #fff1ea; color: #b84a20; }
+  .condition-group--accordion:nth-child(4) .group-icon { background: #eef0fa; color: #4d5a9b; }
+  .condition-group--accordion:nth-child(5) .group-icon { background: #eef8ed; color: #39733d; }
+
+  .condition-group--accordion .summary-copy {
+    display: grid;
+    gap: 0.14rem;
+  }
+
+  .condition-group--accordion .summary-copy strong {
+    color: var(--color-primary-dark);
+    font-size: 1.16rem;
+  }
+
+  .condition-group--accordion .summary-copy small {
+    color: var(--color-primary-ink);
+    font-size: 0.94rem;
+    font-weight: 650;
+  }
+
+  .condition-group--accordion .summary-copy > span {
+    margin-top: 0.2rem;
+    color: var(--color-text-muted);
+    font-size: 0.92rem;
+    line-height: 1.4;
+  }
+
+  .summary-toggle {
+    width: 24px;
+    height: 24px;
+    position: relative;
+    border-radius: var(--radius-full);
+    background: var(--color-primary-light);
+  }
+
+  .summary-toggle::before,
+  .summary-toggle::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    right: 6px;
+    top: 11px;
+    height: 2px;
+    background: var(--color-primary-dark);
+  }
+
+  .summary-toggle::after {
+    transform: rotate(90deg);
+    transition: transform var(--duration-fast) ease;
+  }
+
+  .condition-group--accordion[open] .summary-toggle::after {
+    transform: rotate(0deg);
+  }
+
+  .condition-group--accordion[open] summary {
+    border-bottom: 1px solid var(--color-border);
+    background: linear-gradient(100deg, var(--color-primary-light), transparent 72%);
+  }
+
+  .condition-group--accordion ul {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.55rem;
+    padding: 1rem 1.25rem 1.25rem;
+  }
+
+  .condition-group--accordion li > * {
+    min-height: 44px;
+    padding: 0.65rem 0.75rem;
+    display: flex;
+    align-items: center;
+    border-radius: var(--radius-md);
+    background: var(--color-bg-alt);
+    color: var(--color-text);
+    font-size: 0.94rem;
+    line-height: 1.35;
+  }
+
+  .condition-group--accordion li > a {
+    color: var(--color-primary-ink);
+    font-weight: 650;
+  }
+
+  .condition-group--accordion li > a:hover {
+    background: var(--color-primary-light);
+  }
+
+  .condition-group--accordion li small {
+    display: block;
+    color: var(--color-text-muted);
+    font-weight: 400;
+  }
+
+  .condition-group::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  }
+
+  .group-title {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 1.1875rem;
+    color: var(--color-primary-dark);
+    margin-bottom: 1rem;
+  }
+
+  .group-title > span:last-child {
+    display: grid;
+    gap: 0.15rem;
+  }
+
+  .group-title small {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    font-weight: 550;
+  }
+
+  .group-icon {
+    width: 46px;
+    height: 46px;
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius-md);
+    background: var(--color-primary-light);
+    flex-shrink: 0;
+  }
+
+  .group-title :global(svg) {
+    width: 30px;
+    height: 30px;
+    color: var(--color-primary);
+  }
+
+  /* Chips (homepage) */
+  .condition-groups--chips ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .condition-groups--chips li > * {
+    display: inline-block;
+    padding: 0.4rem 0.85rem;
+    border-radius: var(--radius-full);
+    font-size: 0.9375rem;
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
+  }
+
+  .condition-groups--chips li > a {
+    border-color: var(--color-primary);
+    color: var(--color-primary-ink);
+    font-weight: 600;
+  }
+
+  .condition-groups--chips li > a:hover {
+    background: var(--color-primary-light);
+  }
+
+  /* List (hub) */
+  .condition-groups--list ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+  }
+
+  .condition-groups--list li {
+    display: flex;
+  }
+
+  .condition-groups--list li > * {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.55rem 0.85rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-alt);
+    line-height: 1.35;
+  }
+
+  .condition-groups--list li > span {
+    color: var(--color-text-muted);
+  }
+
+  .condition-groups--list li > a {
+    color: var(--color-primary-ink);
+    font-weight: 600;
+  }
+
+  .condition-groups--list li > a::after {
+    content: '';
+  }
+
+  .condition-groups--list li > a small {
+    display: block;
+    font-weight: 400;
+    color: var(--color-text-muted);
+  }
+
+  .condition-groups--list li > a:hover {
+    border-color: var(--color-primary);
+    background: var(--color-primary-light);
+  }
+
+  @media (max-width: 1100px) {
+    .condition-groups--list .condition-group,
+    .condition-groups--list .condition-group:nth-child(4),
+    .condition-groups--list .condition-group:nth-child(5) {
+      grid-column: span 6;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .condition-groups--accordion {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+
+    .condition-group--accordion summary {
+      min-height: 116px;
+      padding: 1rem;
+      grid-template-columns: 52px minmax(0, 1fr) 24px;
+      gap: 0.75rem;
+    }
+
+    .condition-group--accordion .group-icon {
+      width: 52px;
+      height: 52px;
+    }
+
+    .condition-group--accordion ul {
+      grid-template-columns: 1fr;
+      padding: 0.85rem 1rem 1rem;
+    }
+
+    .condition-groups--list {
+      grid-template-columns: 1fr;
+    }
+
+    .condition-groups--list .condition-group,
+    .condition-groups--list .condition-group:nth-child(4),
+    .condition-groups--list .condition-group:nth-child(5) {
+      grid-column: auto;
+    }
+
+    .condition-groups--list .condition-group {
+      padding: 1.15rem;
+    }
+  }
+</style>

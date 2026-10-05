@@ -1,27 +1,144 @@
 ---
+// Visit Us (old URL kept) - owns the full timings table, getting here, fees, first visit and FAQ.
+// Anchors: #timings #getting-here #fees #first-visit #faq. Old locations.html / faq.html redirect here.
 import PageLayout from '../../layouts/PageLayout.astro';
-import ContactForm from '../../components/forms/ContactForm.astro';
-import { contact as page } from '../../data/contact';
+import LocationCard from '../../components/visit/LocationCard.astro';
+import GettingHere from '../../components/visit/GettingHere.astro';
+import StepList from '../../components/ui/StepList.astro';
+import FaqAccordion from '../../components/ui/FaqAccordion.astro';
+import ContactActions from '../../components/ui/ContactActions.astro';
+import InfoNeeded from '../../components/ui/InfoNeeded.astro';
+import { visitPage as page, firstVisit, quickAnswers } from '../../data/visit';
+import { showDrafts } from '../../data/collections';
+import { site } from '../../config/site';
+
+const hasFees = Boolean(page.fees || page.payment || page.mediclaim);
+const showFees = hasFees || showDrafts;
 ---
 
-<PageLayout title="Contact">
+<PageLayout title="Visit Us" description="Timings, directions, fees and first-visit information for Rivaansh ENT, 4th floor, Centre Point, Gota, Ahmedabad." clinicSchema variant="wide">
   <h1>{page.title}</h1>
-  <div class="contact-info">
-    {page.details.map((detail) => (
-      <p>
-        <strong>{detail.label}:</strong> {detail.href ? <a href={detail.href}>{detail.text}</a> : detail.text}
-      </p>
-    ))}
-  </div>
-  <ContactForm heading={page.formHeading} submitLabel={page.submitLabel} />
+  <p>{page.intro}</p>
+
+  <nav class="jump" aria-label="On this page">
+    <a href="#timings">Timings</a><a href="#getting-here">Getting here</a>{showFees && <a href="#fees">Fees</a>}<a href="#first-visit">First visit</a><a href="#faq">FAQ</a>
+  </nav>
+
+  <section id="timings" aria-label="Timings and address">
+    <LocationCard />
+    <p class="email">Email: <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a></p>
+  </section>
+
+  <section id="getting-here" class="block" aria-labelledby="getting-here-title">
+    <h2 id="getting-here-title">Getting here</h2>
+    <GettingHere />
+    <ul class="access">
+      {page.wheelchair ? <li><strong>Wheelchair access:</strong> {page.wheelchair}</li> : <li><InfoNeeded what="wheelchair access" folder="00-clinic-facts" /></li>}
+      {page.parking ? <li><strong>Parking:</strong> {page.parking}</li> : <li><InfoNeeded what="parking (two-wheeler and car)" folder="00-clinic-facts" /></li>}
+    </ul>
+  </section>
+
+  {showFees && (
+    <section id="fees" class="block" aria-labelledby="fees-title">
+      <h2 id="fees-title">Fees</h2>
+      {page.fees ? <p><strong>Consultation fee:</strong> {page.fees}</p> : <InfoNeeded what="consultation fee" folder="00-clinic-facts" />}
+      {page.payment ? <p><strong>Payment:</strong> {page.payment}</p> : <InfoNeeded what="payment methods (cash, UPI, card)" folder="00-clinic-facts" />}
+      {page.mediclaim ? <p><strong>Mediclaim / insurance:</strong> {page.mediclaim}</p> : <InfoNeeded what="mediclaim / insurance / TPA" folder="00-clinic-facts" />}
+    </section>
+  )}
+
+  <section id="first-visit" class="block" aria-labelledby="first-visit-title">
+    <h2 id="first-visit-title">{firstVisit.title}</h2>
+    <StepList steps={firstVisit.steps} />
+    <h3>What to bring</h3>
+    <ul class="ticks">{firstVisit.bring.map((item) => <li>{item}</li>)}</ul>
+  </section>
+
+  <section id="faq" class="block" aria-labelledby="faq-title">
+    <h2 id="faq-title">Frequently asked questions</h2>
+    <FaqAccordion items={quickAnswers} />
+    <InfoNeeded what="the receptionist's most common phone questions" folder="06-faq" />
+  </section>
+
+  <ContactActions showBook />
 </PageLayout>
 
 <style>
-  .contact-info {
-    margin-bottom: 2em;
+  .jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0 0 2rem;
   }
 
-  .contact-info p {
-    margin-bottom: 0.5em;
+  .jump a {
+    padding: 0.4rem 0.9rem;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-border);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--color-primary-ink);
+  }
+
+  .jump a:hover {
+    background: var(--color-primary-light);
+  }
+
+  .email {
+    margin-top: 1rem;
+  }
+
+  .email a {
+    color: var(--color-primary-ink);
+    font-weight: 600;
+  }
+
+  .block {
+    margin-top: 3rem;
+  }
+
+  .block h2 {
+    margin-bottom: 1rem;
+  }
+
+  .block h3 {
+    margin: 1rem 0 0.5rem;
+  }
+
+  .block :global(.step) {
+    padding: 1rem 0;
+  }
+
+  .block :global(.step-number) {
+    margin: 0 0 0.75rem;
+  }
+
+  .access {
+    margin-top: 1.25rem;
+  }
+
+  .access li {
+    margin-bottom: 0.35rem;
+  }
+
+  .ticks li {
+    padding: 0.35rem 0 0.35rem 1.5rem;
+    position: relative;
+  }
+
+  .ticks li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--color-primary-dark);
+    font-weight: 700;
+  }
+
+  #faq :global(.faq-container) {
+    margin: 0 0 1rem;
+  }
+
+  #faq {
+    margin-bottom: 2rem;
   }
 </style>

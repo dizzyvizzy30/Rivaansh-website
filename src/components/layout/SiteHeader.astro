@@ -1,464 +1,513 @@
 ---
+// Utility strip (≥1024px) + sticky header with four plain destinations, phone and Book - no dropdowns.
+// The header has one fixed height (no shrinking on scroll) and a solid background (no blur).
+// Phones get a "Menu" drawer (native <dialog>: focus trap, Esc, backdrop) plus the bottom ActionBar.
 import { Image } from 'astro:assets';
-import logo from '../../assets/images/brand/logo.jpeg';
-import { site } from '../../config/site';
-import { mainNav, isNavGroup, routes } from '../../config/navigation';
+import logoMark from '../../assets/images/brand/logo-mark-tripod.png';
+import Icon from '../ui/Icon.astro';
+import TodayHours from './TodayHours.astro';
+import { site, whatsappHref } from '../../config/site';
+import { mainNav, secondaryNav, routes, sectionOf } from '../../config/navigation';
+import { hasTips } from '../../data/collections';
 
-const currentPath = Astro.url.pathname.replace(/\/index\.html$|\/$/, '') || '/';
-const normalize = (href: string) => href.replace(/\.html$/, '').replace(/\/$/, '') || '/';
-const isCurrent = (href: string) => normalize(href) === normalize(currentPath);
+const showTips = await hasTips();
+const links = mainNav.filter((link) => !link.requiresTips || showTips);
+const current = sectionOf(Astro.url.pathname);
+const whatsapp = whatsappHref();
+const { phone, landline, address, mapsUrl } = site.contact;
 ---
 
-<header class="site-header" data-site-header>
-  <div class="header-left">
-    <a href={routes.home} class="logo-link" aria-label={`${site.name} — home`}>
-      <Image src={logo} alt="" class="site-logo" width={60} height={60} densities={[1, 2]} loading="eager" />
-    </a>
-    <div class="site-title-group">
-      <span class="site-title">{site.name}</span>
-      <span class="site-tagline">{site.tagline}</span>
-    </div>
+<div class="utility-strip">
+  <div class="utility-inner">
+    <span><Icon name="clock" /><TodayHours /></span>
+    <a href={mapsUrl} target="_blank" rel="noopener"><Icon name="map-pin" />{address.short}</a>
+    {whatsapp && <a href={whatsapp} target="_blank" rel="noopener"><Icon name="chat" />WhatsApp</a>}
   </div>
-  <div class="header-right">
-    <button
-      class="hamburger"
-      type="button"
-      aria-label="Open menu"
-      aria-expanded="false"
-      aria-controls="main-nav"
-      data-menu-toggle
-    >
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-    <nav aria-label="Main">
-      <ul class="nav-list" id="main-nav" data-menu>
-        {mainNav.map((item, index) =>
-          isNavGroup(item) ? (
-            <li class="has-dropdown">
-              <button
-                class="nav-link nav-toggle"
-                type="button"
-                aria-expanded="false"
-                aria-controls={`nav-group-${index}`}
-                data-dropdown-toggle
-              >
-                {item.label}
-              </button>
-              <ul class="dropdown" id={`nav-group-${index}`}>
-                {item.children.map((child) => (
-                  <li>
-                    <a href={child.href} aria-current={isCurrent(child.href) ? 'page' : undefined}>
-                      {child.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ) : (
-            <li>
-              <a class="nav-link" href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
-                {item.label}
-              </a>
-            </li>
-          ),
-        )}
-      </ul>
-    </nav>
+</div>
+
+<header class="site-header">
+  <a href={routes.home} class="brand" aria-label={`${site.name} - home`}>
+    <Image src={logoMark} alt="" class="brand-logo" width={52} height={52} densities={[1, 2]} loading="eager" />
+    <span class="brand-text" aria-hidden="true">
+      <span class="brand-name">Rivaansh</span>
+      <span class="brand-sub">
+        <span class="brand-sub-ent">ENT,</span>
+        <span class="brand-sub-head">HEAD</span>
+        <span class="brand-sub-and">&amp;</span>
+        <span class="brand-sub-neck">NECK CENTRE</span>
+      </span>
+    </span>
+  </a>
+
+  <nav class="desktop-nav" aria-label="Main">
+    <ul>
+      {links.map((link) => (
+        <li><a href={link.href} aria-current={current === link.href ? 'page' : undefined}>{link.label}</a></li>
+      ))}
+    </ul>
+  </nav>
+
+  <div class="header-actions">
+    <a class="header-call" href={`tel:${phone.tel}`} aria-label={`Call ${phone.display}`}>
+      <Icon name="phone" />
+      <span class="header-call-number">{phone.display}</span>
+    </a>
+    <a class="btn btn--primary header-book" href={routes.book}>Book appointment</a>
+    <a class="menu-button" href="#site-footer" aria-haspopup="dialog" aria-controls="site-drawer" data-menu-open>
+      <Icon name="menu" />
+      <span>Menu</span>
+    </a>
   </div>
 </header>
 
+<dialog class="drawer" id="site-drawer" aria-label="Menu" data-drawer>
+  <div class="drawer-head">
+    <span class="drawer-title">{site.shortName}</span>
+    <button class="drawer-close" type="button" data-menu-close>
+      <Icon name="close" />
+      <span>Close</span>
+    </button>
+  </div>
+  <nav aria-label="Main">
+    <ul class="drawer-links">
+      <li><a href={routes.home} aria-current={Astro.url.pathname === '/' ? 'page' : undefined}>Home</a></li>
+      {links.map((link) => (
+        <li>
+          <a href={link.href} aria-current={current === link.href ? 'page' : undefined}>
+            {link.label}
+            {link.description && <small>{link.description}</small>}
+          </a>
+        </li>
+      ))}
+    </ul>
+    <ul class="drawer-secondary">
+      {secondaryNav.map((link) => <li><a href={link.href}>{link.label}</a></li>)}
+    </ul>
+  </nav>
+  <div class="drawer-info">
+    <p><Icon name="clock" /><TodayHours /></p>
+    <p><Icon name="map-pin" /><span>{address.line1}, {address.line2}, {address.line3}</span></p>
+    <p><a href={mapsUrl} target="_blank" rel="noopener">Open in Google Maps</a></p>
+    <p><Icon name="phone" /><span>{phone.label}: <a href={`tel:${phone.tel}`}>{phone.display}</a></span></p>
+    <p><Icon name="phone" /><span>{landline.label}: <a href={`tel:${landline.tel}`}>{landline.display}</a></span></p>
+  </div>
+</dialog>
+
 <style>
-  .site-header {
+  /* ---------- Utility strip (wide screens only) ---------- */
+  .utility-strip {
+    display: none;
+    background: var(--color-surface-dark);
+    color: var(--color-text-on-dark-soft);
+    font-size: 0.8125rem;
+  }
+
+  .utility-inner {
+    max-width: var(--width-bleed);
+    margin: 0 auto;
+    padding: 0.45rem var(--gutter);
     display: flex;
-    justify-content: space-between;
+    gap: 1.75rem;
     align-items: center;
-    padding: 1rem var(--gutter);
-    background: rgba(255, 255, 255, 0.95);
-    box-shadow: var(--shadow-sm);
+  }
+
+  .utility-inner > * {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .utility-inner a:hover {
+    color: var(--color-text-on-dark);
+    text-decoration: underline;
+  }
+
+  .utility-inner :global(svg) {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+  }
+
+  @media (min-width: 1024px) {
+    .utility-strip {
+      display: block;
+    }
+  }
+
+  /* ---------- Header (one fixed height, solid background) ---------- */
+  .site-header {
     position: sticky;
     top: 0;
     z-index: var(--z-header);
-    min-height: var(--header-height);
-    transition:
-      padding var(--duration-base) var(--ease-standard),
-      min-height var(--duration-base) var(--ease-standard),
-      background-color var(--duration-base) var(--ease-standard),
-      box-shadow var(--duration-base) var(--ease-standard);
-  }
-
-  .site-header.is-scrolled {
-    min-height: var(--header-height-compact);
-    padding: 0.5rem var(--gutter);
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  }
-
-  .site-header.is-scrolled .site-logo {
-    height: 50px;
-  }
-
-  .header-left {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  .logo-link {
-    display: flex;
-    align-items: center;
-    padding: 5px 0;
-  }
-
-  .site-logo {
-    height: 60px;
-    width: auto;
-    transition: height var(--duration-base) var(--ease-standard), transform var(--duration-fast) ease;
-  }
-
-  .site-logo:hover {
-    transform: scale(1.02);
-  }
-
-  .site-title-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.125rem;
-  }
-
-  .site-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--color-primary-dark);
-    letter-spacing: -0.025em;
-  }
-
-  .site-tagline {
-    font-size: 0.875rem;
-    color: var(--color-text-muted);
-    font-weight: 400;
-  }
-
-  .header-right {
+    height: var(--header-height);
     display: flex;
     align-items: center;
     gap: 1.5rem;
+    padding: 0 var(--gutter);
+    background: var(--color-bg);
+    box-shadow: 0 1px 0 var(--color-border), 0 4px 16px rgba(30, 41, 59, 0.06);
   }
 
-  /* ---------- Desktop navigation ---------- */
-  .nav-list {
+  .brand {
     display: flex;
-    gap: 0.5rem;
     align-items: center;
+    gap: 0.7rem;
+    flex-shrink: 0;
   }
 
-  .nav-list li {
-    position: relative;
-  }
-
-  .nav-link {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    font-size: 0.9375rem;
-    font-weight: 500;
-    line-height: 1.6;
-    color: var(--color-text);
-    background: none;
-    border: 0;
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    transition: all var(--duration-fast) ease;
-  }
-
-  .nav-link:hover {
-    background: var(--color-primary-light);
-    color: var(--color-primary-ink);
-  }
-
-  .dropdown {
-    display: none;
-    position: absolute;
-    left: 0;
-    top: calc(100% + 0.5rem);
-    background: var(--color-bg);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    min-width: 200px;
-    box-shadow: var(--shadow-lg);
-    padding: 0.5rem;
-    z-index: var(--z-dropdown);
-  }
-
-  /* Invisible bridge over the 0.5rem gap so the menu stays open while the pointer moves into it. */
-  .dropdown::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: -0.5rem;
-    height: 0.5rem;
-  }
-
-  .nav-toggle[aria-expanded='true'] + .dropdown {
+  .brand-logo {
     display: block;
+    width: 52px;
+    height: 52px;
+    object-fit: contain;
   }
 
-  @media (min-width: 769px) and (hover: hover) {
-    .has-dropdown:hover > .dropdown {
-      display: block;
-    }
-  }
-
-  .dropdown a {
-    display: block;
-    padding: 0.625rem 1rem;
-    font-size: 0.9375rem;
-    font-weight: 500;
-    color: var(--color-text);
-    border-radius: var(--radius-sm);
-    transition: all 0.15s ease;
-  }
-
-  .dropdown a:hover {
-    background: var(--color-primary-light);
-    color: var(--color-primary-ink);
-  }
-
-  /* ---------- Hamburger (mobile only) ---------- */
-  .hamburger {
-    display: none;
+  .brand-text {
+    display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 44px;
-    height: 44px;
-    background: var(--color-primary);
-    border-radius: var(--radius-full);
-    cursor: pointer;
-    position: fixed;
-    top: 18px;
-    right: 18px;
-    z-index: var(--z-menu-button);
-    box-shadow: var(--shadow-md);
-    border: none;
-    transition: background var(--duration-fast) ease;
+    line-height: 1.15;
+    white-space: nowrap;
   }
 
-  .hamburger:hover {
-    background: var(--color-primary-dark);
+  .brand-name {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 1.24rem;
+    font-weight: 700;
+    color: var(--color-text);
+    letter-spacing: -0.035em;
   }
 
-  .hamburger span {
+  .brand-sub {
+    margin-top: 0.14rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.22rem;
+    font-family: 'Arial Narrow', 'Aptos Narrow', 'Roboto Condensed', var(--font-sans);
+    font-size: 0.68rem;
+    font-weight: 750;
+    line-height: 1;
+    letter-spacing: 0.045em;
+  }
+
+  .brand-sub-ent {
+    color: var(--color-accent);
+  }
+
+  .brand-sub-head {
+    color: var(--color-primary);
+  }
+
+  .brand-sub-and {
+    color: var(--color-text);
+  }
+
+  .brand-sub-neck {
+    color: var(--color-secondary);
+  }
+
+  .desktop-nav {
+    margin-left: auto;
+  }
+
+  .desktop-nav ul {
+    display: flex;
+    gap: 0.25rem;
+  }
+
+  .desktop-nav a {
     display: block;
-    width: 20px;
-    height: 2px;
-    background: var(--color-bg);
-    margin: 3px 0;
-    border-radius: 2px;
-    transition: all var(--duration-base) ease;
+    padding: 0.5rem 0.9rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--color-text);
+    border-radius: var(--radius-sm);
+    transition: background-color var(--duration-fast) ease, color var(--duration-fast) ease;
   }
 
-  @media (max-width: 768px) {
-    .site-header {
-      padding: 0.75rem var(--gutter-mobile);
-      min-height: var(--header-height-compact);
-    }
+  .desktop-nav a:hover,
+  .desktop-nav a[aria-current='page'] {
+    background: var(--color-primary-light);
+    color: var(--color-primary-ink);
+  }
 
-    .site-header.is-scrolled {
-      padding: 0.5rem var(--gutter-mobile);
-    }
+  .desktop-nav a[aria-current='page'] {
+    font-weight: 600;
+  }
 
-    .site-title {
-      font-size: 1.25rem;
-    }
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
 
-    .site-tagline {
-      font-size: 0.75rem;
-    }
+  .header-call {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 600;
+    color: var(--color-primary-ink);
+    white-space: nowrap;
+  }
 
-    .site-logo {
-      height: 44px;
-    }
+  .header-call :global(svg) {
+    width: 18px;
+    height: 18px;
+  }
 
-    .site-header.is-scrolled .site-logo {
-      height: 44px;
-    }
+  .header-call:hover .header-call-number {
+    text-decoration: underline;
+  }
 
-    .hamburger {
-      display: flex;
-    }
+  .header-book.btn {
+    padding: 0.55rem 1.25rem;
+    font-size: 0.9375rem;
+    box-shadow: none;
+  }
 
-    /* Off-canvas drawer. Hidden with transform + visibility so it never widens the page. */
-    .nav-list {
-      position: fixed;
-      top: 0;
-      right: 0;
-      width: 80vw;
-      max-width: 320px;
-      height: 100vh;
-      height: 100dvh;
-      background: var(--color-bg);
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0;
-      padding: 5rem 1.5rem 2rem;
-      box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
-      z-index: var(--z-drawer);
-      overflow-y: auto;
-      transform: translateX(100%);
-      visibility: hidden;
-      transition: transform var(--duration-base) ease, visibility 0s linear var(--duration-base);
-    }
+  .header-book.btn:hover {
+    transform: none;
+    box-shadow: none;
+  }
 
-    .nav-list.open {
-      transform: translateX(0);
-      visibility: visible;
-      transition: transform var(--duration-base) ease, visibility 0s;
-    }
+  .menu-button {
+    display: none;
+  }
 
-    .nav-list li {
-      width: 100%;
-    }
-
-    .nav-link {
-      display: block;
-      width: 100%;
-      text-align: left;
-      padding: 0.875rem 0;
-      font-size: 1rem;
-      border-bottom: 1px solid var(--color-border);
-      border-radius: 0;
-    }
-
-    .nav-link:hover {
-      background: none;
-    }
-
-    .dropdown {
-      position: static;
-      box-shadow: none;
-      border: none;
-      border-radius: 0;
-      min-width: 0;
-      background: var(--color-bg-alt);
-      padding: 0.5rem 0 0.5rem 1rem;
-      margin-top: 0;
-    }
-
-    .dropdown::before {
+  /* 769–1023px: phone becomes an icon button */
+  @media (max-width: 1023px) {
+    .brand-sub {
       display: none;
     }
 
-    .dropdown a {
-      padding: 0.625rem 0;
-      font-size: 0.9375rem;
-      border-radius: 0;
+    .header-call-number {
+      display: none;
+    }
+
+    .header-call {
+      width: 44px;
+      height: 44px;
+      justify-content: center;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+    }
+
+    .desktop-nav a {
+      padding: 0.5rem 0.6rem;
     }
   }
 
-  @media (max-width: 480px) {
-    .header-left {
+  /* ≤768px: logo mark, Call icon, "Menu" button; booking lives in the bottom action bar */
+  @media (max-width: 768px) {
+    .site-header {
+      height: var(--header-height-compact);
+      padding: 0 var(--gutter-mobile);
       gap: 0.75rem;
     }
 
-    .site-tagline {
+    .brand-logo {
+      width: 42px;
+      height: 42px;
+    }
+
+    .brand {
+      gap: 0.5rem;
+    }
+
+    .brand-name {
+      font-size: 1rem;
+    }
+
+    .brand-sub {
+      display: block;
+      margin-top: 0.1rem;
+      font-size: 0.625rem;
+    }
+
+    .brand-sub > span + span {
+      margin-left: 0.14rem;
+    }
+
+    .desktop-nav,
+    .header-book {
       display: none;
+    }
+
+    .header-actions {
+      margin-left: auto;
+      gap: 0.5rem;
+    }
+
+    .menu-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      height: 44px;
+      padding: 0 1rem;
+      border-radius: var(--radius-full);
+      background: var(--color-primary-ink);
+      color: var(--color-text-on-dark);
+      font-weight: 600;
+    }
+
+    .menu-button :global(svg) {
+      width: 18px;
+      height: 18px;
     }
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .site-header,
-    .site-logo,
-    .nav-list,
-    .nav-list.open {
-      transition: none;
+  /* ---------- Drawer ---------- */
+  .drawer {
+    margin: 0 0 0 auto;
+    width: min(360px, 88vw);
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    border: 0;
+    padding: 0 1.25rem 2rem;
+    background: var(--color-bg);
+    color: var(--color-text);
+    overflow-y: auto;
+    box-shadow: -8px 0 30px rgba(15, 23, 42, 0.2);
+  }
+
+  .drawer::backdrop {
+    background: rgba(15, 23, 42, 0.45);
+  }
+
+  .drawer-head {
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--header-height-compact);
+    background: var(--color-bg);
+  }
+
+  .drawer-title {
+    font-weight: 700;
+    color: var(--color-primary-dark);
+    font-size: 1.125rem;
+  }
+
+  .drawer-close {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    height: 44px;
+    padding: 0 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .drawer-close :global(svg) {
+    width: 18px;
+    height: 18px;
+  }
+
+  .drawer-links a {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 56px;
+    padding: 0.5rem 0.75rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .drawer-links small {
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: var(--color-text-muted);
+  }
+
+  .drawer-links a[aria-current='page'] {
+    color: var(--color-primary-ink);
+    background: var(--color-primary-light);
+    border-radius: var(--radius-sm);
+  }
+
+  .drawer-secondary {
+    margin-top: 1rem;
+  }
+
+  .drawer-secondary a {
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 0 0.75rem;
+    font-size: 1rem;
+    color: var(--color-primary-ink);
+    font-weight: 600;
+  }
+
+  .drawer-info {
+    margin-top: 1.25rem;
+    padding: 1rem 0.75rem 0;
+    border-top: 1px solid var(--color-border);
+    font-size: 0.9375rem;
+    color: var(--color-text-muted);
+  }
+
+  .drawer-info p {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+  }
+
+  .drawer-info :global(svg) {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+    color: var(--color-primary-dark);
+  }
+
+  .drawer-info a {
+    color: var(--color-primary-ink);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .drawer[open] {
+      animation: drawer-in var(--duration-base) var(--ease-standard);
+    }
+
+    @keyframes drawer-in {
+      from { transform: translateX(100%); }
+      to { transform: translateX(0); }
     }
   }
 </style>
 
 <script>
-  import { onFrame } from '../../scripts/motion';
+  const drawer = document.querySelector<HTMLDialogElement>('[data-drawer]');
+  const openers = document.querySelectorAll<HTMLAnchorElement>('[data-menu-open]');
 
-  const header = document.querySelector<HTMLElement>('[data-site-header]');
-  const menuToggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
-  const menu = document.querySelector<HTMLElement>('[data-menu]');
-  const dropdownToggles = document.querySelectorAll<HTMLButtonElement>('[data-dropdown-toggle]');
-  const desktopQuery = window.matchMedia('(min-width: 769px)');
-
-  // Compact, blurred header once the page scrolls. The shrink/expand points are 60px apart — more than
-  // the ~26px the header changes height — so shrinking can never pull scrollY back across the threshold
-  // and flip it back (a single 50px threshold made the page bounce on trackpad scrolls).
-  if (header) {
-    const SHRINK_AT = 80;
-    const EXPAND_AT = 20;
-    const update = () => {
-      const y = window.scrollY;
-      const compact = header.classList.contains('is-scrolled');
-      if (!compact && y > SHRINK_AT) header.classList.add('is-scrolled');
-      else if (compact && y < EXPAND_AT) header.classList.remove('is-scrolled');
-    };
-    window.addEventListener('scroll', onFrame(update), { passive: true });
-    update();
+  if (drawer && typeof drawer.showModal === 'function') {
+    openers.forEach((opener) => {
+      opener.setAttribute('role', 'button');
+      opener.addEventListener('click', (event) => {
+        event.preventDefault();
+        drawer.showModal();
+      });
+    });
+    drawer.querySelector('[data-menu-close]')?.addEventListener('click', () => drawer.close());
+    // Tapping the backdrop (outside the panel) closes the menu.
+    drawer.addEventListener('click', (event) => {
+      if (event.target === drawer) drawer.close();
+    });
+    drawer.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => drawer.close()));
+    window.matchMedia('(min-width: 769px)').addEventListener('change', (e) => {
+      if (e.matches) drawer.close();
+    });
   }
-
-  const closeDropdowns = (except?: HTMLButtonElement) => {
-    dropdownToggles.forEach((toggle) => {
-      if (toggle !== except) toggle.setAttribute('aria-expanded', 'false');
-    });
-  };
-
-  const setMenuOpen = (open: boolean) => {
-    if (!menu || !menuToggle) return;
-    menu.classList.toggle('open', open);
-    menuToggle.setAttribute('aria-expanded', String(open));
-    menuToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-  };
-
-  menuToggle?.addEventListener('click', () => {
-    setMenuOpen(!menu?.classList.contains('open'));
-  });
-
-  dropdownToggles.forEach((toggle) => {
-    toggle.addEventListener('click', () => {
-      const expanded = toggle.getAttribute('aria-expanded') === 'true';
-      closeDropdowns(toggle);
-      toggle.setAttribute('aria-expanded', String(!expanded));
-    });
-  });
-
-  // Keyboard users: close a dropdown once focus moves outside its menu group.
-  document.querySelectorAll<HTMLElement>('.has-dropdown').forEach((group) => {
-    group.addEventListener('focusout', (event) => {
-      if (group.contains(event.relatedTarget as Node)) return;
-      group.querySelector('[data-dropdown-toggle]')?.setAttribute('aria-expanded', 'false');
-    });
-  });
-
-  menu?.addEventListener('click', (event) => {
-    if ((event.target as HTMLElement).closest('a')) setMenuOpen(false);
-  });
-
-  document.addEventListener('click', (event) => {
-    if (!(event.target as HTMLElement).closest('.has-dropdown')) closeDropdowns();
-  });
-
-  document.addEventListener('keydown', (event) => {
-    if (event.key !== 'Escape') return;
-    const openToggle = [...dropdownToggles].find((t) => t.getAttribute('aria-expanded') === 'true');
-    if (openToggle) {
-      closeDropdowns();
-      openToggle.focus();
-    } else if (menu?.classList.contains('open')) {
-      setMenuOpen(false);
-      menuToggle?.focus();
-    }
-  });
-
-  desktopQuery.addEventListener('change', (event) => {
-    if (event.matches) setMenuOpen(false);
-    closeDropdowns();
-  });
 </script>

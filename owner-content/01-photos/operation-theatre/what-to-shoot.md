@@ -1,0 +1,7 @@
+# 12. Operation theatre
+
+The theatre with staff only (with their consent), no surgical field visible.
+
+- Landscape — hold the phone sideways
+- At least 1600×1067 pixels (any recent phone is fine)
+- Only if surgery photos may be shown (decisions 7 and 12)

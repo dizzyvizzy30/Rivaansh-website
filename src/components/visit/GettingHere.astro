@@ -1,0 +1,70 @@
+---
+// Visit Us › Getting here: numbered wayfinding steps, each with its photo slot. A step without a photo is text-only
+// on the live site (preview builds show the "Photo needed" frame).
+import PhotoSlot from '../media/PhotoSlot.astro';
+import InfoNeeded from '../ui/InfoNeeded.astro';
+import { visitPage } from '../../data/visit';
+import { slotImage } from '../../data/photo-slots';
+import { showDrafts } from '../../data/collections';
+---
+
+<ol class="getting-here">
+  {visitPage.gettingHere.map((step, index) => (
+    <li class:list={['step', !slotImage(step.slot) && !showDrafts && 'step--text']}>
+      <PhotoSlot id={step.slot} sizes="(max-width: 768px) calc(100vw - 2rem), 280px" />
+      <div class="step-body">
+        <span class="step-number" aria-hidden="true">{index + 1}</span>
+        <h3>{step.title}</h3>
+        <p>{step.text}</p>
+        {index === 1 && (visitPage.lift ? <p>{visitPage.lift}</p> : <InfoNeeded what="lift / stairs" folder="00-clinic-facts" />)}
+      </div>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .getting-here {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+    list-style: none;
+  }
+
+  .step {
+    display: grid;
+    gap: 0.75rem;
+    align-content: start;
+  }
+
+  .step-body {
+    position: relative;
+  }
+
+  .step-number {
+    display: inline-grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-full);
+    background: var(--color-primary-ink);
+    color: var(--color-text-on-dark);
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+
+  .step h3 {
+    font-size: 1.125rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .step p {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+  }
+
+  @media (max-width: 768px) {
+    .getting-here {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

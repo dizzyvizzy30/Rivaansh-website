@@ -1,109 +1,84 @@
-// Homepage — /
-// Owner input: owner-content/01-home/
-import type { ImageItem } from '../components/media/types';
-import doctorOfficePortrait from '../assets/images/clinic/doctor-office-portrait.jpeg';
-import endoscopyProcedure from '../assets/images/clinic/endoscopy-procedure.jpeg';
-import operationTheatreTeam from '../assets/images/clinic/operation-theatre-team.jpeg';
-import placeholderSpecialist1 from '../assets/images/team/placeholder-specialist-1.svg';
-import placeholderSpecialist2 from '../assets/images/team/placeholder-specialist-2.svg';
-import placeholderSpecialist3 from '../assets/images/team/placeholder-specialist-3.svg';
-import { clinicStats } from './stats';
+// Homepage - / (a short, problem-led front door; detail stays on the inner pages)
+// Owner input: owner-content/00-clinic-facts/ and owner-content/01-photos/
 
-export const heroSlides: ImageItem[] = [
-  { kind: 'image', src: doctorOfficePortrait, alt: 'ENT specialist seated at a desk in the clinic consultation room', focus: 'center 30%' },
-  { kind: 'image', src: endoscopyProcedure, alt: 'Doctors performing an endoscopic ENT procedure with the camera view on a monitor', focus: 'center 30%' },
-  { kind: 'image', src: operationTheatreTeam, alt: 'Surgical team in the operation theatre under surgical lights', focus: 'center 30%' },
-];
+import type { IconName } from '../components/ui/Icon.astro';
 
 export const hero = {
-  titleLines: ['Empowering Better Lives', 'Through Expert ENT Care'],
-  subtitle: 'Comprehensive ear, nose, and throat services with compassion, expertise, and cutting-edge technology.',
-  primaryCta: { label: 'READ MORE', href: '/pages/about.html' },
-  secondaryCta: { label: 'CONTACT US', href: '/pages/contact.html' },
+  title: 'ENT centre in Gota, Ahmedabad',
+  subline: 'Ear pain or discharge? Hearing less? Feeling dizzy? Blocked nose? Is your child snoring or breathing through the mouth?',
+  /** Photo slot for the top banner. */
+  slot: 'doctor-consultation-room',
 };
 
-export const stats = clinicStats.map((stat) =>
-  stat.label === 'Patients Treated' ? { ...stat, note: '(300+ kids)' } : stat,
-);
+export interface HomeProblemGroup {
+  id: string;
+  title: string;
+  icon: IconName;
+  symptoms: { label: string; slug?: string }[];
+}
 
-export const serviceColumns = [
+/** Everyday phrases belong on Home; medical names stay on Treatments and condition pages. */
+export const homeProblemGroups: HomeProblemGroup[] = [
   {
+    id: 'ear',
+    title: 'Ear, hearing & balance',
     icon: 'ear',
-    title: 'Ear',
-    items: [
-      'Micro Ear Surgery',
-      'Cochlear Implant',
-      'Vertigo Clinic',
-      'Ear infection & hearing assessment',
-      'Tinnitus Clinic',
-      'Hearing Aid Clinic',
+    symptoms: [
+      { label: 'Ear pain or discharge', slug: 'ear-pain-ear-infections' },
+      { label: 'Hearing less', slug: 'hearing-loss-hearing-aids' },
+      { label: 'Feeling dizzy', slug: 'vertigo-dizziness' },
     ],
   },
   {
+    id: 'nose',
+    title: 'Nose & sleep',
     icon: 'nose',
-    title: 'Nose',
-    items: [
-      'Endoscopic Sinus Surgery',
-      'Septoplasty & Turbinate Surgery',
-      'Allergy Clinic',
-      'Sinus and allergy treatment',
-      'Nasal Polyps Treatment',
-      'Smell and Taste Disorders',
+    symptoms: [
+      { label: 'Blocked or runny nose', slug: 'sinus-allergy-blocked-nose' },
+      { label: 'Sneezing or allergy', slug: 'sinus-allergy-blocked-nose' },
+      { label: 'Snoring', slug: 'snoring' },
     ],
   },
   {
+    id: 'throat',
+    title: 'Throat & voice',
     icon: 'throat',
-    title: 'Throat',
-    items: [
-      'Voice Surgery',
-      'Speech Therapy',
-      'Sleep Apnea Clinic',
-      'Throat disorders',
-      'Voice & swallowing therapy',
-      'Tonsils and Adenoids',
+    symptoms: [
+      { label: 'Repeated sore throat', slug: 'tonsils-adenoids' },
+      { label: 'Tonsils', slug: 'tonsils-adenoids' },
+      { label: 'Hoarse voice or trouble swallowing' },
     ],
   },
-] as const;
+  {
+    id: 'head-neck',
+    title: 'Neck & thyroid',
+    icon: 'throat',
+    symptoms: [
+      { label: 'A lump or swelling in the neck', slug: 'thyroid-neck-swellings' },
+      { label: 'Thyroid concerns', slug: 'thyroid-neck-swellings' },
+    ],
+  },
+  {
+    id: 'children',
+    title: 'Children',
+    icon: 'ear',
+    symptoms: [
+      { label: 'Ear pain', slug: 'ear-pain-ear-infections' },
+      { label: 'Snoring or mouth breathing', slug: 'tonsils-adenoids' },
+      { label: 'Something stuck in the ear or nose' },
+    ],
+  },
+];
 
-// PLACEHOLDER: sample testimonials with stand-in names. Replace only with real, consented patient feedback
-// (or remove the section — patient testimonials are restricted for doctors in India).
-export const testimonials = {
-  title: 'What Our Patients Say',
-  items: [
-    {
-      quote:
-        "I had been suffering from chronic sinusitis for years, and Dr. Tanay Parikh's treatment has been a game-changer. I can finally breathe freely again!",
-      author: 'John Doe',
-    },
-    {
-      quote:
-        'The staff at Rivaansh ENT Clinic are incredibly professional and caring. They made my daughter feel comfortable during her tonsillectomy.',
-      author: 'Jane Smith',
-    },
-    {
-      quote:
-        "I was nervous about my hearing test, but the audiologist was so patient and explained everything clearly. I'm very happy with my new hearing aids.",
-      author: 'Robert Brown',
-    },
-    {
-      quote:
-        'Finding a good ENT for my son was a challenge. Dr. Parikh was amazing with him and made the whole experience so much better.',
-      author: 'Sarah L.',
-    },
-    {
-      quote:
-        "I had a complex sinus surgery, and the care I received at Rivaansh ENT Clinic was exceptional. I'm so grateful to the entire team.",
-      author: 'Michael P.',
-    },
-  ],
-};
+export const visitExpectations = [
+  { title: 'Tell us what you have noticed', text: 'The visit starts with your symptoms, how long they have been there, and what is worrying you.' },
+  { title: 'Be examined', text: 'The doctor examines the affected ear, nose or throat and explains whether any test may be useful.' },
+  { title: 'Understand the next steps', text: 'The likely cause and available options are discussed before treatment starts.' },
+];
 
-// PLACEHOLDER: cartoon avatars; Dr. Emily Carter and Dr. Ben Hanson look like template names — owner to confirm the real team.
-export const specialists = {
-  title: 'Meet Our Specialists',
-  members: [
-    { name: 'Dr. Tanay Parikh', lines: ['ENT Specialist'], image: placeholderSpecialist1 },
-    { name: 'Dr. Emily Carter', lines: ['Audiologist'], image: placeholderSpecialist2 },
-    { name: 'Dr. Ben Hanson', lines: ['Speech Therapist'], image: placeholderSpecialist3 },
-  ],
+export const homeSections = {
+  treatTitle: 'What is troubling you?',
+  visitTitle: 'What happens at your first visit?',
+  doctorTitle: 'Who you will see',
+  comingTitle: 'Plan your visit',
 };

@@ -1,0 +1,185 @@
+---
+import symptomSprite from '../../assets/images/symptoms/ent-symptom-sprite.webp';
+import { featuredProblems } from '../../data/problem-finder';
+import { routes } from '../../config/navigation';
+
+const position = (column: number, row: number) => `${column * 50}% ${row * 100}%`;
+---
+
+<div class="rail-shell" data-symptom-rail>
+  <button class="rail-button rail-button--previous" type="button" aria-label="See previous symptoms" data-rail-previous>‹</button>
+  <ul class="symptom-rail" tabindex="0" aria-label="Common ear, nose and throat symptoms" data-rail-list>
+    {featuredProblems.map((problem) => (
+      <li class="symptom-card">
+        <a href={`${routes.problemFinder}#${problem.id}`}>
+          <span
+            class="symptom-image"
+            aria-hidden="true"
+            style={`background-image:url(${symptomSprite.src});background-position:${position(problem.image!.column, problem.image!.row)}`}
+          ></span>
+          <span class="symptom-copy">
+            <small>{problem.category}</small>
+            <strong>{problem.title}</strong>
+            {problem.gujarati && <span class="symptom-gujarati" lang="gu">{problem.gujarati}</span>}
+          </span>
+        </a>
+      </li>
+    ))}
+  </ul>
+  <button class="rail-button rail-button--next" type="button" aria-label="See more symptoms" data-rail-next>›</button>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-symptom-rail]').forEach((shell) => {
+    const rail = shell.querySelector<HTMLElement>('[data-rail-list]');
+    const previous = shell.querySelector<HTMLButtonElement>('[data-rail-previous]');
+    const next = shell.querySelector<HTMLButtonElement>('[data-rail-next]');
+    if (!rail || !previous || !next) return;
+
+    const step = () => Math.min(rail.clientWidth * 0.82, 620);
+    previous.addEventListener('click', () => rail.scrollBy({ left: -step(), behavior: 'smooth' }));
+    next.addEventListener('click', () => rail.scrollBy({ left: step(), behavior: 'smooth' }));
+
+    const update = () => {
+      previous.disabled = rail.scrollLeft < 8;
+      next.disabled = rail.scrollLeft + rail.clientWidth >= rail.scrollWidth - 8;
+    };
+    rail.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  });
+</script>
+
+<style>
+  .rail-shell {
+    position: relative;
+  }
+
+  .symptom-rail {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: clamp(320px, 24vw, 380px);
+    gap: 1rem;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: inline proximity;
+    scroll-padding-inline: 0.25rem;
+    padding: 0.25rem 0.25rem 1rem;
+    scrollbar-color: var(--color-primary-tint) transparent;
+    scrollbar-width: thin;
+  }
+
+  .symptom-rail:focus-visible {
+    outline: 3px solid var(--color-secondary);
+    outline-offset: 4px;
+    border-radius: var(--radius-lg);
+  }
+
+  .symptom-card {
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+
+  .symptom-card a {
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    background: var(--color-bg);
+    color: var(--color-text);
+    box-shadow: var(--shadow-card);
+    transition: transform var(--duration-fast) ease, border-color var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
+  }
+
+  .symptom-card a:hover {
+    transform: translateY(-3px);
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-brand);
+  }
+
+  .symptom-card a:focus-visible {
+    outline: 3px solid var(--color-secondary);
+    outline-offset: 3px;
+  }
+
+  .symptom-image {
+    display: block;
+    aspect-ratio: 1 / 1;
+    background-size: 300% 200%;
+    background-repeat: no-repeat;
+    background-color: var(--color-primary-light);
+  }
+
+  .symptom-copy {
+    display: grid;
+    align-content: start;
+    gap: 0.35rem;
+    padding: 1rem 1.1rem 1.15rem;
+  }
+
+  .symptom-copy small {
+    color: var(--color-primary-ink);
+    font-size: 0.8125rem;
+    font-weight: 750;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .symptom-copy strong {
+    color: var(--color-primary-dark);
+    font-size: 1.3rem;
+    line-height: 1.3;
+  }
+
+  .symptom-gujarati {
+    color: var(--color-text-muted);
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .rail-button {
+    position: absolute;
+    top: 29%;
+    z-index: 2;
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    background: var(--color-bg);
+    color: var(--color-primary-dark);
+    box-shadow: var(--shadow-md);
+    font-size: 1.8rem;
+    cursor: pointer;
+  }
+
+  .rail-button:disabled {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .rail-button--previous { left: -1.25rem; }
+  .rail-button--next { right: -1.25rem; }
+
+  @media (max-width: 768px) {
+    .symptom-rail {
+      grid-auto-columns: min(84vw, 350px);
+      margin-inline: calc(-1 * var(--gutter-mobile));
+      padding-inline: var(--gutter-mobile);
+      scroll-padding-inline: var(--gutter-mobile);
+    }
+
+    .rail-button {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .symptom-card a {
+      transition: none;
+    }
+  }
+</style>

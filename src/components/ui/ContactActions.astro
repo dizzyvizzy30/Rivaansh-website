@@ -1,0 +1,69 @@
+---
+// Call · WhatsApp (or Directions) · optional Book - the same actions everywhere a visitor might decide to get in touch.
+import Icon from './Icon.astro';
+import { site, whatsappHref } from '../../config/site';
+import { routes } from '../../config/navigation';
+
+interface Props {
+  /** `on-dark` for use over the hero photo. */
+  tone?: 'default' | 'on-dark';
+  showBook?: boolean;
+  whatsappText?: string;
+  class?: string;
+}
+
+const { tone = 'default', showBook = false, whatsappText, class: className } = Astro.props;
+const whatsapp = whatsappHref(whatsappText);
+---
+
+<div class:list={['contact-actions', `contact-actions--${tone}`, className]}>
+  <a class="btn btn--primary" href={`tel:${site.contact.phone.tel}`} aria-label={`Call Rivaansh ENT at ${site.contact.phone.display}`}>
+    <Icon name="phone" />
+    Call us
+  </a>
+  {whatsapp ? (
+    <a class="btn btn--light" href={whatsapp} target="_blank" rel="noopener">
+      <Icon name="chat" />
+      WhatsApp
+    </a>
+  ) : (
+    <a class="btn btn--light" href={site.contact.mapsUrl} target="_blank" rel="noopener">
+      <Icon name="map-pin" />
+      Directions
+    </a>
+  )}
+  {showBook && (
+    <a class="btn btn--light" href={routes.book}>
+      Book appointment
+    </a>
+  )}
+</div>
+
+<style>
+  .contact-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .contact-actions :global(svg) {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+
+  .contact-actions .btn {
+    padding: 0.75rem 1.5rem;
+    box-shadow: none;
+  }
+
+  .contact-actions--default .btn--light {
+    border-color: var(--color-border);
+  }
+
+  @media (max-width: 768px) {
+    .contact-actions .btn {
+      max-width: none;
+    }
+  }
+</style>

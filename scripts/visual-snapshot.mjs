@@ -10,23 +10,20 @@ const [base, out, only] = process.argv.slice(2);
 mkdirSync(out, { recursive: true });
 
 const pages = [
-  '/index.html',
-  '/pages/about-us.html',
-  '/pages/about.html',
-  '/pages/appointment.html',
-  '/pages/online-consultation.html',
-  '/pages/blog.html',
-  '/pages/blog/blog1.html',
-  '/pages/care.html',
-  '/pages/contact.html',
+  '/',
   '/pages/ent.html',
-  '/pages/faq.html',
-  '/pages/gallery.html',
-  '/pages/locations.html',
-  '/pages/specialities.html',
-  '/pages/surgeries.html',
+  '/pages/problem-finder.html',
+  '/pages/about-us.html',
+  '/pages/contact.html',
+  '/pages/appointment.html',
+  '/pages/care.html',
+  '/pages/blog.html',
+  // Draft pages — only present in drafts builds (npm run dev, deploy previews); skipped when missing.
+  '/pages/ent/vertigo-dizziness.html',
+  '/pages/blog/when-to-see-an-ent-doctor.html',
+  '/pages/photos-needed.html',
 ];
-const selected = only ? pages.filter((p) => only.split(',').some((o) => p.includes(o))) : pages;
+const selected = only ? pages.filter((p) => only.split(',').some((o) => o === 'home' ? p === '/' : p.includes(o))) : pages;
 const viewports = { desktop: { width: 1440, height: 900 }, mobile: { width: 390, height: 844 } };
 
 const browser = await chromium.launch({ channel: 'chrome' });
@@ -40,7 +37,11 @@ for (const [vpName, vp] of Object.entries(viewports)) {
     const failed = [];
     page.on('requestfailed', (r) => failed.push(r.url()));
     page.on('response', (r) => { if (r.status() >= 400) failed.push(`${r.status()} ${r.url()}`); });
-    await page.goto(base + path, { waitUntil: 'networkidle' });
+    const response = await page.goto(base + path, { waitUntil: 'networkidle' });
+    if (!response || response.status() === 404) {
+      await page.close();
+      continue;
+    }
     await page.evaluate(async () => {
       for (let y = 0; y < document.documentElement.scrollHeight; y += 400) { window.scrollTo(0, y); await new Promise((r) => setTimeout(r, 60)); }
       window.scrollTo(0, 0);

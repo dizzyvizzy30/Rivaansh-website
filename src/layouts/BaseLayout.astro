@@ -4,21 +4,51 @@ import interLatinUrl from '@fontsource-variable/inter/files/inter-latin-wght-nor
 import '../styles/global.css';
 import SiteHeader from '../components/layout/SiteHeader.astro';
 import SiteFooter from '../components/layout/SiteFooter.astro';
-import ScrollProgress from '../components/layout/ScrollProgress.astro';
-import FloatingCta from '../components/layout/FloatingCta.astro';
+import ActionBar from '../components/layout/ActionBar.astro';
 import { site } from '../config/site';
 
 interface Props {
-  /** Page name, shown as "<title> | <clinic name>". Omit on the homepage. */
+  /** Page name, shown as "<title> | Rivaansh ENT". Omit on the homepage. */
   title?: string;
   description?: string;
-  showScrollProgress?: boolean;
-  showFloatingCta?: boolean;
+  /** Keep the page out of search results (drafts, 404). */
+  noindex?: boolean;
+  /** Add MedicalClinic structured data (homepage and Visit Us). */
+  clinicSchema?: boolean;
 }
 
-const { title, description = site.description, showScrollProgress = false, showFloatingCta = false } = Astro.props;
-const fullTitle = title ? `${title} | ${site.name}` : site.name;
-const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
+const { title, description = site.description, noindex = false, clinicSchema = false } = Astro.props;
+const fullTitle = title ? `${title} | ${site.shortName}` : `${site.name} - Gota, Ahmedabad`;
+const canonicalPath = Astro.url.pathname === '/index.html' ? '/' : Astro.url.pathname;
+const canonical = Astro.site ? new URL(canonicalPath, Astro.site).href : undefined;
+
+const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const schema = clinicSchema && {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalClinic',
+  name: site.name,
+  medicalSpecialty: 'Otolaryngologic',
+  telephone: site.contact.phone.tel,
+  email: site.contact.email,
+  ...(Astro.site && { url: Astro.site.href }),
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: site.contact.address.street,
+    addressLocality: site.contact.address.locality,
+    addressRegion: site.contact.address.region,
+    postalCode: site.contact.address.postalCode,
+    addressCountry: site.contact.address.country,
+  },
+  openingHoursSpecification: site.hours.flatMap((h) =>
+    h.sessions.map((s) => ({
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: h.days.map((d) => dayNames[d]),
+      opens: s.open,
+      closes: s.close,
+    })),
+  ),
+  employee: { '@type': 'Physician', name: site.doctor.name },
+};
 ---
 
 <!doctype html>
@@ -28,23 +58,24 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : un
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#8fbc8f" />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#ffffff" />
     {canonical && <link rel="canonical" href={canonical} />}
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="preload" href={interLatinUrl} as="font" type="font/woff2" crossorigin />
     <script is:inline>document.documentElement.classList.add('js');</script>
+    {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
     <slot name="head" />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
-    {showScrollProgress && <ScrollProgress />}
     <SiteHeader />
     <main id="main" tabindex="-1">
       <slot />
     </main>
     <SiteFooter />
-    {showFloatingCta && <FloatingCta />}
+    <ActionBar />
     <script>
       import '../scripts/reveal';
     </script>

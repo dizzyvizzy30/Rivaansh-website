@@ -1,46 +1,422 @@
 ---
+// Homepage: a short path from symptom recognition to visit expectations, clinician proof and practical details.
+// Full medical, doctor, clinic and logistics content stays on the relevant inner page.
 import BaseLayout from '../layouts/BaseLayout.astro';
-import HeroSlideshow from '../components/home/HeroSlideshow.astro';
-import StatsBand from '../components/sections/StatsBand.astro';
-import ServiceColumns from '../components/home/ServiceColumns.astro';
-import TestimonialSlider from '../components/home/TestimonialSlider.astro';
-import SpecialistGrid from '../components/home/SpecialistGrid.astro';
-import { hero, heroSlides, stats, serviceColumns, testimonials, specialists } from '../data/home';
+import HomeHero from '../components/home/HomeHero.astro';
+import SymptomRail from '../components/home/SymptomRail.astro';
+import PhotoSlot from '../components/media/PhotoSlot.astro';
+import ContactActions from '../components/ui/ContactActions.astro';
+import InfoNeeded from '../components/ui/InfoNeeded.astro';
+import { homeSections as s, visitExpectations } from '../data/home';
+import { doctor } from '../data/doctor-clinic';
+import { bookPage } from '../data/book';
+import { visitPage } from '../data/visit';
+import { treatmentsPage } from '../data/treatments';
+import { routes } from '../config/navigation';
+import { site } from '../config/site';
+
+const { address, phone } = site.contact;
+const qualifications = doctor.qualifications.map((qualification) => qualification.degree);
 ---
 
-<BaseLayout showScrollProgress showFloatingCta>
-  <HeroSlideshow slides={heroSlides} {...hero} />
-  <StatsBand stats={stats} variant="cards" />
-  <ServiceColumns columns={serviceColumns} />
-  <TestimonialSlider title={testimonials.title} items={testimonials.items} />
-  <section class="team-section" aria-labelledby="team-title">
-    <h2 class="team-title" id="team-title" data-animate="fade-up">{specialists.title}</h2>
-    <SpecialistGrid members={specialists.members} animate />
+<BaseLayout clinicSchema>
+  <HomeHero />
+
+  <section class="section" aria-labelledby="treat-title">
+    <div class="section-inner">
+      <div class="problem-heading">
+        <div>
+          <h2 class="section-title" id="treat-title">{s.treatTitle}</h2>
+          <p class="section-lede">Swipe through common concerns. You do not need to know the medical name.</p>
+        </div>
+        <a class="see-all" href={routes.problemFinder}>View all symptoms</a>
+      </div>
+      <form class="home-search" action={routes.problemFinder} method="get" role="search">
+        <label class="sr-only" for="home-problem-query">Search symptoms and concerns</label>
+        <input
+          id="home-problem-query"
+          name="q"
+          type="search"
+          inputmode="search"
+          autocomplete="off"
+          maxlength="120"
+          placeholder="Type a problem - ear pain, ચક્કર, blocked nose…"
+        />
+        <button type="submit">Search</button>
+      </form>
+      <SymptomRail />
+      <div class="problem-help">
+        <p>
+          {treatmentsPage.notListed}
+          <a href={`tel:${phone.tel}`}>Call {phone.display}</a>
+        </p>
+        <a class="urgent-link" href={`${routes.treatments}#urgent`}>Breathing difficulty, sudden hearing loss or bleeding? See urgent guidance</a>
+      </div>
+
+      <div class="visit-panel" aria-labelledby="visit-expectations-title">
+        <div class="visit-panel__intro">
+          <p class="eyebrow">Your visit</p>
+          <h3 id="visit-expectations-title">{s.visitTitle}</h3>
+          <p>Many common ENT problems can be managed without an operation. If surgery may help, its benefits, alternatives and risks are discussed first.</p>
+        </div>
+        <ol class="visit-steps">
+          {visitExpectations.map((step, index) => (
+            <li>
+              <span aria-hidden="true">{index + 1}</span>
+              <div><strong>{step.title}</strong><p>{step.text}</p></div>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      <nav class="next-links" aria-label="More treatment information">
+        <a href={routes.treatments}>See all conditions and treatments</a>
+        <a href={`${routes.treatments}#procedures`}>Already advised an operation? See procedures</a>
+        <a href={routes.care}>Before and after surgery guidance</a>
+      </nav>
+    </div>
+  </section>
+
+  <section class="section section--alt" id="doctor-centre" aria-labelledby="doctor-centre-title">
+    <div class="section-inner">
+      <h2 class="section-title" id="doctor-centre-title">{s.doctorTitle}</h2>
+      <div class="doctor-proof">
+        <div>
+          <h3>{doctor.name}</h3>
+          <p class="doctor-role">{doctor.role}</p>
+          <ul class="credentials" aria-label="Qualifications">
+            {qualifications.map((qualification) => <li>{qualification}</li>)}
+          </ul>
+          {site.doctor.registration && <p>Registration no. {site.doctor.registration}{site.doctor.council && ` · ${site.doctor.council}`}</p>}
+          {doctor.languages && <p><strong>Languages:</strong> {doctor.languages}</p>}
+        </div>
+        <div class="doctor-proof__next">
+          <p>See the full profile, centre photos, equipment and hygiene information before you visit.</p>
+          <a class="section-link" href={`${routes.doctorClinic}#doctor`}>Meet the doctor and see the centre</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="coming" aria-labelledby="coming-title">
+    <div class="section-inner">
+      <h2 class="section-title" id="coming-title">{s.comingTitle}</h2>
+      <div class="coming">
+        <PhotoSlot id="building-street-view" sizes="(max-width: 900px) calc(100vw - 2rem), 560px" class="coming-photo" />
+        <div class="coming-body">
+          <address>
+            {address.line1}<br />
+            {address.line2}
+          </address>
+          {visitPage.lift ? <p>{visitPage.lift}</p> : <InfoNeeded what="lift / stairs" folder="00-clinic-facts" />}
+          {visitPage.fees ? <p><strong>Consultation fee:</strong> {visitPage.fees}</p> : <InfoNeeded what="consultation fee" folder="00-clinic-facts" />}
+          <p class="booking-note">{bookPage.haveReady}</p>
+          <ContactActions showBook />
+          <ul class="link-rows">
+            <li><a href={routes.visit}>Timings, getting here, fees &amp; FAQ</a></li>
+            <li><a href={`${routes.visit}#first-visit`}>Your first visit - what to bring</a></li>
+            <li><a href={routes.care}>Having an operation? Before &amp; after surgery</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </section>
 </BaseLayout>
 
 <style>
-  .team-section {
-    padding: 4rem 2rem;
-    max-width: var(--width-wide);
-    margin: 0 auto;
+  .visit-panel {
+    margin-top: 1.5rem;
+    padding: clamp(1.25rem, 3vw, 2rem);
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.4fr);
+    gap: 2rem;
+    border-radius: var(--radius-xl);
+    background: var(--color-surface-dark);
+    color: var(--color-text-on-dark-soft);
   }
 
-  .team-title {
-    text-align: center;
-    font-size: 2rem;
+  .visit-panel h3 {
+    margin-bottom: 0.75rem;
+    color: var(--color-text-on-dark);
+    font-size: 1.5rem;
+  }
+
+  .eyebrow {
+    margin-bottom: 0.35rem;
+    color: #7ee0d8;
+    font-size: 0.875rem;
     font-weight: 700;
-    color: var(--color-text);
-    margin-bottom: 2.5rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 
-  @media (max-width: 768px) {
-    .team-section {
-      padding: 3rem 1rem;
+  .visit-steps {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .visit-steps li {
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    gap: 0.75rem;
+    align-items: start;
+  }
+
+  .visit-steps li > span {
+    width: 2rem;
+    height: 2rem;
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius-full);
+    background: var(--color-primary-light);
+    color: var(--color-primary-ink);
+    font-weight: 800;
+  }
+
+  .visit-steps strong {
+    color: var(--color-text-on-dark);
+  }
+
+  .visit-steps p {
+    margin-top: 0.2rem;
+  }
+
+  .next-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 1.25rem;
+    margin-top: 1.25rem;
+  }
+
+  .problem-heading {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+    align-items: end;
+    margin-bottom: 1.25rem;
+  }
+
+  .problem-heading .section-lede {
+    margin-bottom: 0;
+  }
+
+  .home-search {
+    max-width: 54rem;
+    margin: 0 0 1.35rem;
+    padding: 0.35rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.35rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-bg);
+    box-shadow: var(--shadow-card);
+  }
+
+  .home-search input {
+    min-width: 0;
+    min-height: 50px;
+    padding: 0.7rem 0.9rem;
+    border: 0;
+    background: transparent;
+    color: var(--color-text);
+    font: inherit;
+    font-size: 1rem;
+  }
+
+  .home-search input:focus {
+    outline: 0;
+  }
+
+  .home-search:focus-within {
+    border-color: var(--color-secondary);
+    outline: 3px solid rgba(18, 103, 155, 0.16);
+  }
+
+  .home-search button {
+    min-width: 104px;
+    min-height: 50px;
+    padding: 0.65rem 1.2rem;
+    border: 0;
+    border-radius: calc(var(--radius-lg) - 0.2rem);
+    background: var(--color-primary-ink);
+    color: var(--color-text-on-dark);
+    font: inherit;
+    font-weight: 750;
+    cursor: pointer;
+  }
+
+  .home-search button:hover {
+    background: var(--color-primary-dark);
+  }
+
+  .see-all,
+  .problem-help a {
+    color: var(--color-primary-ink);
+    font-weight: 700;
+    white-space: nowrap;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .problem-help {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.75rem 2rem;
+    color: var(--color-text-muted);
+  }
+
+  .problem-help p {
+    margin: 0;
+  }
+
+  .problem-help p a {
+    margin-left: 0.35rem;
+  }
+
+  .problem-help .urgent-link {
+    color: #8b1f1f;
+    white-space: normal;
+  }
+
+  .next-links a,
+  .section-link {
+    color: var(--color-primary-ink);
+    font-weight: 650;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .doctor-proof {
+    margin-top: 1.25rem;
+    padding: clamp(1.25rem, 3vw, 2rem);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
+    gap: 2rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    background: var(--color-bg);
+    box-shadow: var(--shadow-card);
+  }
+
+  .doctor-proof h3 {
+    font-size: 1.5rem;
+  }
+
+  .doctor-role {
+    color: var(--color-primary-ink);
+    font-weight: 650;
+  }
+
+  .credentials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0.75rem 0;
+  }
+
+  .credentials li {
+    padding: 0.3rem 0.75rem;
+    border-radius: var(--radius-full);
+    background: var(--color-primary-light);
+    color: var(--color-primary-ink);
+    font-size: 0.875rem;
+    font-weight: 650;
+  }
+
+  .doctor-proof__next {
+    padding-left: 2rem;
+    border-left: 1px solid var(--color-border);
+  }
+
+  .doctor-proof__next p {
+    margin-bottom: 0.75rem;
+  }
+
+  .coming {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .coming address {
+    font-style: normal;
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    margin-bottom: 0.75rem;
+  }
+
+  .coming-body p {
+    margin-bottom: 0.5rem;
+  }
+
+  .booking-note {
+    margin-top: 1rem;
+    color: var(--color-text-muted);
+  }
+
+  .coming-body :global(.contact-actions) {
+    margin: 1rem 0 1.25rem;
+  }
+
+  .link-rows {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .link-rows a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 56px;
+    padding: 0.5rem 0.25rem;
+    border-bottom: 1px solid var(--color-border);
+    font-weight: 600;
+    color: var(--color-primary-ink);
+  }
+
+  .link-rows a:hover {
+    background: var(--color-primary-light);
+  }
+
+  @media (max-width: 900px) {
+    .visit-panel,
+    .doctor-proof,
+    .coming {
+      grid-template-columns: 1fr;
     }
 
-    .team-title {
-      font-size: 1.5rem;
+    .doctor-proof__next {
+      padding: 1.25rem 0 0;
+      border-left: 0;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .problem-heading {
+      display: grid;
+      align-items: start;
+    }
+
+    .see-all {
+      justify-self: start;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .home-search {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .home-search button {
+      min-width: 86px;
+      padding-inline: 0.85rem;
+    }
+
+    .visit-panel {
+      margin-inline: calc(-1 * var(--gutter-mobile));
+      border-radius: 0;
     }
   }
 </style>

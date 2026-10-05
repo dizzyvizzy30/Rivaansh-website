@@ -1,17 +1,17 @@
 ---
 import PostCover from './PostCover.astro';
-import { blogPostHref } from '../../config/navigation';
-import type { BlogPost } from '../../data/blog';
+import { tipHref } from '../../config/navigation';
+import type { Tip } from '../../data/collections';
 
 interface Props {
-  post: BlogPost;
+  post: Tip;
 }
 
 const { post } = Astro.props;
 ---
 
 <article class="blog-post">
-  <a href={blogPostHref(post.id)} class="blog-post-link">
+  <a href={tipHref(post.id)} class:list={["blog-post-link", post.data.cover && "has-cover"]}>
     <PostCover
       cover={post.data.cover}
       alt={post.data.coverAlt}
@@ -19,7 +19,7 @@ const { post } = Astro.props;
       class="blog-post-cover"
     />
     <div class="blog-post-content">
-      <h2>{post.data.title}</h2>
+      <h2>{post.data.title}{post.data.draft && <span class="draft-tag"> · Draft</span>}</h2>
       <p>{post.data.description}</p>
       <span class="read-more">Read More &rarr;</span>
     </div>
@@ -41,7 +41,7 @@ const { post } = Astro.props;
   }
 
   @media (min-width: 768px) {
-    .blog-post-link {
+    .blog-post-link.has-cover {
       grid-template-columns: 300px 1fr;
     }
   }
@@ -64,6 +64,11 @@ const { post } = Astro.props;
     line-height: 1.6;
     color: var(--color-text-muted);
     margin: 0 0 1em;
+  }
+
+  .draft-tag {
+    font-size: 0.6em;
+    color: #8a5a00;
   }
 
   .read-more {

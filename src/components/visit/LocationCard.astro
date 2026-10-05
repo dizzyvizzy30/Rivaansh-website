@@ -1,0 +1,106 @@
+---
+// Visit Us › Timings: address, landmark, the full weekly hours table (only here), phone numbers and Maps.
+import HoursTable from './HoursTable.astro';
+import Icon from '../ui/Icon.astro';
+import InfoNeeded from '../ui/InfoNeeded.astro';
+import { site } from '../../config/site';
+import { visitPage } from '../../data/visit';
+
+const { address, mapsUrl, phone, landline } = site.contact;
+---
+
+<div class="location-card">
+  <div class="location-address">
+    <h3 class="location-name">{site.name}</h3>
+    <address>
+      {address.line1}<br />
+      {address.line2}<br />
+      {address.line3}
+    </address>
+    <p class="landmark">{visitPage.landmark}</p>
+    <ul class="location-phones">
+      <li><Icon name="phone" />{phone.label}: <a href={`tel:${phone.tel}`}>{phone.display}</a></li>
+      <li><Icon name="phone" />{landline.label}: <a href={`tel:${landline.tel}`}>{landline.display}</a></li>
+    </ul>
+    <a class="btn btn--primary" href={mapsUrl} target="_blank" rel="noopener">
+      <Icon name="map-pin" />
+      Open in Google Maps
+    </a>
+  </div>
+  <div class="location-hours">
+    <h3 class="location-name">Timings</h3>
+    <HoursTable />
+    {visitPage.holidays ? <p class="holidays">{visitPage.holidays}</p> : <InfoNeeded what="holidays when the centre is closed" folder="00-clinic-facts" />}
+  </div>
+</div>
+
+<style>
+  .location-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 2rem;
+    align-items: start;
+    padding: 1.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+
+  .location-name {
+    font-size: 1.1875rem;
+    margin-bottom: 0.5rem;
+  }
+
+  address {
+    font-style: normal;
+    line-height: 1.7;
+    margin-bottom: 0.75rem;
+  }
+
+  .landmark,
+  .holidays {
+    color: var(--color-text-muted);
+    font-size: 1rem;
+  }
+
+  .location-phones {
+    margin: 1rem 0 1.25rem;
+  }
+
+  .location-phones li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.4rem;
+    flex-wrap: wrap;
+  }
+
+  .location-phones a {
+    font-weight: 600;
+    color: var(--color-primary-ink);
+  }
+
+  .location-card :global(svg) {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+
+  .location-phones :global(svg) {
+    color: var(--color-primary-dark);
+  }
+
+  .location-card .btn {
+    box-shadow: none;
+  }
+
+  .holidays {
+    margin-top: 0.75rem;
+  }
+
+  @media (max-width: 900px) {
+    .location-card {
+      grid-template-columns: 1fr;
+      padding: 1.25rem;
+    }
+  }
+</style>

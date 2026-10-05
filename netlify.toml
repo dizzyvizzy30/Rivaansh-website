@@ -1,3 +1,133 @@
-[build]
-  publish = "www"
+# Netlify build + routing for the Astro site.
+# Plan: docs/site-restructure-plan.md · setup notes: docs/domain-and-hosting-setup.md
 
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Deploy previews and branch deploys show unreviewed draft pages (with a "Draft" banner) so the doctor can
+# review them on a phone. Production never builds drafts.
+[context.deploy-preview.environment]
+  SHOW_DRAFTS = "true"
+
+[context.branch-deploy.environment]
+  SHOW_DRAFTS = "true"
+
+# ---------------------------------------------------------------------------
+# Old URLs → new pages. Each rule exists for both the .html and extensionless path.
+# These pages no longer exist in dist/, so Netlify's "shadowing" can't block the rules.
+# ---------------------------------------------------------------------------
+
+# Old overview page named a different doctor
+[[redirects]]
+  from = "/pages/about.html"
+  to = "/pages/about-us.html"
+  status = 301
+
+[[redirects]]
+  from = "/pages/about"
+  to = "/pages/about-us.html"
+  status = 301
+
+# Specialities became the Treatments hub groups
+[[redirects]]
+  from = "/pages/specialities.html"
+  to = "/pages/ent.html"
+  status = 301
+
+[[redirects]]
+  from = "/pages/specialities"
+  to = "/pages/ent.html"
+  status = 301
+
+# Procedures live on the hub and condition pages
+[[redirects]]
+  from = "/pages/surgeries.html"
+  to = "/pages/ent.html#procedures"
+  status = 301
+
+[[redirects]]
+  from = "/pages/surgeries"
+  to = "/pages/ent.html#procedures"
+  status = 301
+
+# Gallery moved to Doctor & Centre
+[[redirects]]
+  from = "/pages/gallery.html"
+  to = "/pages/about-us.html#centre"
+  status = 301
+
+[[redirects]]
+  from = "/pages/gallery"
+  to = "/pages/about-us.html#centre"
+  status = 301
+
+# Locations merged into Visit Us
+[[redirects]]
+  from = "/pages/locations.html"
+  to = "/pages/contact.html"
+  status = 301
+
+[[redirects]]
+  from = "/pages/locations"
+  to = "/pages/contact.html"
+  status = 301
+
+# FAQ merged into Visit Us
+[[redirects]]
+  from = "/pages/faq.html"
+  to = "/pages/contact.html#faq"
+  status = 301
+
+[[redirects]]
+  from = "/pages/faq"
+  to = "/pages/contact.html#faq"
+  status = 301
+
+# No video consultation service yet
+[[redirects]]
+  from = "/pages/online-consultation.html"
+  to = "/pages/appointment.html"
+  status = 301
+
+[[redirects]]
+  from = "/pages/online-consultation"
+  to = "/pages/appointment.html"
+  status = 301
+
+# Old tinnitus placeholder post
+[[redirects]]
+  from = "/pages/blog/blog1.html"
+  to = "/pages/ent.html#ear"
+  status = 301
+
+[[redirects]]
+  from = "/pages/blog/blog1"
+  to = "/pages/ent.html#ear"
+  status = 301
+
+# Old allergies placeholder post
+[[redirects]]
+  from = "/pages/blog/blog3.html"
+  to = "/pages/ent.html#nose"
+  status = 301
+
+[[redirects]]
+  from = "/pages/blog/blog3"
+  to = "/pages/ent.html#nose"
+  status = 301
+
+# The loud-sound health tip keeps /pages/blog/blog2.html. Until it is published, send visitors to the
+# Health Tips page. No `force`: once blog2.html exists, Netlify serves the page instead of this rule.
+[[redirects]]
+  from = "/pages/blog/blog2.html"
+  to = "/pages/blog.html"
+  status = 302
+
+[[redirects]]
+  from = "/pages/blog/blog2"
+  to = "/pages/blog.html"
+  status = 302

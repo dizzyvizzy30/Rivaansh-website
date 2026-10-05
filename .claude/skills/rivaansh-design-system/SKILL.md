@@ -53,10 +53,24 @@ The site's identity is a calm, clinical **sage-green + slate** palette, the **In
 `480px` (small phones), `768px` (mobile ↔ desktop nav switch), `1024px` (tablet stacking). Write mobile overrides with `max-width` queries to match existing CSS.
 
 ## Recurring patterns (reuse, don't reinvent)
-- **Pill button** — `Button.astro`: `variant="light|primary"`, `size="default|large"`, optional trailing arrow. Hover lifts 3px with a ripple.
-- **Accent card** — white, 1px border, `--radius-lg`, 4px green gradient bar on the left (service cards) or top (vision/mission).
-- **Section band** — alternate `--color-bg` and `--color-bg-alt`; dark band (`--color-text` gradient) only for stats on About Us.
-- **Hero** — full-bleed photo slideshow, slate→sage animated gradient overlay, white wave divider at the bottom.
+- **Pill button** — `.btn.btn--primary|--light` (`Button.astro` or `ContactActions.astro` for Call/WhatsApp/Directions/Book).
+- **Accent card** — white, 1px border, `--radius-lg`, 4px green gradient bar on the left (condition groups).
+- **Section band** utilities — `.section`, `.section--alt`, `.section-inner`, `.section-title`, `.section-lede`, `.section-link`.
+- Alternate `--color-bg` and `--color-bg-alt` bands down long pages.
+- **Header** — utility strip (slate, ≥1024px: today's hours · floor/landmark), then a sticky white header with ONE fixed
+  height (72px desktop / 64px mobile), solid background and soft shadow. No shrink-on-scroll, no backdrop blur.
+- **Hero** — one still photo: right half on wide screens (blended into slate), a 16:9 strip ABOVE the text on phones
+  (never behind it). White wave divider. No slideshow, zoom or animated gradient. Phones: one Call button only.
+- **Area tiles** — whole-card links (icon, title →, three example conditions), 3 / 2 / 1 columns.
+- **Link rows** — 56px full-width rows with "→" for onward navigation on summaries.
+- **Numbers band** — white cards on `--color-bg-alt`, big `--color-primary-dark` number above a muted label.
+- **Quote cards** — white card, pale-green serif “ mark, quote in `--color-text`, name in `--color-primary-ink`,
+  source line and a disclaimer under the set.
+- **Preview-only markers** — amber dashed "Photo needed" frames, "Stand-in" badges and "Info needed" chips
+  (`#fff7e6` / `#f3c56b` / `#6b4400`); never rendered on the live site.
+- **Action bar (phones)** — fixed bottom bar, three equal 44px pills: Call · WhatsApp (or Directions) · Book (filled).
+- **Urgent box** — pale red panel (`#fff5f5` / `#9b1c1c` text) only for emergency warning signs.
+- **Draft banner** — pale amber `.draft-banner`, only in preview builds.
 - **Editorial media** — see the `rivaansh-media-presentation` skill.
 
 ## Do / don't

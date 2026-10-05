@@ -1,23 +1,36 @@
 ---
+// Health Tips index (old /pages/blog.html URL kept). Hidden from the menus until a tip is published.
 import PageLayout from '../../layouts/PageLayout.astro';
 import PostCard from '../../components/blog/PostCard.astro';
-import { blogPage, getPublishedPosts } from '../../data/blog';
+import { getTips } from '../../data/collections';
+import { routes } from '../../config/navigation';
 
-const posts = await getPublishedPosts();
+const tips = await getTips();
 ---
 
-<PageLayout title="Blog">
-  <h1>{blogPage.title}</h1>
-  <div class="blog-posts">
-    {posts.map((post) => <PostCard post={post} />)}
-  </div>
+<PageLayout title="Health Tips" description="Everyday ear, nose and throat care advice from Rivaansh ENT, Gota, Ahmedabad." noindex={tips.length === 0} variant="wide">
+  <h1>Health Tips</h1>
+  <p>Everyday ear, nose and throat care - and when to see a doctor.</p>
+  {tips.length > 0 ? (
+    <div class="tips">{tips.map((post) => <PostCard post={post} />)}</div>
+  ) : (
+    <p class="empty">
+      New articles are being reviewed by the doctor and will appear here soon. Meanwhile, see the
+      <a href={routes.treatments}>conditions we treat</a>.
+    </p>
+  )}
 </PageLayout>
 
 <style>
-  .blog-posts {
+  .tips {
     display: grid;
-    grid-template-columns: 1fr;
     gap: 3em;
     margin-top: 2em;
+  }
+
+  .empty {
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    background: var(--color-bg-alt);
   }
 </style>

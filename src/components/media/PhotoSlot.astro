@@ -1,0 +1,101 @@
+---
+// A named place for a photo (registry: src/data/photo-slots.ts).
+// - Real photo supplied  → shows it.
+// - Stand-in only        → preview builds show it with a badge; live builds hide it unless explicitly verified.
+// - Nothing yet          → preview builds show a dashed amber "Photo needed: <id>" frame (the owner's shot list);
+//                          the live site renders nothing, so the surrounding layout closes up.
+import MediaImage from './MediaImage.astro';
+import Icon from '../ui/Icon.astro';
+import { getSlot, slotImage, slotRatio } from '../../data/photo-slots';
+import { showDrafts } from '../../data/collections';
+
+interface Props {
+  id: string;
+  sizes: string;
+  class?: string;
+  priority?: boolean;
+  /** Override the slot's aspect ratio for this placement, e.g. '1 / 1' for an avatar. */
+  aspect?: string;
+}
+
+const { id, sizes, class: className, priority = false, aspect } = Astro.props;
+const slot = getSlot(id);
+const image = slotImage(id);
+const ratio = aspect ?? slotRatio(slot);
+---
+
+{image ? (
+  <div class:list={['photo-slot', className]} style={`--slot-ratio: ${ratio}`}>
+    <MediaImage image={image} sizes={sizes} priority={priority} class="photo-slot__img" />
+    {showDrafts && image.isStandIn && <span class="photo-slot__badge">Stand-in - replace with <code>{slot.id}</code></span>}
+  </div>
+) : (
+  showDrafts && (
+    <div class:list={['photo-slot', 'photo-slot--empty', className]} style={`--slot-ratio: ${ratio}`} role="img" aria-label={`Photo needed: ${slot.title}`}>
+      <Icon name="camera" />
+      <strong>Photo needed: <code>{slot.id}</code></strong>
+      <span>{slot.brief}</span>
+      <small>{slot.orientation} · min {slot.minSize} · {slot.level} · owner-content/01-photos/{slot.id}/</small>
+    </div>
+  )
+)}
+
+<style>
+  .photo-slot {
+    position: relative;
+    aspect-ratio: var(--slot-ratio);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--color-bg-alt);
+  }
+
+  .photo-slot :global(.photo-slot__img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .photo-slot__badge {
+    position: absolute;
+    left: 0.5rem;
+    bottom: 0.5rem;
+    max-width: calc(100% - 1rem);
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 247, 230, 0.95);
+    border: 1px solid #f3c56b;
+    color: #6b4400;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .photo-slot--empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    padding: 1rem;
+    text-align: center;
+    background: #fff7e6;
+    border: 2px dashed #f3c56b;
+    color: #6b4400;
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+
+  .photo-slot--empty :global(svg) {
+    width: 32px;
+    height: 32px;
+  }
+
+  .photo-slot--empty small {
+    font-size: 0.75rem;
+    opacity: 0.85;
+  }
+
+  .photo-slot code {
+    font-size: 0.95em;
+    overflow-wrap: anywhere;
+  }
+</style>

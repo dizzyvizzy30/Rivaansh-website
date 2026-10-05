@@ -1,80 +1,120 @@
 ---
+// Health tip page. Each tip links to 1–3 condition pages (and they link back).
 import { render } from 'astro:content';
 import PageLayout from '../../../layouts/PageLayout.astro';
 import PostCover from '../../../components/blog/PostCover.astro';
-import { getPublishedPosts, type BlogPost } from '../../../data/blog';
+import ContactActions from '../../../components/ui/ContactActions.astro';
+import { getTips, getConditions, reviewLine, type Tip } from '../../../data/collections';
+import { conditionHref, routes } from '../../../config/navigation';
+import { site } from '../../../config/site';
 
 export async function getStaticPaths() {
-  const posts = await getPublishedPosts();
-  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+  const tips = await getTips();
+  return tips.map((tip) => ({ params: { slug: tip.id }, props: { tip } }));
 }
 
 interface Props {
-  post: BlogPost;
+  tip: Tip;
 }
 
-const { post } = Astro.props;
-const { Content } = await render(post);
-const published = post.data.publishDate?.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+const { tip } = Astro.props;
+const { data } = tip;
+const { Content } = await render(tip);
+const related = (await getConditions()).filter((c) => data.relatedConditions.includes(c.id) || c.data.relatedTips.includes(tip.id));
+const reviewed = reviewLine(data);
 ---
 
-<PageLayout title={post.data.title} description={post.data.description}>
-  <article class="blog-article">
-    {post.data.cover && (
-      <PostCover
-        cover={post.data.cover}
-        alt={post.data.coverAlt}
-        sizes="(max-width: 960px) calc(100vw - 4rem), 896px"
-        priority
-        class="blog-article-cover"
-      />
-    )}
-    <h1>{post.data.title}</h1>
-    {(published || post.data.author) && (
-      <p class="blog-article-meta">
-        {post.data.author}
-        {post.data.author && published && ' · '}
-        {published && <time datetime={post.data.publishDate?.toISOString()}>{published}</time>}
-      </p>
-    )}
-    <div class="blog-article-body">
-      <Content />
-    </div>
+<PageLayout title={data.title} description={data.description} noindex={data.draft}>
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href={routes.tips}>Health Tips</a> <span aria-hidden="true">›</span> <span aria-current="page">{data.title}</span>
+  </nav>
+  {data.draft && <p class="draft-banner">Draft - awaiting review by {site.doctor.name}. Not published on the live site.</p>}
+  <article class="tip">
+    {data.cover && <PostCover cover={data.cover} alt={data.coverAlt} sizes="(max-width: 960px) calc(100vw - 4rem), 896px" priority class="tip-cover" />}
+    <h1>{data.title}</h1>
+    <div class="tip-body"><Content /></div>
   </article>
+
+  {related.length > 0 && (
+    <section class="related" aria-labelledby="related-title">
+      <h2 id="related-title">Related conditions</h2>
+      <ul>{related.map((c) => <li><a href={conditionHref(c.id)}>{c.data.title}</a></li>)}</ul>
+    </section>
+  )}
+
+  <section class="tip-contact" aria-label="Contact the centre">
+    <p>Worried about a symptom? Call {site.doctor.shortName}’s centre.</p>
+    <ContactActions showBook />
+  </section>
+
+  <p class="review-note">
+    {reviewed ?? `Written for ${site.name}; awaiting the doctor's review.`} · General information, not a substitute for a consultation.
+  </p>
 </PageLayout>
 
 <style>
-  .blog-article :global(.blog-article-cover) {
+  .breadcrumb {
+    font-size: 0.9375rem;
+    color: var(--color-text-muted);
+    margin-bottom: 1rem;
+  }
+
+  .breadcrumb a {
+    color: var(--color-primary-ink);
+    font-weight: 600;
+  }
+
+  .tip :global(.tip-cover) {
     width: 100%;
     height: auto;
     border-radius: var(--radius-sm);
     margin-bottom: 2em;
   }
 
-  .blog-article-meta {
-    margin-top: -0.5em;
-    color: var(--color-text-muted);
-    font-size: 0.9375em;
+  .tip-body :global(h2) {
+    font-size: 1.5rem;
+    margin: 2rem 0 0.75rem;
   }
 
-  .blog-article-body :global(h2) {
-    margin: 1.5em 0 0.5em;
-  }
-
-  .blog-article-body :global(ul),
-  .blog-article-body :global(ol) {
-    margin: 0 0 1em 1.25em;
+  .tip-body :global(ul),
+  .tip-body :global(ol) {
     list-style: revert;
+    margin: 0 0 1em 1.25em;
   }
 
-  .blog-article-body :global(li) {
-    margin-bottom: 0.4em;
-    font-size: 1.1em;
+  .tip-body :global(li) {
+    font-size: 1.05em;
     line-height: 1.7;
+    margin-bottom: 0.35em;
   }
 
-  .blog-article-body :global(img) {
-    border-radius: var(--radius-sm);
-    margin: 1.5em 0;
+  .tip-body :global(a) {
+    color: var(--color-primary-ink);
+    text-decoration: underline;
+  }
+
+  .related {
+    margin-top: 2.5rem;
+  }
+
+  .related li {
+    padding: 0.4rem 0;
+  }
+
+  .related a {
+    color: var(--color-primary-ink);
+    font-weight: 600;
+    text-decoration: underline;
+  }
+
+  .tip-contact {
+    margin-top: 2.5rem;
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    background: var(--color-primary-light);
+  }
+
+  .tip-contact p {
+    font-weight: 600;
   }
 </style>

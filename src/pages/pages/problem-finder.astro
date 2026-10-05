@@ -1,0 +1,57 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import ProblemSearch from '../../components/problems/ProblemSearch.astro';
+import { routes } from '../../config/navigation';
+---
+
+<PageLayout
+  title="Find information for your symptoms"
+  description="Search common ear, nose, throat, balance, sleep and neck concerns listed by Rivaansh ENT in Gota, Ahmedabad."
+  variant="wide"
+>
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href={routes.home}>Home</a> <span aria-hidden="true">›</span> Find your problem</nav>
+  <h1>Find information for your symptoms</h1>
+  <p class="page-intro">
+    Choose a category or type what you have noticed. This searches information on this website; it does not diagnose
+    a condition or confirm that every possible cause is treated at the centre.
+  </p>
+  <aside class="urgent-note">
+    <strong>Difficulty breathing, bleeding that will not stop, or sudden hearing loss?</strong>
+    <a href={`${routes.treatments}#urgent`}>Read the urgent guidance first</a>.
+  </aside>
+  <ProblemSearch />
+</PageLayout>
+
+<style>
+  .breadcrumb {
+    margin-bottom: 1rem;
+    color: var(--color-text-muted);
+    font-size: 0.9375rem;
+  }
+
+  .breadcrumb a {
+    color: var(--color-primary-ink);
+    font-weight: 650;
+  }
+
+  .page-intro {
+    max-width: 62rem;
+  }
+
+  .urgent-note {
+    max-width: 70rem;
+    margin-top: 1.5rem;
+    padding: 1rem 1.25rem;
+    border: 1px solid #f3c5c5;
+    border-left: 5px solid #9b1c1c;
+    border-radius: var(--radius-md);
+    background: #fff5f5;
+  }
+
+  .urgent-note a {
+    color: #8b1f1f;
+    font-weight: 750;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+</style>

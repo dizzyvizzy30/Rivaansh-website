@@ -9,9 +9,10 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "npm run check:copy && astro build",
     "preview": "astro preview",
-    "check": "astro check",
+    "check": "npm run check:copy && astro check",
+    "check:copy": "node scripts/check-no-em-dash.mjs",
     "test:snapshot": "node scripts/visual-snapshot.mjs http://localhost:4321 .snapshots/latest",
     "test:interactions": "node scripts/interaction-check.mjs http://localhost:4321"
   },
@@ -22,6 +23,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "@types/node": "^22.20.5",
     "playwright-core": "^1.63.0",
     "typescript": "^6.0.3"
   }
