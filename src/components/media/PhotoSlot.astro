@@ -6,7 +6,7 @@
 //                          the live site renders nothing, so the surrounding layout closes up.
 import MediaImage from './MediaImage.astro';
 import Icon from '../ui/Icon.astro';
-import { getSlot, slotImage, slotRatio } from '../../data/photo-slots';
+import { getSlot, ownerPhotoFolder, slotImage, slotRatio } from '../../data/photo-slots';
 import { showDrafts } from '../../data/collections';
 
 interface Props {
@@ -35,7 +35,7 @@ const ratio = aspect ?? slotRatio(slot);
       <Icon name="camera" />
       <strong>Photo needed: <code>{slot.id}</code></strong>
       <span>{slot.brief}</span>
-      <small>{slot.orientation} · min {slot.minSize} · {slot.level} · owner-content/01-photos/{slot.id}/</small>
+      <small>{slot.orientation} · min {slot.minSize} · {slot.level} · {ownerPhotoFolder(slot.id)}</small>
     </div>
   )
 )}

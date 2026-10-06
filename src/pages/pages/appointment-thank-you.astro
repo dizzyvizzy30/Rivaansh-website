@@ -1,0 +1,58 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { routes } from '../../config/navigation';
+import { site } from '../../config/site';
+
+const { landline } = site.contact;
+---
+
+<PageLayout
+  title="Appointment request received"
+  description="Confirmation that an appointment request was sent to Rivaansh ENT."
+  noindex
+>
+  <section class="confirmation" aria-labelledby="confirmation-title">
+    <p class="confirmation-mark" aria-hidden="true">✓</p>
+    <h1 id="confirmation-title">Your request has been sent</h1>
+    <p>Thank you. The centre will contact you to confirm the appointment.</p>
+    <p><strong>This is not yet a confirmed appointment.</strong> If you need to change your request, call <a href={`tel:${landline.tel}`}>{landline.display}</a>.</p>
+    <div class="confirmation-actions">
+      <a class="btn btn--primary" href={routes.home}>Return home</a>
+      <a class="btn btn--light" href={`${routes.visit}#first-visit`}>Prepare for your visit</a>
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .confirmation {
+    max-width: 46rem;
+    padding: clamp(1.5rem, 4vw, 3rem);
+    border: 1px solid var(--color-primary-tint);
+    border-radius: var(--radius-xl);
+    background: var(--color-primary-light);
+  }
+
+  .confirmation-mark {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    margin-bottom: 1.25rem;
+    border-radius: 50%;
+    background: var(--color-primary-ink);
+    color: var(--color-text-on-dark);
+    font-size: 1.5rem;
+    font-weight: 750;
+  }
+
+  .confirmation h1 {
+    margin-bottom: 0.45em;
+  }
+
+  .confirmation-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+</style>

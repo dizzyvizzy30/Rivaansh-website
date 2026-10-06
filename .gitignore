@@ -6,10 +6,11 @@ dist/
 .env.*
 .snapshots/
 
-# Owner uploads stay on this computer (the GitHub repo is public): only the README/text.md
-# templates, folder placeholders and the reference flyer are tracked.
+# Owner uploads stay outside the public GitHub repository. Only the prepared text,
+# Word questionnaires, folder placeholders, and the approved reference flyer are tracked.
 owner-content/**/*
 !owner-content/**/
-!owner-content/**/*.md
+!owner-content/**/*.txt
+!owner-content/**/*.docx
 !owner-content/**/.gitkeep
-!owner-content/00-clinic-facts/reference/clinic-flyer.jpeg
+!owner-content/00-shared-site-details/reference/clinic-flyer.jpeg

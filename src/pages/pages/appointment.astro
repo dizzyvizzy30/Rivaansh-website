@@ -1,62 +1,408 @@
 ---
-// Book (old URL kept) - a task page: how to call, what to have ready. No timings table, no photos.
-// Old online-consultation.html redirects here. The request form returns in Phase 2.
+// Appointment request page. Netlify Forms handles submissions after form detection is enabled for the project.
 import PageLayout from '../../layouts/PageLayout.astro';
-import ContactActions from '../../components/ui/ContactActions.astro';
 import TodayHours from '../../components/layout/TodayHours.astro';
-import InfoNeeded from '../../components/ui/InfoNeeded.astro';
 import { bookPage as page } from '../../data/book';
 import { site } from '../../config/site';
 import { routes } from '../../config/navigation';
 
-const { phone, landline } = site.contact;
+const { landline } = site.contact;
 ---
 
-<PageLayout title="Book an appointment" description="Call Rivaansh ENT, Gota, Ahmedabad to book, change or cancel an ENT appointment.">
-  <h1>{page.title}</h1>
-  <p>{page.intro}</p>
+<PageLayout
+  title="Book an appointment"
+  description="Request an appointment with Rivaansh ENT in Gota, Ahmedabad, or call the appointments landline."
+  variant="wide"
+>
+  <header class="booking-intro">
+    <p class="eyebrow">Appointments</p>
+    <h1>{page.title}</h1>
+    <p>{page.intro}</p>
+  </header>
 
-  <div class="book-card">
-    <p class="call-when"><TodayHours prefix="Call today" separator=" - " /></p>
-    <ContactActions whatsappText="Hello, I would like to book an appointment at Rivaansh ENT. It is for: (me / my child / my parent). Age: . Problem: . Preferred day: ." />
-    <ul class="numbers">
-      <li>{phone.label}: <a href={`tel:${phone.tel}`}>{phone.display}</a></li>
-      <li>{landline.label}: <a href={`tel:${landline.tel}`}>{landline.display}</a></li>
-    </ul>
-    <p class="ready">{page.haveReady}</p>
-    {page.afterYouCall ? <p>{page.afterYouCall}</p> : <InfoNeeded what="what happens after you call (fixed time, token, walk-in?)" folder="06-faq" />}
+  <div class="booking-layout">
+    <section class="request-card" aria-labelledby="request-title">
+      <div class="request-heading">
+        <h2 id="request-title">Request a visit</h2>
+        <p>Share a few details. The centre will contact you to confirm the appointment.</p>
+      </div>
+
+      <form
+        name="appointment-request"
+        method="POST"
+        action="/pages/appointment-thank-you.html"
+        accept-charset="UTF-8"
+        data-netlify="true"
+        data-netlify-honeypot="bot-field"
+      >
+        <input type="hidden" name="form-name" value="appointment-request" />
+        <input type="hidden" name="subject" value="New appointment request from Rivaansh ENT website" data-remove-prefix />
+
+        <p class="bot-field" aria-hidden="true">
+          <label>Do not fill this field <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+        </p>
+
+        <div class="form-grid">
+          <label class="field">
+            <span>Patient name <strong aria-hidden="true">*</strong></span>
+            <input type="text" name="name" autocomplete="name" maxlength="100" required />
+          </label>
+
+          <label class="field">
+            <span>Mobile number <strong aria-hidden="true">*</strong></span>
+            <input type="tel" name="phone" autocomplete="tel" inputmode="tel" maxlength="20" required />
+          </label>
+
+          <label class="field">
+            <span>Email <small>(optional)</small></span>
+            <input type="email" name="email" autocomplete="email" maxlength="120" />
+          </label>
+
+          <label class="field">
+            <span>Appointment for <strong aria-hidden="true">*</strong></span>
+            <select name="appointment-for" required>
+              <option value="">Choose one</option>
+              <option value="Self">Myself</option>
+              <option value="Child">My child</option>
+              <option value="Family member">A family member</option>
+            </select>
+          </label>
+
+          <label class="field field--picker" data-picker-field>
+            <span>Preferred date <small>(optional)</small></span>
+            <input type="date" name="preferred-date" data-future-date data-native-picker />
+          </label>
+
+          <label class="field field--picker" data-picker-field>
+            <span>Preferred time <small>(optional)</small></span>
+            <input type="time" name="preferred-time" step="900" data-native-picker />
+          </label>
+
+          <label class="field">
+            <span>How did you hear about us? <small>(optional)</small></span>
+            <select name="how-did-you-hear">
+              <option value="">Choose one</option>
+              <option value="Google search">Google search</option>
+              <option value="Google Maps">Google Maps</option>
+              <option value="Friend or family">Friend or family</option>
+              <option value="Doctor or healthcare professional">Doctor or healthcare professional</option>
+              <option value="Social media">Social media</option>
+              <option value="Returning patient">Returning patient</option>
+              <option value="Other">Other</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span>Who referred you? <small>(optional)</small></span>
+            <input type="text" name="referred-by" maxlength="100" placeholder="Person or doctor’s name" />
+          </label>
+
+          <label class="field field--wide">
+            <span>Short note <small>(optional)</small></span>
+            <textarea name="note" rows="4" maxlength="300" placeholder="For example: ear pain for two days"></textarea>
+            <small>Do not upload or include reports, identification numbers, or detailed medical records.</small>
+          </label>
+        </div>
+
+        <label class="acknowledgement">
+          <input type="checkbox" name="confirmation-understood" value="Yes" required />
+          <span>I understand that this is an appointment request. It is confirmed only after the centre contacts me.</span>
+        </label>
+
+        <p class="form-privacy">The information submitted here is used to respond to this appointment request.</p>
+
+        <button class="btn btn--primary submit-button" type="submit">Send appointment request</button>
+      </form>
+    </section>
+
+    <aside class="booking-aside" aria-label="Other ways to book">
+      <div class="call-card">
+        <p class="eyebrow">Prefer to call?</p>
+        <h2>Speak with the centre</h2>
+        <p class="call-when"><TodayHours prefix="Today" separator=": " /></p>
+        <a class="call-number" href={`tel:${landline.tel}`}>{landline.display}</a>
+        <p>{page.haveReady}</p>
+      </div>
+
+      <div class="notice-card">
+        <h2>Need urgent help?</h2>
+        <p>This form is not monitored for emergencies. For severe breathing trouble, heavy bleeding, or another emergency, go to the nearest emergency department.</p>
+      </div>
+
+      <nav class="booking-links" aria-label="Prepare for your visit">
+        <a href={`${routes.visit}#first-visit`}>What to bring to your first visit</a>
+        <a href={`${routes.visit}#timings`}>View timings and address</a>
+      </nav>
+    </aside>
   </div>
-
-  <p><a href={`${routes.visit}#first-visit`}>What happens at your first visit, and what to bring</a></p>
-  <p><a href={`${routes.visit}#timings`}>Full weekly timings and address</a></p>
 </PageLayout>
 
+<script>
+  const dateInput = document.querySelector<HTMLInputElement>('[data-future-date]');
+  if (dateInput) {
+    const today = new Date();
+    const localDate = new Date(today.getTime() - today.getTimezoneOffset() * 60_000).toISOString().slice(0, 10);
+    dateInput.min = localDate;
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-picker-field]').forEach((field) => {
+    const input = field.querySelector<HTMLInputElement>('[data-native-picker]');
+    if (!input) return;
+
+    field.addEventListener('click', (event) => {
+      if (event.target !== input) event.preventDefault();
+      input.focus();
+      try {
+        input.showPicker?.();
+      } catch {
+        // Some browsers open their native picker on focus and do not expose showPicker().
+      }
+    });
+  });
+</script>
+
 <style>
-  .book-card {
-    padding: 1.75rem;
-    border-radius: var(--radius-lg);
-    background: var(--color-primary-light);
-    margin: 1.5rem 0 2rem;
+  .booking-intro {
+    max-width: 52rem;
+    margin-bottom: 2rem;
   }
 
-  .call-when {
-    font-weight: 600;
+  .booking-intro h1 {
+    margin-bottom: 0.35em;
   }
 
-  .numbers {
-    margin: 1.25rem 0 1rem;
+  .eyebrow {
+    margin-bottom: 0.45rem;
+    color: var(--color-primary-ink);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 
-  .numbers li {
+  .booking-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.55fr) minmax(18rem, 0.75fr);
+    gap: clamp(1.5rem, 3vw, 3rem);
+    align-items: start;
+  }
+
+  .request-card,
+  .call-card,
+  .notice-card {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+  }
+
+  .request-card {
+    padding: clamp(1.25rem, 3vw, 2.5rem);
+    background: var(--color-bg);
+    box-shadow: var(--shadow-card);
+  }
+
+  .request-heading {
+    margin-bottom: 1.5rem;
+  }
+
+  .request-heading h2,
+  .call-card h2,
+  .notice-card h2 {
+    color: var(--color-primary-dark);
+    font-size: clamp(1.3rem, 2vw, 1.65rem);
     margin-bottom: 0.4rem;
   }
 
-  .numbers a {
-    font-weight: 600;
-    color: var(--color-primary-ink);
+  .request-heading p,
+  .call-card p,
+  .notice-card p {
+    margin-bottom: 0;
+    color: var(--color-text-muted);
+    font-size: 1rem;
   }
 
-  .ready {
-    font-weight: 600;
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.15rem 1.25rem;
+  }
+
+  .field {
+    display: grid;
+    gap: 0.4rem;
+    min-width: 0;
+    color: var(--color-primary-dark);
+    font-weight: 650;
+  }
+
+  .field--wide {
+    grid-column: 1 / -1;
+  }
+
+  .field small {
+    color: var(--color-text-muted);
+    font-size: 0.8125rem;
+    font-weight: 450;
+  }
+
+  .field > small {
+    line-height: 1.5;
+  }
+
+  .field strong {
+    color: var(--color-accent);
+  }
+
+  .field--picker,
+  .field--picker input {
+    cursor: pointer;
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    min-height: 48px;
+    padding: 0.7rem 0.8rem;
+    border: 1px solid var(--color-field-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-bg);
+    color: var(--color-text);
+    font: inherit;
+    font-weight: 450;
+  }
+
+  .field textarea {
+    min-height: 7rem;
+    resize: vertical;
+  }
+
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    border-color: var(--color-primary-ink);
+    outline: 3px solid var(--color-primary-tint);
+    outline-offset: 1px;
+  }
+
+  .acknowledgement {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    margin: 1.35rem 0;
+    color: var(--color-text-muted);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+
+  .acknowledgement input {
+    width: 1.1rem;
+    height: 1.1rem;
+    margin-top: 0.2rem;
+    flex: 0 0 auto;
+    accent-color: var(--color-primary-ink);
+  }
+
+  .submit-button {
+    border-radius: var(--radius-sm);
+  }
+
+  .form-privacy {
+    margin: -0.55rem 0 1.1rem;
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .bot-field {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .booking-aside {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .call-card,
+  .notice-card {
+    padding: 1.5rem;
+  }
+
+  .call-card {
+    background: var(--color-primary-light);
+    border-color: var(--color-primary-tint);
+  }
+
+  .call-when {
+    font-weight: 650;
+  }
+
+  .call-number {
+    display: inline-block;
+    margin: 0.7rem 0 1rem;
+    color: var(--color-primary-ink);
+    font-size: clamp(1.25rem, 2vw, 1.55rem);
+    font-weight: 750;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .notice-card {
+    background: var(--color-bg-alt);
+  }
+
+  .booking-links {
+    display: grid;
+    gap: 0.65rem;
+    padding: 0.5rem;
+  }
+
+  .booking-links a {
+    color: var(--color-primary-ink);
+    font-weight: 650;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  @media (max-width: 900px) {
+    .booking-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .booking-aside {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .booking-links {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .form-grid,
+    .booking-aside {
+      grid-template-columns: 1fr;
+    }
+
+    .booking-links {
+      grid-column: auto;
+    }
+
+    .request-card {
+      padding: 1.1rem;
+      border-radius: var(--radius-lg);
+    }
+
+    .submit-button {
+      width: 100%;
+      max-width: none;
+    }
   }
 </style>

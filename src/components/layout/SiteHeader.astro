@@ -14,7 +14,7 @@ const showTips = await hasTips();
 const links = mainNav.filter((link) => !link.requiresTips || showTips);
 const current = sectionOf(Astro.url.pathname);
 const whatsapp = whatsappHref();
-const { phone, landline, address, mapsUrl } = site.contact;
+const { landline, address, mapsUrl } = site.contact;
 ---
 
 <div class="utility-strip">
@@ -48,9 +48,9 @@ const { phone, landline, address, mapsUrl } = site.contact;
   </nav>
 
   <div class="header-actions">
-    <a class="header-call" href={`tel:${phone.tel}`} aria-label={`Call ${phone.display}`}>
+    <a class="header-call" href={`tel:${landline.tel}`} aria-label={`Call ${landline.display}`}>
       <Icon name="phone" />
-      <span class="header-call-number">{phone.display}</span>
+      <span class="header-call-number">{landline.display}</span>
     </a>
     <a class="btn btn--primary header-book" href={routes.book}>Book appointment</a>
     <a class="menu-button" href="#site-footer" aria-haspopup="dialog" aria-controls="site-drawer" data-menu-open>
@@ -88,7 +88,6 @@ const { phone, landline, address, mapsUrl } = site.contact;
     <p><Icon name="clock" /><TodayHours /></p>
     <p><Icon name="map-pin" /><span>{address.line1}, {address.line2}, {address.line3}</span></p>
     <p><a href={mapsUrl} target="_blank" rel="noopener">Open in Google Maps</a></p>
-    <p><Icon name="phone" /><span>{phone.label}: <a href={`tel:${phone.tel}`}>{phone.display}</a></span></p>
     <p><Icon name="phone" /><span>{landline.label}: <a href={`tel:${landline.tel}`}>{landline.display}</a></span></p>
   </div>
 </dialog>

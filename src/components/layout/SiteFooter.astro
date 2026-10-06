@@ -3,11 +3,12 @@
 import { site, formatSessions, whatsappHref } from '../../config/site';
 import { routes, conditionHref } from '../../config/navigation';
 import { getConditions, hasTips } from '../../data/collections';
+import Icon from '../ui/Icon.astro';
 
 const conditions = await getConditions();
 const showTips = await hasTips();
 const whatsapp = whatsappHref();
-const { phone, landline, email, address, mapsUrl } = site.contact;
+const { landline, email, mapsUrl } = site.contact;
 const year = new Date().getFullYear();
 
 const groups = [
@@ -50,14 +51,16 @@ const groups = [
 
     <div class="footer-section footer-contact">
       <h2 class="footer-heading">Contact</h2>
-      <p class="footer-name">{site.name}</p>
-      <address>
-        {address.line1}<br />
-        {address.line2}<br />
-        {address.line3}
-      </address>
-      <p><a href={mapsUrl} target="_blank" rel="noopener">Open in Google Maps</a></p>
-      <p>{phone.label}: <a href={`tel:${phone.tel}`}>{phone.display}</a></p>
+      <div class="footer-address-row">
+        <address>
+          406, Centre Point<br />
+          Vandematram-Gota, Ahmedabad<br />
+          Gujarat 382470
+        </address>
+        <a class="footer-map-link" href={mapsUrl} target="_blank" rel="noopener" aria-label="Open Rivaansh ENT in Google Maps" title="Open in Google Maps">
+          <Icon name="map-pin" />
+        </a>
+      </div>
       <p>{landline.label}: <a href={`tel:${landline.tel}`}>{landline.display}</a></p>
       {whatsapp && <p><a href={whatsapp} target="_blank" rel="noopener">WhatsApp</a></p>}
       <p><a href={`mailto:${email}`}>{email}</a></p>
@@ -127,9 +130,26 @@ const groups = [
     font-style: normal;
   }
 
-  .footer-name {
-    color: var(--color-text-on-dark);
-    font-weight: 600;
+  .footer-address-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+
+  .footer-map-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    flex: 0 0 auto;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+  }
+
+  .footer-map-link :global(svg) {
+    width: 1rem;
+    height: 1rem;
   }
 
   .footer-hours {

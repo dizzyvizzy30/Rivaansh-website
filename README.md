@@ -34,6 +34,6 @@ Medical pages start as `draft: true`. They appear in `npm run dev` and on Netlif
 ## More
 
 - Playbooks for future work: `.claude/skills/` (design system, media, architecture, migration, owner content)
-- Content requests for the clinic: `owner-content/`
+- Owner content and photo intake: `owner-content/00-START-HERE.txt`
 - Domain / DNS / email setup: `docs/domain-and-hosting-setup.md`
 - Old URLs are redirected in `netlify.toml`.

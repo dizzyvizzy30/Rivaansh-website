@@ -1,0 +1,7 @@
+# 10. Doctor portrait
+
+Head and shoulders at eye level, plain light wall, daylight.
+
+- Portrait. Hold the phone upright.
+- At least 1200×1500 pixels (any recent phone is fine)
+- Required

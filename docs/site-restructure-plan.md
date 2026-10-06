@@ -289,8 +289,8 @@ built Phase 1 against screenshots. Implemented on `astro-migration`._
 8. "In short" = summary + local names + one call link (no button block).
 
 ## Photo slots
-12 named slots (`src/data/photo-slots.ts`; files in `src/assets/images/slots/<id>.*`; owner folders
-`owner-content/01-photos/<id>/`): building-street-view, entrance-lift-lobby, clinic-door-4th-floor,
+12 named slots (`src/data/photo-slots.ts`; files in `src/assets/images/slots/<id>.*`; owner uploads are grouped under
+`owner-content/<page>/photos/<id>/`): building-street-view, entrance-lift-lobby, clinic-door-4th-floor,
 reception-waiting-area, consultation-room-ent-unit, endoscope-unit, hearing-test-room, sterilisation-area,
 doctor-consultation-room, doctor-portrait, operating-microscope, operation-theatre. Six are required for launch.
 Preview builds show dashed amber "Photo needed" frames, stand-in badges, "Info needed" chips and the
@@ -309,11 +309,11 @@ The owner asked for clinic numbers and testimonials. They are back, with safegua
   (how it was counted). Home: a band under the hero. Doctor & Clinic: `#numbers` with sources. The old site's 15+ /
   10,000+ / 5,000+ are pre-filled as unconfirmed; "98% satisfaction" is dropped unless a documented survey exists.
 - **Reviews** (`testimonials`, `googleReviews`): only patients' own words with written consent (template:
-  `owner-content/07-numbers-and-reviews/consent-form.md`), shown with name as agreed, source and a disclaimer; plus a
+  `docs/archive/owner-content-numbers-and-reviews/consent-form.md`), shown with name as agreed, source and a disclaimer; plus a
   link to the clinic's Google reviews. Home shows up to 3; Doctor & Clinic `#reviews` shows all.
 - Preview builds show amber markers for every unconfirmed number and missing quote; the live site hides them.
-- Risk accepted by the owner: NMC rules restrict doctors' advertising, especially testimonials. The doctor must agree
-  before quotes go live (question 7 in folder 07).
+- Risk accepted by the owner: NMC rules restrict doctors' advertising, especially testimonials. The archived material
+  is not part of the owner upload workflow and must not be published without specific professional review.
 
 
 ---

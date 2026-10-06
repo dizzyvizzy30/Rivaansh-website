@@ -15,7 +15,7 @@ import { treatmentsPage } from '../data/treatments';
 import { routes } from '../config/navigation';
 import { site } from '../config/site';
 
-const { address, phone } = site.contact;
+const { address, landline } = site.contact;
 const qualifications = doctor.qualifications.map((qualification) => qualification.degree);
 ---
 
@@ -48,7 +48,7 @@ const qualifications = doctor.qualifications.map((qualification) => qualificatio
       <div class="problem-help">
         <p>
           {treatmentsPage.notListed}
-          <a href={`tel:${phone.tel}`}>Call {phone.display}</a>
+          <a href={`tel:${landline.tel}`}>Call {landline.display}</a>
         </p>
         <a class="urgent-link" href={`${routes.treatments}#urgent`}>Breathing difficulty, sudden hearing loss or bleeding? See urgent guidance</a>
       </div>
