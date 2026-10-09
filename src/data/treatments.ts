@@ -1,5 +1,5 @@
 // Treatments hub - /pages/ent.html
-// Owner input: owner-content/03-conditions-review/
+// Owner input: owner-content/02-treatments/
 // Each item links to its condition page once that page is published (src/content/conditions/<slug>.md);
 // until then it is listed as plain text, never as a dead link.
 import type { IconName } from '../components/ui/Icon.astro';

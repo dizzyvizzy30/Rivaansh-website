@@ -1,0 +1,20 @@
+Return checklist
+
+Before sharing the folder back, confirm:
+
+- ☐ Shared site details are answered.
+- ☐ Each completed Word questionnaire is inside its matching page
+  folder.
+- ☐ Each photo is inside the matching page and photo folder.
+- ☐ Original photo files were uploaded when available.
+- ☐ No photo shows an identifiable patient.
+- ☐ No file exposes patient information.
+- ☐ Staff shown in photos agreed to website publication.
+- ☐ Available operation handouts are in the handouts folder.
+- ☐ The Google Drive folder is restricted to authorized people.
+- ☐ The complete top-level folder was shared, not a collection of
+  separate links.
+
+Multiple photos are welcome. The website team will select the best image
+after checking sharpness, lighting, orientation, privacy, and
+suitability for the page.

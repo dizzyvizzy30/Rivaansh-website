@@ -5,7 +5,7 @@ import { site, whatsappHref } from '../../config/site';
 import { routes } from '../../config/navigation';
 
 interface Props {
-  /** `on-dark` for use over the hero photo. */
+  /** `on-dark` for use on the dark hero panel. */
   tone?: 'default' | 'on-dark';
   showBook?: boolean;
   whatsappText?: string;
@@ -17,7 +17,7 @@ const whatsapp = whatsappHref(whatsappText);
 ---
 
 <div class:list={['contact-actions', `contact-actions--${tone}`, className]}>
-  <a class="btn btn--primary" href={`tel:${site.contact.phone.tel}`} aria-label={`Call Rivaansh ENT at ${site.contact.phone.display}`}>
+  <a class="btn btn--primary" href={`tel:${site.contact.landline.tel}`} aria-label={`Call Rivaansh ENT at ${site.contact.landline.display}`}>
     <Icon name="phone" />
     Call us
   </a>

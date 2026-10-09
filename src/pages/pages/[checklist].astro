@@ -1,14 +1,13 @@
 ---
-// Preview-only shot list + facts list for the owner: /pages/photos-needed.html
-// Generated only in drafts builds (npm run dev, Netlify deploy previews) - never on the live site.
+// Unlisted owner shot list + facts list: /pages/photos-needed.html
+// It is generated on every build, marked noindex, and never linked from the public navigation.
 import PageLayout from '../../layouts/PageLayout.astro';
 import PhotoSlot from '../../components/media/PhotoSlot.astro';
-import { photoSlots, slotStatus, type SlotStatus } from '../../data/photo-slots';
+import { ownerPhotoFolder, photoSlots, slotStatus, type SlotStatus } from '../../data/photo-slots';
 import { factsNeeded } from '../../data/facts-needed';
-import { showDrafts } from '../../data/collections';
 
 export function getStaticPaths() {
-  return showDrafts ? [{ params: { checklist: 'photos-needed' } }] : [];
+  return [{ params: { checklist: 'photos-needed' } }];
 }
 
 const groups: { status: SlotStatus; title: string }[] = [
@@ -21,12 +20,11 @@ const missingCount = photoSlots.filter((s) => slotStatus(s.id) !== 'real').lengt
 const facts = factsNeeded();
 ---
 
-<PageLayout title="Photos needed" noindex>
-  <h1>Photos needed</h1>
+<PageLayout title="Owner photo checklist" noindex>
+  <h1>Owner photo checklist</h1>
   <p>
-    {missingCount} of {photoSlots.length} photo spots still need a real photo. They are listed in walking order - from the street to
-    the consultation room. Name each photo after its spot (for example <code>reception-waiting-area.jpg</code>) and put it in
-    <code>owner-content/01-photos/&lt;spot&gt;/</code>. This page is only visible on preview links.
+    {missingCount} of {photoSlots.length} photo spots still need a real photo. Add each photo to the page folder shown with that item.
+    The photo folders are grouped by the website page they support. This page is unlisted and is not linked from the patient navigation.
   </p>
   <p class="tips">
     Daylight · lights on · phone at eye level · wipe the lens · three takes of each · no patients and no patient data on screens ·
@@ -41,10 +39,11 @@ const facts = factsNeeded();
         <ol class="slots">
           {slots.map((slot) => (
             <li class="slot">
-              <PhotoSlot id={slot.id} sizes="(max-width: 640px) 100vw, 260px" />
+              <PhotoSlot id={slot.id} sizes="(max-width: 640px) 100vw, 260px" reviewMode />
               <div class="slot-body">
                 <h3><code>{slot.id}</code></h3>
                 <p><strong>{slot.title}.</strong> {slot.brief}</p>
+                <p class="meta">Upload to: <code>{ownerPhotoFolder(slot.id)}</code></p>
                 <p class="meta">{slot.orientation === 'landscape' ? 'Landscape - hold the phone sideways' : 'Portrait - hold the phone upright'} · at least {slot.minSize} · {levelLabel[slot.level]}</p>
                 <p class="meta">Used on: {slot.usedOn.map((u, i) => <>{i > 0 && ' · '}<a href={u.href}>{u.label}</a></>)}</p>
               </div>

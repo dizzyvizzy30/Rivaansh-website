@@ -1,11 +1,10 @@
-// Named photo slots - every place on the site where a real photo belongs (decided in round 2 of
-// docs/site-restructure-plan.md). Slot id = owner-content/01-photos/<id>/ folder = file name.
+// Named photo slots. Owner uploads are grouped by website page under owner-content/.
+// The final photo file name still matches the slot id.
 //
 // To fill a slot: save the chosen photo as src/assets/images/slots/<id>.jpg (or .jpeg/.png/.webp).
 // It is detected automatically at build time - no code change needed.
 // Rendering rules: src/components/media/PhotoSlot.astro.
 import type { ImageMetadata } from 'astro';
-import doctorOfficePortrait from '../assets/images/clinic/doctor-office-portrait.jpeg';
 import centrePointBuilding from '../assets/images/locations/centre-point-building-gota.png';
 import microscopeEarSurgery from '../assets/images/clinic/microscope-ear-surgery.jpeg';
 import operationTheatreTeam from '../assets/images/clinic/operation-theatre-team.jpeg';
@@ -30,6 +29,26 @@ export interface PhotoSlotDef {
   standIn?: { src: ImageMetadata; alt: string; focus?: string; allowOnLive?: boolean };
 }
 
+const ownerPageBySlot: Record<string, string> = {
+  'endoscope-unit': '02-treatments',
+  'hearing-test-room': '02-treatments',
+  'reception-waiting-area': '03-doctor-and-centre',
+  'consultation-room-ent-unit': '03-doctor-and-centre',
+  'doctor-portrait': '03-doctor-and-centre',
+  'sterilisation-area': '03-doctor-and-centre',
+  'operating-microscope': '03-doctor-and-centre',
+  'operation-theatre': '03-doctor-and-centre',
+  'building-street-view': '04-visit-us',
+  'entrance-lift-lobby': '04-visit-us',
+  'clinic-door-4th-floor': '04-visit-us',
+};
+
+export function ownerPhotoFolder(id: string): string {
+  const page = ownerPageBySlot[id];
+  if (!page) throw new Error(`No owner page folder is registered for photo slot "${id}"`);
+  return `owner-content/${page}/photos/${id}/`;
+}
+
 const supplied = import.meta.glob<ImageMetadata>('../assets/images/slots/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG}', {
   eager: true,
   import: 'default',
@@ -40,14 +59,14 @@ const suppliedById = new Map(
 const isPreview = import.meta.env.DEV || (import.meta.env.SHOW_DRAFTS ?? (globalThis as { process?: { env?: Record<string, string | undefined> } }).process?.env?.SHOW_DRAFTS) === 'true';
 
 // Listed in shooting (walking) order: street → lobby → 4th-floor door → reception → consultation room →
-// equipment → doctor, then the surgery photos that depend on owner decision 7.
+// equipment, doctor, then the surgery photos that depend on owner confirmation.
 export const photoSlots: PhotoSlotDef[] = [
   {
     id: 'building-street-view',
     title: 'Building from the street',
     brief: 'Centre Point from across New S.G. Road at eye level, in daylight - the entrance and the Rivaansh signboard readable.',
     usedOn: [
-      { label: 'Home › Coming to the clinic', href: '/#coming' },
+      { label: 'Home › Plan your visit', href: '/#coming' },
       { label: 'Visit Us › Getting here, step 1', href: '/pages/contact.html#getting-here' },
     ],
     ratio: '3 / 2',
@@ -71,8 +90,8 @@ export const photoSlots: PhotoSlotDef[] = [
   },
   {
     id: 'clinic-door-4th-floor',
-    title: 'Clinic door on the 4th floor',
-    brief: 'What you see stepping out of the lift: the clinic door and signboard.',
+    title: 'Centre door on the 4th floor',
+    brief: 'What you see stepping out of the lift: the centre door and signboard.',
     usedOn: [
       { label: 'Visit Us › Getting here, step 3', href: '/pages/contact.html#getting-here' },
       { label: 'Doctor & Centre › Centre tour', href: '/pages/about-us.html#centre' },
@@ -115,11 +134,11 @@ export const photoSlots: PhotoSlotDef[] = [
   {
     id: 'endoscope-unit',
     title: 'Endoscope',
-    brief: 'The endoscope and its monitor in the consultation room - no patient data on the screen. Only if endoscopy is done at the clinic.',
+    brief: 'The endoscope and its monitor in the consultation room. No patient data on the screen. Only if endoscopy is available at the centre.',
     usedOn: [
       { label: 'Home › Your doctor and the centre', href: '/#doctor-centre' },
       { label: 'Doctor & Centre › Centre tour', href: '/pages/about-us.html#centre' },
-      { label: 'Treatments › Tests done at the clinic', href: '/pages/ent.html#tests' },
+      { label: 'Treatments › Tests available at the centre', href: '/pages/ent.html#tests' },
       { label: 'Sinus, allergy & blocked nose page', href: '/pages/ent/sinus-allergy-blocked-nose.html' },
     ],
     ratio: '3 / 2',
@@ -131,10 +150,10 @@ export const photoSlots: PhotoSlotDef[] = [
   {
     id: 'hearing-test-room',
     title: 'Hearing test',
-    brief: 'The audiometer or hearing-test booth. Only if hearing tests are done at the clinic.',
+    brief: 'The audiometer or hearing-test booth. Only if hearing tests are available at the centre.',
     usedOn: [
       { label: 'Doctor & Centre › Centre tour', href: '/pages/about-us.html#centre' },
-      { label: 'Treatments › Tests done at the clinic', href: '/pages/ent.html#tests' },
+      { label: 'Treatments › Tests available at the centre', href: '/pages/ent.html#tests' },
       { label: 'Hearing loss & hearing aids page', href: '/pages/ent/hearing-loss-hearing-aids.html' },
     ],
     ratio: '3 / 2',
@@ -158,24 +177,11 @@ export const photoSlots: PhotoSlotDef[] = [
     alt: 'Autoclave and sealed, sterilised instrument packs',
   },
   {
-    id: 'doctor-consultation-room',
-    title: 'Doctor in the consultation room',
-    brief: 'The doctor standing beside the ENT chair, room and screen visible, lights on, no patient. Hold the phone sideways.',
-    usedOn: [{ label: 'Home › Top banner', href: '/' }],
-    ratio: '16 / 9',
-    orientation: 'landscape',
-    minSize: '2400×1350',
-    level: 'required',
-    alt: '',
-    // PLACEHOLDER: stand-in until the photo session - owner to confirm the person is Dr. Tanay S Parikh.
-    standIn: { src: doctorOfficePortrait, alt: '', focus: 'center 38%' },
-  },
-  {
     id: 'doctor-portrait',
     title: 'Doctor portrait',
     brief: 'Head and shoulders at eye level, plain light wall, daylight.',
     usedOn: [
-      { label: 'Doctor & Clinic › The doctor', href: '/pages/about-us.html#doctor' },
+      { label: 'Doctor & Centre › The doctor', href: '/pages/about-us.html#doctor' },
       { label: 'Condition pages › doctor card', href: '/pages/ent.html' },
     ],
     ratio: '4 / 5',
@@ -183,14 +189,12 @@ export const photoSlots: PhotoSlotDef[] = [
     minSize: '1200×1500',
     level: 'required',
     alt: 'Dr. Tanay S Parikh',
-    // PLACEHOLDER: owner to confirm this clinic photo shows Dr. Tanay S Parikh.
-    standIn: { src: doctorOfficePortrait, alt: 'Dr. Tanay S Parikh in the consultation room', focus: 'center 25%' },
   },
   {
     id: 'operating-microscope',
     title: 'Operating microscope',
     brief: 'The microscope used for ear surgery, in the theatre where operations are done. Depends on owner decision 7.',
-    usedOn: [{ label: 'Doctor & Clinic › Where surgery is done', href: '/pages/about-us.html#surgery' }],
+    usedOn: [{ label: 'Doctor & Centre › Where surgery is done', href: '/pages/about-us.html#surgery' }],
     ratio: '3 / 2',
     orientation: 'landscape',
     minSize: '1600×1067',
@@ -202,7 +206,7 @@ export const photoSlots: PhotoSlotDef[] = [
     id: 'operation-theatre',
     title: 'Operation theatre',
     brief: 'The theatre with staff only (with their consent), no surgical field visible. Depends on owner decisions 7 and 12.',
-    usedOn: [{ label: 'Doctor & Clinic › Where surgery is done', href: '/pages/about-us.html#surgery' }],
+    usedOn: [{ label: 'Doctor & Centre › Where surgery is done', href: '/pages/about-us.html#surgery' }],
     ratio: '3 / 2',
     orientation: 'landscape',
     minSize: '1600×1067',

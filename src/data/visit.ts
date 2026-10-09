@@ -1,5 +1,5 @@
 // Visit Us - /pages/contact.html (owns the full timings table, getting here, fees, first visit and FAQ)
-// Owner input: owner-content/00-clinic-facts/, owner-content/06-faq/, photos in owner-content/01-photos/
+// Owner input: owner-content/04-visit-us/ and owner-content/00-shared-site-details/
 // Missing facts stay null: hidden on the live site, shown as "Info needed" chips in preview builds.
 
 export const visitPage = {
@@ -32,7 +32,7 @@ export const firstVisit = {
   bring: ['Previous reports, scans and prescriptions', 'A list of the medicines you take', 'Hearing aids, if you use them'],
 };
 
-// PLACEHOLDER: add the receptionist's most common phone questions (owner-content/06-faq).
+// PLACEHOLDER: add the receptionist's most common phone questions from owner-content/04-visit-us/.
 // Questions already answered elsewhere on Visit Us (opening hours, what to bring) are deliberately left out.
 export const quickAnswers = [
   { question: 'Do I need a referral?', answer: 'No. You can book directly by calling the clinic.' },

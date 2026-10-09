@@ -1,30 +1,16 @@
 ---
-// Homepage hero. Wide screens: photo on the right half, text on solid slate. Phones: a 16:9 photo strip ABOVE the
-// text (never behind it) and a single Call button - Directions/WhatsApp become a text row because the bottom action
-// bar already offers them. No photo → solid slate on the live site.
-import MediaImage from '../media/MediaImage.astro';
-import PhotoSlot from '../media/PhotoSlot.astro';
+// Homepage hero. Text and visit details sit on a full-width dark panel.
+// Phones show one Call button. Directions and WhatsApp become text links because the bottom action bar already offers them.
 import ContactActions from '../ui/ContactActions.astro';
 import Icon from '../ui/Icon.astro';
 import TodayHours from '../layout/TodayHours.astro';
 import { site, whatsappHref } from '../../config/site';
 import { hero } from '../../data/home';
-import { slotImage } from '../../data/photo-slots';
-import { showDrafts } from '../../data/collections';
 
-const image = slotImage(hero.slot);
 const whatsapp = whatsappHref();
 ---
 
-<section class:list={['hero', !image && 'hero--no-photo']}>
-  {image ? (
-    <div class="hero-media">
-      <MediaImage image={image} sizes="(max-width: 900px) 100vw, 52vw" priority class="hero-photo" />
-      {showDrafts && image.isStandIn && <span class="hero-badge">Stand-in · replace with {hero.slot}</span>}
-    </div>
-  ) : (
-    showDrafts && <div class="hero-media hero-media--empty"><PhotoSlot id={hero.slot} sizes="100vw" /></div>
-  )}
+<section class="hero">
   <div class="hero-content">
     <div class="hero-copy">
       <p class="hero-kicker">{site.shortName} <span lang="gu">· {site.localTagline}</span></p>
@@ -54,7 +40,7 @@ const whatsapp = whatsappHref();
 <style>
   .hero {
     position: relative;
-    min-height: min(620px, 72vh);
+    min-height: min(560px, 68vh);
     display: flex;
     align-items: center;
     overflow: hidden;
@@ -63,58 +49,15 @@ const whatsapp = whatsappHref();
     background: var(--color-surface-dark);
   }
 
-  .hero-media {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 52%;
-    height: 100%;
-    z-index: -2;
-  }
-
-  .hero-media :global(.hero-photo) {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .hero-media--empty :global(.photo-slot) {
-    height: 100%;
-    aspect-ratio: auto;
-    border-radius: 0;
-  }
-
-  /* Blend the photo into the slate panel. */
   .hero::before {
     content: '';
     position: absolute;
     inset: 0;
     z-index: -1;
     pointer-events: none;
-    background: linear-gradient(90deg, var(--color-surface-dark) 0%, var(--color-surface-dark) 46%, rgba(30, 41, 59, 0.55) 62%, rgba(30, 41, 59, 0.1) 100%);
-  }
-
-  .hero--no-photo::before {
     background:
       radial-gradient(circle at 88% 14%, rgba(18, 139, 139, 0.28), transparent 30rem),
       linear-gradient(120deg, var(--color-surface-dark) 0%, #1d405b 100%);
-  }
-
-  .hero--no-photo {
-    min-height: 500px;
-  }
-
-  .hero-badge {
-    position: absolute;
-    right: 0.75rem;
-    top: 0.75rem;
-    padding: 0.25rem 0.6rem;
-    border-radius: var(--radius-sm);
-    background: rgba(255, 247, 230, 0.95);
-    border: 1px solid #f3c56b;
-    color: #6b4400;
-    font-size: 0.75rem;
-    font-weight: 600;
   }
 
   .hero-content {
@@ -216,37 +159,23 @@ const whatsapp = whatsappHref();
     fill: var(--color-bg);
   }
 
-  /* Phones and tablets: photo strip above the text. */
+  /* Phones and tablets. */
   @media (max-width: 900px) {
     .hero {
       flex-direction: column;
       align-items: stretch;
       min-height: 0;
-      padding: 0 0 4rem;
+      padding: 3rem 0 4rem;
     }
 
     .hero::before {
       display: none;
     }
 
-    .hero-media {
-      position: relative;
-      width: 100%;
-      height: auto;
-      aspect-ratio: 16 / 9;
-      overflow: hidden;
-      z-index: 0;
-    }
-
-    .hero-media :global(.hero-photo) {
-      position: absolute;
-      inset: 0;
-    }
-
     .hero-content {
       grid-template-columns: 1fr;
       gap: 1.5rem;
-      padding: 1.75rem var(--gutter) 0;
+      padding: 0 var(--gutter);
     }
 
     .hero-copy {
@@ -261,7 +190,7 @@ const whatsapp = whatsappHref();
 
   @media (max-width: 768px) {
     .hero-content {
-      padding: 1.5rem var(--gutter-mobile) 0;
+      padding: 0 var(--gutter-mobile);
     }
 
     .hero-subline {

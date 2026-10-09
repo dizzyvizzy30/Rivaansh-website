@@ -6,7 +6,7 @@ import InfoNeeded from '../ui/InfoNeeded.astro';
 import { site } from '../../config/site';
 import { visitPage } from '../../data/visit';
 
-const { address, mapsUrl, phone, landline } = site.contact;
+const { address, mapsUrl, landline } = site.contact;
 ---
 
 <div class="location-card">
@@ -19,7 +19,6 @@ const { address, mapsUrl, phone, landline } = site.contact;
     </address>
     <p class="landmark">{visitPage.landmark}</p>
     <ul class="location-phones">
-      <li><Icon name="phone" />{phone.label}: <a href={`tel:${phone.tel}`}>{phone.display}</a></li>
       <li><Icon name="phone" />{landline.label}: <a href={`tel:${landline.tel}`}>{landline.display}</a></li>
     </ul>
     <a class="btn btn--primary" href={mapsUrl} target="_blank" rel="noopener">
@@ -30,7 +29,7 @@ const { address, mapsUrl, phone, landline } = site.contact;
   <div class="location-hours">
     <h3 class="location-name">Timings</h3>
     <HoursTable />
-    {visitPage.holidays ? <p class="holidays">{visitPage.holidays}</p> : <InfoNeeded what="holidays when the centre is closed" folder="00-clinic-facts" />}
+    {visitPage.holidays ? <p class="holidays">{visitPage.holidays}</p> : <InfoNeeded what="holidays when the centre is closed" folder="04-visit-us" />}
   </div>
 </div>
 

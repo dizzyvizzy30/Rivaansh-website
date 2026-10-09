@@ -1,11 +1,10 @@
-// Book - /pages/appointment.html (task page: no timings table, no photos)
-// Owner input: owner-content/00-clinic-facts/ and owner-content/06-faq/
-// NOTE: the online request form returns in Phase 2 once it can deliver to WhatsApp / Google Sheet.
+// Book - /pages/appointment.html (appointment request form plus telephone option)
+// Owner input: owner-content/07-book-appointment/ and owner-content/00-shared-site-details/
 
 export const bookPage = {
   title: 'Book an appointment',
-  intro: 'Call the clinic mobile or appointments landline to book, change or cancel a visit.',
-  haveReady: 'Have ready: who the appointment is for (you, your child or your parent), their age, and the problem.',
-  // PLACEHOLDER: what happens after you call - fixed time or token system? walk-ins?
-  afterYouCall: null as string | null,
+  intro: 'Request an appointment online, or call to book, change, or cancel a visit.',
+  haveReady: 'Please have the patient’s name and preferred day ready.',
+  // Owner to confirm the expected response time and whether confirmation is by call, SMS, or email.
+  confirmationProcess: null as string | null,
 };

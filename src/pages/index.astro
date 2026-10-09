@@ -15,7 +15,7 @@ import { treatmentsPage } from '../data/treatments';
 import { routes } from '../config/navigation';
 import { site } from '../config/site';
 
-const { address, phone } = site.contact;
+const { address, landline } = site.contact;
 const qualifications = doctor.qualifications.map((qualification) => qualification.degree);
 ---
 
@@ -48,7 +48,7 @@ const qualifications = doctor.qualifications.map((qualification) => qualificatio
       <div class="problem-help">
         <p>
           {treatmentsPage.notListed}
-          <a href={`tel:${phone.tel}`}>Call {phone.display}</a>
+          <a href={`tel:${landline.tel}`}>Call {landline.display}</a>
         </p>
         <a class="urgent-link" href={`${routes.treatments}#urgent`}>Breathing difficulty, sudden hearing loss or bleeding? See urgent guidance</a>
       </div>
@@ -108,8 +108,8 @@ const qualifications = doctor.qualifications.map((qualification) => qualificatio
             {address.line1}<br />
             {address.line2}
           </address>
-          {visitPage.lift ? <p>{visitPage.lift}</p> : <InfoNeeded what="lift / stairs" folder="00-clinic-facts" />}
-          {visitPage.fees ? <p><strong>Consultation fee:</strong> {visitPage.fees}</p> : <InfoNeeded what="consultation fee" folder="00-clinic-facts" />}
+          {visitPage.lift ? <p>{visitPage.lift}</p> : <InfoNeeded what="lift / stairs" folder="04-visit-us" />}
+          {visitPage.fees ? <p><strong>Consultation fee:</strong> {visitPage.fees}</p> : <InfoNeeded what="consultation fee" folder="04-visit-us" />}
           <p class="booking-note">{bookPage.haveReady}</p>
           <ContactActions showBook />
           <ul class="link-rows">

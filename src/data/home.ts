@@ -1,13 +1,11 @@
 // Homepage - / (a short, problem-led front door; detail stays on the inner pages)
-// Owner input: owner-content/00-clinic-facts/ and owner-content/01-photos/
+// Owner input: owner-content/01-home/ and owner-content/00-shared-site-details/
 
 import type { IconName } from '../components/ui/Icon.astro';
 
 export const hero = {
   title: 'ENT centre in Gota, Ahmedabad',
   subline: 'Ear pain or discharge? Hearing less? Feeling dizzy? Blocked nose? Is your child snoring or breathing through the mouth?',
-  /** Photo slot for the top banner. */
-  slot: 'doctor-consultation-room',
 };
 
 export interface HomeProblemGroup {

@@ -28,7 +28,7 @@ const schema = clinicSchema && {
   '@type': 'MedicalClinic',
   name: site.name,
   medicalSpecialty: 'Otolaryngologic',
-  telephone: site.contact.phone.tel,
+  telephone: site.contact.landline.tel,
   email: site.contact.email,
   ...(Astro.site && { url: Astro.site.href }),
   address: {
