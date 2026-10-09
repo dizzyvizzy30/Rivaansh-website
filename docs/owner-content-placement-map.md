@@ -23,7 +23,6 @@ Each final photo folder name is also its website slot identifier. After review, 
 
 | Owner upload folder | Main website use |
 |---|---|
-| `01-home/photos/doctor-consultation-room/` | Home hero |
 | `02-treatments/photos/endoscope-unit/` | Treatments and sinus information |
 | `02-treatments/photos/hearing-test-room/` | Treatments and hearing information |
 | `03-doctor-and-centre/photos/doctor-portrait/` | Doctor profile and doctor cards |

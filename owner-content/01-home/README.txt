@@ -6,6 +6,5 @@ impression.
 What to do
 
 1.  Review the Home page wording in EDIT-IN-GOOGLE-DRIVE.docx.
-2.  Add the Home hero photo inside photos/doctor-consultation-room/.
-3.  Leave photos used primarily by another page in that page’s folder.
+2.  Leave photos used primarily by another page in that page’s folder.
     The placement map records reused images.

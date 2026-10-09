@@ -5,7 +5,6 @@
 // It is detected automatically at build time - no code change needed.
 // Rendering rules: src/components/media/PhotoSlot.astro.
 import type { ImageMetadata } from 'astro';
-import doctorOfficePortrait from '../assets/images/clinic/doctor-office-portrait.jpeg';
 import centrePointBuilding from '../assets/images/locations/centre-point-building-gota.png';
 import microscopeEarSurgery from '../assets/images/clinic/microscope-ear-surgery.jpeg';
 import operationTheatreTeam from '../assets/images/clinic/operation-theatre-team.jpeg';
@@ -31,7 +30,6 @@ export interface PhotoSlotDef {
 }
 
 const ownerPageBySlot: Record<string, string> = {
-  'doctor-consultation-room': '01-home',
   'endoscope-unit': '02-treatments',
   'hearing-test-room': '02-treatments',
   'reception-waiting-area': '03-doctor-and-centre',
@@ -61,7 +59,7 @@ const suppliedById = new Map(
 const isPreview = import.meta.env.DEV || (import.meta.env.SHOW_DRAFTS ?? (globalThis as { process?: { env?: Record<string, string | undefined> } }).process?.env?.SHOW_DRAFTS) === 'true';
 
 // Listed in shooting (walking) order: street → lobby → 4th-floor door → reception → consultation room →
-// equipment → doctor, then the surgery photos that depend on owner decision 7.
+// equipment, doctor, then the surgery photos that depend on owner confirmation.
 export const photoSlots: PhotoSlotDef[] = [
   {
     id: 'building-street-view',
@@ -179,19 +177,6 @@ export const photoSlots: PhotoSlotDef[] = [
     alt: 'Autoclave and sealed, sterilised instrument packs',
   },
   {
-    id: 'doctor-consultation-room',
-    title: 'Doctor in the consultation room',
-    brief: 'The doctor standing beside the ENT chair, room and screen visible, lights on, no patient. Hold the phone sideways.',
-    usedOn: [{ label: 'Home › Top banner', href: '/' }],
-    ratio: '16 / 9',
-    orientation: 'landscape',
-    minSize: '2400×1350',
-    level: 'required',
-    alt: '',
-    // PLACEHOLDER: stand-in until the photo session - owner to confirm the person is Dr. Tanay S Parikh.
-    standIn: { src: doctorOfficePortrait, alt: '', focus: 'center 38%' },
-  },
-  {
     id: 'doctor-portrait',
     title: 'Doctor portrait',
     brief: 'Head and shoulders at eye level, plain light wall, daylight.',
@@ -204,8 +189,6 @@ export const photoSlots: PhotoSlotDef[] = [
     minSize: '1200×1500',
     level: 'required',
     alt: 'Dr. Tanay S Parikh',
-    // PLACEHOLDER: owner to confirm this centre photo shows Dr. Tanay S Parikh.
-    standIn: { src: doctorOfficePortrait, alt: 'Dr. Tanay S Parikh in the consultation room', focus: 'center 25%' },
   },
   {
     id: 'operating-microscope',

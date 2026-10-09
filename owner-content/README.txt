@@ -16,8 +16,8 @@ Folder map
                                 pages                   details once
 
   01-home                       Home                    Review the first
-                                                        impression, symptom
-                                                        wording, and hero photo
+                                                        impression and symptom
+                                                        wording
 
   02-treatments                 Treatments and          Review condition
                                 condition pages         information and service

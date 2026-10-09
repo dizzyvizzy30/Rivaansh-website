@@ -15,6 +15,10 @@ The editable questionnaires use Word format because Google Drive can open, edit,
 
 ## Add photos to a page
 
+Live photo reference: `https://rivaanshent.com/pages/photos-needed.html`
+
+This unlisted page shows every requested photo, its orientation, minimum size, priority, website use, and matching upload folder.
+
 1. Open the page folder.
 2. Open its `photos` folder.
 3. Open the folder matching what the photo shows.

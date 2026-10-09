@@ -5,7 +5,7 @@ _Decided 2026-10-02 through a structured debate: an Advocate (3–4 intent secti
 visitors). This is the Arbitrator's final plan._
 
 > **Status:** Phase 1 implemented on branch `astro-migration` (2026-10-02), plus three simplifications: solid header,
-> one fixed header height, still hero photo. Phases 2–3 wait for owner content. Deviations from this plan: the
+> one fixed header height and a text-led hero. Phases 2–3 wait for owner content. Deviations from this plan: the
 > homepage hero keeps a photo of the doctor's office until a wide clinic photo arrives; sitemap waits for the live
 > domain; the Gujarati tagline uses neutral "કાન · નાક · ગળું" until the "hospital" wording is confirmed.
 
@@ -148,19 +148,20 @@ testimonials, rating widgets, patient stories or before/after photos; no patient
 identifiable patients; list only services the doctor confirms in writing; every medical page shows "Reviewed by" and a
 date; "24/7" only if a named number is answered 24/7; "hospital" only if registered as one.
 
-## 8. Owner-content restructure (replaces folders 00–14)
-| Folder | Replaces | Owner provides | Owner time |
-|---|---|---|---|
-| `00-clinic-facts` | 00, 08, 12, 13, parts of 09/14 | One questionnaire: name, phone numbers and their purpose, WhatsApp number and who answers it, email, Google Maps link, hours, holidays, 24/7?, Unjha?, registration no., languages, fees, payment methods, mediclaim, where surgery is done, lift/parking | 30 min |
-| `01-photos` | photo folders in 01, 02, 11, 12 | One phone photo session; sub-folders doctor-portrait, exterior-signboard, reception, consultation-room, equipment, operation-theatre (only if one exists) | 1 hr |
-| `02-doctor-profile` | 02, 03 | Qualifications with institute and year, fellowship, council, memberships, areas of interest | 20 min |
-| `03-conditions-review` | 04, 05, 06 | **We draft each condition**; the doctor corrects it or replies "OK" on WhatsApp and confirms tests/procedures done here | ~15 min per page |
-| `04-surgery-guides` | 07 | Photos/scans of handouts already given to patients | 15 min |
-| `05-health-tips-review` | 10 | Approve our drafts; list the questions patients ask most | 1 hr |
-| `06-faq` | 14 | Receptionist lists the 10 most common phone questions | 20 min |
+## 8. Owner-content structure
 
-≈ 5 hours of owner time in total. Update `owner-content/README.md` and the folder map in
-`.claude/skills/rivaansh-owner-content-intake/SKILL.md` to match.
+| Folder | Owner provides |
+|---|---|
+| `00-shared-site-details` | Official name, public contact details, brand wording, and profiles reused across pages |
+| `01-home` | Home heading, symptom wording, and first-visit message review |
+| `02-treatments` | Condition review, tests, procedures, local terms, and treatment equipment photos |
+| `03-doctor-and-centre` | Doctor profile, registration, facilities, hygiene, surgery details, and centre photos |
+| `04-visit-us` | Address, timings, directions, access, fees, payment, insurance, and common questions |
+| `05-before-and-after-surgery` | Existing handouts and corrections to preparation and recovery guidance |
+| `06-health-tips` | Approval or correction of drafted education articles |
+| `07-book-appointment` | Booking contact, response process, form choices, and record access |
+
+The owner-facing folder contains plain-text instructions and Word questionnaires that open in Google Drive. The source files are kept in `docs/owner-content-source/`.
 
 ## 9. Redirects
 Add each rule for both the `.html` and extensionless path; delete the old page files so Netlify "shadowing" can't block
@@ -289,10 +290,10 @@ built Phase 1 against screenshots. Implemented on `astro-migration`._
 8. "In short" = summary + local names + one call link (no button block).
 
 ## Photo slots
-12 named slots (`src/data/photo-slots.ts`; files in `src/assets/images/slots/<id>.*`; owner uploads are grouped under
+11 named slots (`src/data/photo-slots.ts`; files in `src/assets/images/slots/<id>.*`; owner uploads are grouped under
 `owner-content/<page>/photos/<id>/`): building-street-view, entrance-lift-lobby, clinic-door-4th-floor,
 reception-waiting-area, consultation-room-ent-unit, endoscope-unit, hearing-test-room, sterilisation-area,
-doctor-consultation-room, doctor-portrait, operating-microscope, operation-theatre. Six are required for launch.
+doctor-portrait, operating-microscope, operation-theatre. Five are required for launch.
 Preview builds show dashed amber "Photo needed" frames, stand-in badges, "Info needed" chips and the
 `/pages/photos-needed.html` checklist; the live site hides every empty slot and unknown fact. Production builds log
 missing required photos and **fail** if "PLACEHOLDER" or "___" reaches the output.

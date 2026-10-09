@@ -32,11 +32,3 @@ Your answer:
 
 Your answer:
 
-
-
-### 5. Is the doctor in the current stand-in photo Dr. Tanay S Parikh, and may it remain visible until a new photo is approved?
-
-> Currently: Used only as a temporary stand-in where allowed.
-
-Your answer:
-

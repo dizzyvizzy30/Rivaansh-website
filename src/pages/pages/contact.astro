@@ -33,17 +33,17 @@ const showFees = hasFees || showDrafts;
     <h2 id="getting-here-title">Getting here</h2>
     <GettingHere />
     <ul class="access">
-      {page.wheelchair ? <li><strong>Wheelchair access:</strong> {page.wheelchair}</li> : <li><InfoNeeded what="wheelchair access" folder="00-clinic-facts" /></li>}
-      {page.parking ? <li><strong>Parking:</strong> {page.parking}</li> : <li><InfoNeeded what="parking (two-wheeler and car)" folder="00-clinic-facts" /></li>}
+      {page.wheelchair ? <li><strong>Wheelchair access:</strong> {page.wheelchair}</li> : <li><InfoNeeded what="wheelchair access" folder="04-visit-us" /></li>}
+      {page.parking ? <li><strong>Parking:</strong> {page.parking}</li> : <li><InfoNeeded what="parking (two-wheeler and car)" folder="04-visit-us" /></li>}
     </ul>
   </section>
 
   {showFees && (
     <section id="fees" class="block" aria-labelledby="fees-title">
       <h2 id="fees-title">Fees</h2>
-      {page.fees ? <p><strong>Consultation fee:</strong> {page.fees}</p> : <InfoNeeded what="consultation fee" folder="00-clinic-facts" />}
-      {page.payment ? <p><strong>Payment:</strong> {page.payment}</p> : <InfoNeeded what="payment methods (cash, UPI, card)" folder="00-clinic-facts" />}
-      {page.mediclaim ? <p><strong>Mediclaim / insurance:</strong> {page.mediclaim}</p> : <InfoNeeded what="mediclaim / insurance / TPA" folder="00-clinic-facts" />}
+      {page.fees ? <p><strong>Consultation fee:</strong> {page.fees}</p> : <InfoNeeded what="consultation fee" folder="04-visit-us" />}
+      {page.payment ? <p><strong>Payment:</strong> {page.payment}</p> : <InfoNeeded what="payment methods (cash, UPI, card)" folder="04-visit-us" />}
+      {page.mediclaim ? <p><strong>Mediclaim / insurance:</strong> {page.mediclaim}</p> : <InfoNeeded what="mediclaim / insurance / TPA" folder="04-visit-us" />}
     </section>
   )}
 
@@ -57,7 +57,7 @@ const showFees = hasFees || showDrafts;
   <section id="faq" class="block" aria-labelledby="faq-title">
     <h2 id="faq-title">Frequently asked questions</h2>
     <FaqAccordion items={quickAnswers} />
-    <InfoNeeded what="the receptionist's most common phone questions" folder="06-faq" />
+    <InfoNeeded what="the receptionist's most common phone questions" folder="04-visit-us" />
   </section>
 
   <ContactActions showBook />

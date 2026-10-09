@@ -14,11 +14,13 @@ interface Props {
   sizes: string;
   class?: string;
   priority?: boolean;
+  /** Show owner-review placeholders and stand-in badges even on a production build. */
+  reviewMode?: boolean;
   /** Override the slot's aspect ratio for this placement, e.g. '1 / 1' for an avatar. */
   aspect?: string;
 }
 
-const { id, sizes, class: className, priority = false, aspect } = Astro.props;
+const { id, sizes, class: className, priority = false, reviewMode = false, aspect } = Astro.props;
 const slot = getSlot(id);
 const image = slotImage(id);
 const ratio = aspect ?? slotRatio(slot);
@@ -27,10 +29,10 @@ const ratio = aspect ?? slotRatio(slot);
 {image ? (
   <div class:list={['photo-slot', className]} style={`--slot-ratio: ${ratio}`}>
     <MediaImage image={image} sizes={sizes} priority={priority} class="photo-slot__img" />
-    {showDrafts && image.isStandIn && <span class="photo-slot__badge">Stand-in - replace with <code>{slot.id}</code></span>}
+    {(showDrafts || reviewMode) && image.isStandIn && <span class="photo-slot__badge">Stand-in - replace with <code>{slot.id}</code></span>}
   </div>
 ) : (
-  showDrafts && (
+  (showDrafts || reviewMode) && (
     <div class:list={['photo-slot', 'photo-slot--empty', className]} style={`--slot-ratio: ${ratio}`} role="img" aria-label={`Photo needed: ${slot.title}`}>
       <Icon name="camera" />
       <strong>Photo needed: <code>{slot.id}</code></strong>

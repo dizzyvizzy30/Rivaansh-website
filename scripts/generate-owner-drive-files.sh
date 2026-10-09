@@ -39,7 +39,6 @@ make_page "05-before-and-after-surgery"
 make_page "06-health-tips"
 make_page "07-book-appointment"
 
-make_photo_note "01-home" "doctor-consultation-room"
 make_photo_note "02-treatments" "endoscope-unit"
 make_photo_note "02-treatments" "hearing-test-room"
 make_photo_note "03-doctor-and-centre" "consultation-room-ent-unit"

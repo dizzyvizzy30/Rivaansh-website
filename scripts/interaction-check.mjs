@@ -40,7 +40,7 @@ const watch = (page) => page.on('pageerror', (e) => errors.push(`${page.url()}: 
   watch(page);
   await page.goto(base + '/pages/ent.html', { waitUntil: 'networkidle' });
   const labels = await page.$$eval('.desktop-nav a', (as) => as.map((a) => a.textContent.trim()));
-  check('desktop menu has the plain destinations', ['Treatments', 'Doctor & Clinic', 'Visit Us'].every((l) => labels.includes(l)), labels.join(' · '));
+  check('desktop menu has the plain destinations', ['Treatments', 'Doctor & Centre', 'Visit Us'].every((l) => labels.includes(l)), labels.join(' · '));
   check('no dropdown menus', (await page.$$('.dropdown, [data-dropdown-toggle]')).length === 0);
   check('current section is marked', (await page.getAttribute('.desktop-nav a[aria-current="page"]', 'href')) === '/pages/ent.html');
   const strip = await page.textContent('.utility-strip');
@@ -117,20 +117,18 @@ const watch = (page) => page.on('pageerror', (e) => errors.push(`${page.url()}: 
   await ctx.close();
 }
 
-// ---------- Homepage summary (round 2: ~4 phone screens, photo above the heading on phones) ----------
+// ---------- Homepage summary ----------
 {
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
   const page = await ctx.newPage();
   watch(page);
   await page.goto(base + '/', { waitUntil: 'networkidle' });
-  const { screens, photoAboveTitle, heroButtons, preview } = await page.evaluate(() => {
+  const { screens, heroHasImage, heroButtons, preview } = await page.evaluate(() => {
     const footer = document.querySelector('.site-footer').getBoundingClientRect().top + scrollY;
-    const photo = document.querySelector('.hero-media');
-    const title = document.querySelector('.hero-title');
     const visibleButtons = [...document.querySelectorAll('.hero .btn')].filter((b) => getComputedStyle(b).display !== 'none').length;
     return {
       screens: footer / innerHeight,
-      photoAboveTitle: !photo || photo.getBoundingClientRect().bottom <= title.getBoundingClientRect().top + 1,
+      heroHasImage: !!document.querySelector('.hero img, .hero picture'),
       heroButtons: visibleButtons,
       preview: !!document.querySelector('.info-needed, .photo-slot--empty'),
     };
@@ -138,7 +136,7 @@ const watch = (page) => page.on('pageerror', (e) => errors.push(`${page.url()}: 
   // Preview builds also show the owner's placeholders (photo frames, numbers, review cards), so allow more room.
   const maxScreens = preview ? 8 : 5;
   check(`homepage is a short summary on phones (≤ ${maxScreens} screens before the footer${preview ? ', preview' : ''})`, screens <= maxScreens, `${screens.toFixed(1)} screens`);
-  check('phone hero photo sits above the heading (not behind it)', photoAboveTitle);
+  check('home hero has no image', !heroHasImage);
   check('phone hero shows a single button', heroButtons === 1, `${heroButtons} visible`);
   check('no duplicated FAQ or first-visit blocks on the homepage', (await page.$$('main .faq-container, main .steps')).length === 0);
   await ctx.close();

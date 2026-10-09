@@ -108,8 +108,8 @@ const qualifications = doctor.qualifications.map((qualification) => qualificatio
             {address.line1}<br />
             {address.line2}
           </address>
-          {visitPage.lift ? <p>{visitPage.lift}</p> : <InfoNeeded what="lift / stairs" folder="00-clinic-facts" />}
-          {visitPage.fees ? <p><strong>Consultation fee:</strong> {visitPage.fees}</p> : <InfoNeeded what="consultation fee" folder="00-clinic-facts" />}
+          {visitPage.lift ? <p>{visitPage.lift}</p> : <InfoNeeded what="lift / stairs" folder="04-visit-us" />}
+          {visitPage.fees ? <p><strong>Consultation fee:</strong> {visitPage.fees}</p> : <InfoNeeded what="consultation fee" folder="04-visit-us" />}
           <p class="booking-note">{bookPage.haveReady}</p>
           <ContactActions showBook />
           <ul class="link-rows">

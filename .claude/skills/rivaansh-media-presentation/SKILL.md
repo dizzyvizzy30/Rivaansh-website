@@ -16,7 +16,7 @@ Photography is the strongest asset this clinic has (real procedures, real theatr
   descriptive name.
 
 ## Photo slots (where real clinic photos belong)
-- Registry: `src/data/photo-slots.ts` — 12 named slots (id, brief, ratio, min size, required/conditional/optional,
+- Registry: `src/data/photo-slots.ts` has 11 named slots (id, brief, ratio, min size, required/conditional/optional,
   where used, truthful stand-in if any). A photo saved as `src/assets/images/slots/<id>.jpg|jpeg|png|webp` fills the
   slot automatically (import.meta.glob) — no code change.
 - `PhotoSlot.astro` renders one slot: real photo → shown; stand-in → shown (preview builds add a "Stand-in" badge);
@@ -51,7 +51,6 @@ Only **one** `priority` image per page.
 ### `sizes` cheat-sheet (match the CSS, or the browser downloads the wrong width)
 | Layout | `sizes` |
 |---|---|
-| Home hero (right half ≥900px, full-bleed on phones) | `100vw` |
 | Justified gallery tile | `(max-width: 576px) calc(100vw - 2rem), (max-width: 992px) 60vw, 40vw` |
 | Two-column feature (About facility main) | `(max-width: 1024px) 100vw, 560px` |
 | Card thumbnail (locations/blog) | `(max-width: 768px) 100vw, 300px` |
@@ -79,7 +78,7 @@ Only **one** `priority` image per page.
 - Video items: `data-type="video"` + `data-video-src` + poster thumbnail. The lightbox renders a native `<video controls playsinline preload="metadata">`; it pauses on slide change/close.
 
 ## Performance budget (mobile, 4G)
-- Homepage hero image ≤ 200 KB transferred; any gallery tile ≤ 120 KB.
+- Any above-the-fold photo should be no more than 200 KB transferred; any gallery tile should be no more than 120 KB.
 - No image request before the priority image; no layout shift (CLS ≈ 0).
 - Run `npm run build` and check `dist/_astro/*.webp` sizes and count after adding media (no `.jpg/.png` originals
   should appear in `dist/_astro`).

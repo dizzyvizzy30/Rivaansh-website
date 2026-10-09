@@ -32,10 +32,10 @@ const showSurgery = showDrafts || page.surgery;
     <SlotGallery slots={page.tourSlots} id="centre" label="Centre tour" />
 
     <h3>{page.equipmentHeading}</h3>
-    {page.equipment ? <ul class="ticks">{page.equipment.map((e) => <li>{e}</li>)}</ul> : <InfoNeeded what="equipment at the centre, in plain words" folder="00-clinic-facts" />}
+    {page.equipment ? <ul class="ticks">{page.equipment.map((e) => <li>{e}</li>)}</ul> : <InfoNeeded what="equipment at the centre, in plain words" folder="03-doctor-and-centre" />}
 
     <h3>{page.hygieneHeading}</h3>
-    {page.hygiene ? <ul class="ticks">{page.hygiene.map((h) => <li>{h}</li>)}</ul> : <InfoNeeded what="sterilisation method, single-use items" folder="00-clinic-facts" />}
+    {page.hygiene ? <ul class="ticks">{page.hygiene.map((h) => <li>{h}</li>)}</ul> : <InfoNeeded what="sterilisation method, single-use items" folder="03-doctor-and-centre" />}
   </section>
 
   {showSurgery && (
@@ -49,7 +49,7 @@ const showSurgery = showDrafts || page.surgery;
       ) : (
         <>
           <p class="draft-banner">Preview only - this section goes live once the centre confirms where operations are done.</p>
-          <InfoNeeded what="where operations are done and who gives anaesthesia" folder="00-clinic-facts" />
+          <InfoNeeded what="where operations are done and who gives anaesthesia" folder="03-doctor-and-centre" />
         </>
       )}
       <SlotGallery slots={page.surgerySlots} id="surgery" label="Surgery photos" columns={2} />

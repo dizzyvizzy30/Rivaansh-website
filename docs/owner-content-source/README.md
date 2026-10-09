@@ -9,7 +9,7 @@ The numbered folders match the website pages. Open the folder for the page you w
 | Folder | Website area | Owner action |
 |---|---|---|
 | `00-shared-site-details` | Header, footer, and details reused across pages | Confirm the official contact and brand details once |
-| `01-home` | Home | Review the first impression, symptom wording, and hero photo |
+| `01-home` | Home | Review the first impression and symptom wording |
 | `02-treatments` | Treatments and condition pages | Review condition information and service availability |
 | `03-doctor-and-centre` | Doctor & Centre | Confirm the doctor profile, facilities, and centre photos |
 | `04-visit-us` | Visit Us | Confirm timings, directions, fees, access, and common questions |
